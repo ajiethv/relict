@@ -4,14 +4,9 @@ Bullet::Bullet()
 {
 }
 
-void Bullet::SetDamage(float d)
+void Bullet::SetVelocity(vec2 s)
 {
-	m_damage = d;
-}
-
-void Bullet::SetSpeed(float s)
-{
-	m_speed = s;
+	m_velocity = s;
 }
 
 void Bullet::SetType(int t)
@@ -24,14 +19,9 @@ void Bullet::SetReflected(bool r)
 	m_reflected = r;
 }
 
-float Bullet::GetDamage() const
+vec2 Bullet::GetVelocity() const
 {
-	return m_damage;
-}
-
-float Bullet::GetSpeed() const
-{
-	return m_speed;
+	return m_velocity;
 }
 
 int Bullet::GetType() const

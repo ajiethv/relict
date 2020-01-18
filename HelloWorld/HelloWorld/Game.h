@@ -91,10 +91,10 @@ private:
 	bool m_wheel = false;
 	
 	//Game variables
-	std::vector<int> m_bullet;
-	std::vector<int> m_enemy;
-	std::vector<int> m_removeEntity;
-	float m_invunerability = 0;
+	std::vector<int> m_bullet; //all bullet entities
+	std::vector<int> m_enemy; //all enemy entities
+	std::vector<int> m_removeEntity; //all entities that need to be removed
+	float m_invunerability = 0; //player invunerability timer (after being hit)
 };
 
 

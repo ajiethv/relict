@@ -8,23 +8,26 @@ public:
 	Enemy();
 
 	//setters
-	void SetHealth(float h);
+	void SetHealth(int h);
 	void SetSpeed(float s);
-	void SetAttackPattern(float ap);
-	void SetAttackSpeed(float as);
+	void SetAttackPattern(int ap);
+	void SetAttackSpeed(int as);
+	void SetType(int t);
 
 	//getters
-	float GetHealth() const;
+	int GetHealth() const;
 	float GetSpeed() const;
-	float GetAttackPattern() const;
-	float GetAttackSpeed() const;
+	int GetAttackPattern() const;
+	int GetAttackSpeed() const;
+	int GetType() const;
 
 private:
 	//variables
-	float m_health = 0.f;
-	float m_speed = 0.f;
-	float m_attackPattern = 0.f;
-	float m_attackSpeed = 0.f;
+	int m_health = 0; //enemy health
+	float m_speed = 0.f; //enemy speed
+	int m_attackPattern = 0; //1 = shoot straight at player
+	int m_attackSpeed = 0; //enemy fire rate
+	int m_type = 0; //sets the other variables to match the enemy type, 1 = basic enemy, 2 = boss 1, 3 = boss 2, etc.
 };
 
 //Sends enemy TO json file
@@ -38,6 +41,8 @@ inline void to_json(nlohmann::json& j, const Enemy& enemy)
 	j["EnemyAttackPattern"] = enemy.GetAttackPattern();
 	//Save attack speed
 	j["EnemyAttackSpeed"] = enemy.GetAttackSpeed();
+	//save enemy type
+	j["EnemyType"] = enemy.GetType();
 }
 
 //Reads enemy in FROM json file
@@ -51,4 +56,6 @@ inline void from_json(const nlohmann::json& j, Enemy& enemy)
 	enemy.SetAttackPattern(j["EnemyAttackPattern"]);
 	//set attack speed
 	enemy.SetAttackSpeed(j["EnemyAttackSpeed"]);
+	//Set enemy type
+	enemy.SetType(j["EnemyType"]);
 }

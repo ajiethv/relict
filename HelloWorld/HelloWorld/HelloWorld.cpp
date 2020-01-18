@@ -121,63 +121,175 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::SetUpIdentifier(collide, bitHolder, "Attack box");
 	}
 
-	//set up object to test collision
+	//set up temp enemies
+	float num = 141.42135623730950488016887242097;
 	{
 		//create entity
-		auto collide = ECS::CreateEntity();
+		auto enemy = ECS::CreateEntity();
 
 		//attach components
-		ECS::AttachComponent<Sprite>(collide);
-		ECS::AttachComponent<Transform>(collide);
+		ECS::AttachComponent<Sprite>(enemy);
+		ECS::AttachComponent<Transform>(enemy);
+		ECS::AttachComponent<Enemy>(enemy);
 
 		//set files
-		std::string fileName = "temp2.png";
+		std::string fileName = "temp.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 10, 10);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(50.f, 0.f, 100.f));
+		ECS::GetComponent<Sprite>(enemy).LoadSprite(fileName, 10, 10);
+		ECS::GetComponent<Transform>(enemy).SetPosition(vec3(-num, num, 100.f));
+		ECS::GetComponent<Enemy>(enemy).SetType(1);
 
 		//set player
-		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
-		ECS::SetUpIdentifier(collide, bitHolder, "Collide box");
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::EnemyBit();
+		ECS::SetUpIdentifier(enemy, bitHolder, "Enemy");
 	}
 	{
 		//create entity
-		auto collide = ECS::CreateEntity();
+		auto enemy = ECS::CreateEntity();
 
 		//attach components
-		ECS::AttachComponent<Sprite>(collide);
-		ECS::AttachComponent<Transform>(collide);
+		ECS::AttachComponent<Sprite>(enemy);
+		ECS::AttachComponent<Transform>(enemy);
+		ECS::AttachComponent<Enemy>(enemy);
 
 		//set files
-		std::string fileName = "temp2.png";
+		std::string fileName = "temp.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 5, 5);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-50.f, 0.f, 100.f));
+		ECS::GetComponent<Sprite>(enemy).LoadSprite(fileName, 10, 10);
+		ECS::GetComponent<Transform>(enemy).SetPosition(vec3(0.f, 200.f, 100.f));
+		ECS::GetComponent<Enemy>(enemy).SetType(1);
 
 		//set player
-		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
-		ECS::SetUpIdentifier(collide, bitHolder, "Collide box");
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::EnemyBit();
+		ECS::SetUpIdentifier(enemy, bitHolder, "Enemy");
 	}
 	{
 		//create entity
-		auto collide = ECS::CreateEntity();
+		auto enemy = ECS::CreateEntity();
 
 		//attach components
-		ECS::AttachComponent<Sprite>(collide);
-		ECS::AttachComponent<Transform>(collide);
+		ECS::AttachComponent<Sprite>(enemy);
+		ECS::AttachComponent<Transform>(enemy);
+		ECS::AttachComponent<Enemy>(enemy);
 
 		//set files
-		std::string fileName = "temp2.png";
+		std::string fileName = "temp.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 15, 15);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 50.f, 100.f));
+		ECS::GetComponent<Sprite>(enemy).LoadSprite(fileName, 10, 10);
+		ECS::GetComponent<Transform>(enemy).SetPosition(vec3(num, num, 100.f));
+		ECS::GetComponent<Enemy>(enemy).SetType(1);
 
 		//set player
-		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
-		ECS::SetUpIdentifier(collide, bitHolder, "Collide box");
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::EnemyBit();
+		ECS::SetUpIdentifier(enemy, bitHolder, "Enemy");
+	}
+	{
+		//create entity
+		auto enemy = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(enemy);
+		ECS::AttachComponent<Transform>(enemy);
+		ECS::AttachComponent<Enemy>(enemy);
+
+		//set files
+		std::string fileName = "temp.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(enemy).LoadSprite(fileName, 10, 10);
+		ECS::GetComponent<Transform>(enemy).SetPosition(vec3(-200.f, 0.f, 100.f));
+		ECS::GetComponent<Enemy>(enemy).SetType(1);
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::EnemyBit();
+		ECS::SetUpIdentifier(enemy, bitHolder, "Enemy");
+	}
+	{
+		//create entity
+		auto enemy = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(enemy);
+		ECS::AttachComponent<Transform>(enemy);
+		ECS::AttachComponent<Enemy>(enemy);
+
+		//set files
+		std::string fileName = "temp.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(enemy).LoadSprite(fileName, 10, 10);
+		ECS::GetComponent<Transform>(enemy).SetPosition(vec3(200.f, 0.f, 100.f));
+		ECS::GetComponent<Enemy>(enemy).SetType(1);
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::EnemyBit();
+		ECS::SetUpIdentifier(enemy, bitHolder, "Enemy");
+	}
+	{
+		//create entity
+		auto enemy = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(enemy);
+		ECS::AttachComponent<Transform>(enemy);
+		ECS::AttachComponent<Enemy>(enemy);
+
+		//set files
+		std::string fileName = "temp.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(enemy).LoadSprite(fileName, 10, 10);
+		ECS::GetComponent<Transform>(enemy).SetPosition(vec3(-num, -num, 100.f));
+		ECS::GetComponent<Enemy>(enemy).SetType(1);
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::EnemyBit();
+		ECS::SetUpIdentifier(enemy, bitHolder, "Enemy");
+	}
+	{
+		//create entity
+		auto enemy = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(enemy);
+		ECS::AttachComponent<Transform>(enemy);
+		ECS::AttachComponent<Enemy>(enemy);
+
+		//set files
+		std::string fileName = "temp.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(enemy).LoadSprite(fileName, 10, 10);
+		ECS::GetComponent<Transform>(enemy).SetPosition(vec3(0.f, -200.f, 100.f));
+		ECS::GetComponent<Enemy>(enemy).SetType(1);
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::EnemyBit();
+		ECS::SetUpIdentifier(enemy, bitHolder, "Enemy");
+	}
+	{
+		//create entity
+		auto enemy = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(enemy);
+		ECS::AttachComponent<Transform>(enemy);
+		ECS::AttachComponent<Enemy>(enemy);
+
+		//set files
+		std::string fileName = "temp.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(enemy).LoadSprite(fileName, 10, 10);
+		ECS::GetComponent<Transform>(enemy).SetPosition(vec3(num, -num, 100.f));
+		ECS::GetComponent<Enemy>(enemy).SetType(1);
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::EnemyBit();
+		ECS::SetUpIdentifier(enemy, bitHolder, "Enemy");
 	}
 
 	//set the camera to focus on the main player
