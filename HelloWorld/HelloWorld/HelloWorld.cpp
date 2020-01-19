@@ -113,8 +113,8 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "temp2.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 10, 10);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, 99.f));
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 20, 20);
+		ECS::GetComponent<Transform>(3).SetPosition((20.f / 3.f), 0, 99);
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();

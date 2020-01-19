@@ -51,44 +51,78 @@ bool Game::Run()
 	for (int i = 4; i <= 11; i++) {
 		m_enemy.push_back(i);
 	}
-	//While window is still open
+
+	//access all the sprites to avoid lag later
+	std::string fileName = "tempInvunerable.png";
+	ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(fileName, 10, 10);
+	fileName = "temp3.png";
+	ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(fileName, 10, 10);
+	fileName = "temp4.png";
+	ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(fileName, 10, 10);
+	fileName = "temp5.png";
+	ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(fileName, 10, 10);
+	fileName = "temp.png";
+	ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(fileName, 10, 10);
+
+	//while window is still open
 	while (m_window->isOpen()) {
 		while (m_window->isOpen() && ECS::GetComponent<HealthBar>(EntityIdentifier::MainPlayer()).GetHealth() > 0)
 		{
-			//Clear window with clearColor
-			m_window->Clear(m_clearColor);
-			//Updates the game
-			Update();
-			//Draws the game
-			BackEnd::Draw(m_register);
+			//Update timer
+			Timer::Update();
+			//Update the backend
+			BackEnd::Update(m_register);
 
-			//Draws ImGUI
-			if (m_guiActive)
-				GUI();
+			//checks the speed cap
+			if (m_speedCap <= 0) {
+				m_speedCap = 0.01f;
+				//Clear window with clearColor
+				m_window->Clear(m_clearColor);
 
-			//Flips the windows
-			m_window->Flip();
+				//Updates the game
+				Update();
+				//Draws the game
+				BackEnd::Draw(m_register);
 
-			//Polls events and then checks them
-			BackEnd::PollEvents(m_register, &m_close, &m_motion, &m_click, &m_wheel);
-			CheckEvents();
+				//Draws ImGUI
+				if (m_guiActive)
+					GUI();
 
-			//does the window have keyboard focus?
-			if (Input::m_windowFocus)
-			{
-				//Accept all input
-				AcceptInput();
+				//Flips the windows
+				m_window->Flip();
+
+				//Polls events and then checks them
+				BackEnd::PollEvents(m_register, &m_close, &m_motion, &m_click, &m_wheel);
+				CheckEvents();
+
+				//does the window have keyboard focus?
+				if (Input::m_windowFocus)
+				{
+					//Accept all input
+					AcceptInput();
+				}
+			}
+			else {
+				m_speedCap -= Timer::deltaTime;
 			}
 		}
+		BackEnd::PollEvents(m_register, &m_close, &m_motion, &m_click, &m_wheel);
+		CheckEvents();
+
 		std::cout << "You died - Press \"Enter\" to respawn - Press \"Esc\" to quit\n"; //REPLACE WITH A DEATH SCREEN ================================================================================================================================================================================================================================================
 		if (Input::m_windowFocus) {
 			if (Input::GetKeyUp(Key::Escape)) {
+				//close the game
 				m_window->Close();
 			}
 			if (Input::GetKeyUp(Key::Enter)) {
+				//reset everything
 				ECS::GetComponent<HealthBar>(EntityIdentifier::MainPlayer()).SetHealth(3.f);
 				ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetPosition(0.f, 0.f, 100.f);
-				ECS::GetComponent<Transform>(3).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY(), 99);
+				ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetRotationAngleZ(0.f);
+				float xOffset = (ECS::GetComponent<Transform>(3).GetScale().x / 3.f), yOffset = 0.f;
+				ECS::GetComponent<Transform>(3).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + xOffset, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + yOffset, 99);
+				ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(fileName, 10, 10);
 				for (int x : m_bullet){
 					ECS::DestroyEntity(x);
 				}
@@ -97,6 +131,8 @@ bool Game::Run()
 					ECS::DestroyEntity(x);
 				}
 				m_enemy.clear();
+				m_removeEntity.clear();
+				m_invunerability = 0.f;
 			}
 		}
 		Input::ResetKeys();
@@ -107,11 +143,6 @@ bool Game::Run()
 
 void Game::Update()
 {
-	//Update timer
-	Timer::Update();
-	//Update the backend
-	BackEnd::Update(m_register);
-
 	//make enemies attack you
 	for (int i : m_enemy) {
 		if (ECS::GetComponent<Enemy>(i).GetAttackSpeed() >= 0) {
@@ -128,12 +159,18 @@ void Game::Update()
 				ECS::AttachComponent<Bullet>(bullet);
 
 				//set files
-				std::string fileName = "temp2.png";
+				std::string fileName = "temp4.png";
 
 				//set components
 				ECS::GetComponent<Sprite>(bullet).LoadSprite(fileName, 3, 3);
 				ECS::GetComponent<Transform>(bullet).SetPosition(vec3(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY(), 100.f));
 				ECS::GetComponent<Bullet>(bullet).SetVelocity(vec2(cos(ECS::GetComponent<Transform>(i).GetRotationAngleZ()), sin(ECS::GetComponent<Transform>(i).GetRotationAngleZ())));
+				ECS::GetComponent<Bullet>(bullet).SetType(2);
+				if (rand() % 5 == 0) {
+					ECS::GetComponent<Bullet>(bullet).SetType(3);
+					fileName = "temp5.png";
+					ECS::GetComponent<Sprite>(bullet).LoadSprite(fileName, 3, 3);
+				}
 
 				//set player
 				unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::BulletBit();
@@ -148,7 +185,7 @@ void Game::Update()
 			ECS::GetComponent<VerticalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
 
 			if (ECS::GetComponent<Enemy>(i).GetType() == 1) {
-				ECS::GetComponent<Enemy>(i).SetAttackSpeed(10);
+				ECS::GetComponent<Enemy>(i).SetAttackSpeed(20);
 			}
 		}
 	}
@@ -166,7 +203,7 @@ void Game::Update()
 		if (sqrt((bulletPos.x - playerPos.x)* (bulletPos.x - playerPos.x) + (bulletPos.y - playerPos.y) * (bulletPos.y - playerPos.y)) <= ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetScale().x / 2.f + ECS::GetComponent<Transform>(i).GetScale().x / 2.f) {
 			if (m_invunerability <= 0.f) {
 				ECS::GetComponent<HealthBar>(EntityIdentifier::MainPlayer()).SetHealth(ECS::GetComponent<HealthBar>(EntityIdentifier::MainPlayer()).GetHealth() - 1);
-				m_invunerability = 2.f;
+				m_invunerability = 1.f;
 				m_removeEntity.push_back(i);
 			}
 		}
@@ -199,10 +236,29 @@ void Game::Update()
 	//count down the invunerability
 	if (m_invunerability > 0) {
 		m_invunerability -= Timer::deltaTime;
-		std::cout << m_invunerability << "\n";
+
+		//set the sprite to flash
+		std::string fileName;
+		if ((m_invunerability <= 1.f && m_invunerability > 1.f / 9.f * 8.f) || (m_invunerability <= 1.f / 9.f * 7.f && m_invunerability > 1.f / 9.f * 6.f) || (m_invunerability <= 1.f / 9.f * 5.f && m_invunerability > 1.f / 9.f * 4.f) || (m_invunerability <= 1.f / 9.f * 3.f && m_invunerability > 1.f / 9.f * 2.f) || (m_invunerability <= 1.f / 9.f && m_invunerability > 0.f)) {
+			fileName = "tempInvunerable.png";
+		}
+		else {
+			fileName = "temp.png";
+		}
+		ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(fileName, 10, 10);
 	}
 
 	//remove all necessary entities
+	for (int i = 0; i < m_removeEntity.size(); i++) {
+		for (int j = 0; j < m_removeEntity.size(); j++) {
+			if (i != j && m_removeEntity[i] == m_removeEntity[j]) {
+				m_removeEntity.erase(m_removeEntity.begin() + j);
+				j = -1;
+				i = -1;
+				break;
+			}
+		}
+	}
 	bool deleted;
 	int count;
 	for (int i : m_removeEntity) {
@@ -358,15 +414,9 @@ void Game::MouseMotion(SDL_MouseMotionEvent evnt)
 	}
 	ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetRotationAngleZ(angle * (PI / 180.f));
 
-	if (m_guiActive)
-	{
-		ImGui::GetIO().MousePos = ImVec2(float(evnt.x), float(evnt.y));
-
-		if (!ImGui::GetIO().WantCaptureMouse)
-		{
-
-		}
-	}
+	//rotate attack hitbox
+	float xOffset = (ECS::GetComponent<Transform>(3).GetScale().x / 3.f) * cos(angle * (PI / 180.f)), yOffset = (ECS::GetComponent<Transform>(3).GetScale().x / 3.f) * sin(angle * (PI / 180.f));
+	ECS::GetComponent<Transform>(3).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + xOffset, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + yOffset, 99);
 
 	//std::cout << evnt.x / (float(BackEnd::GetWindowWidth()) / 100.f) << " " << evnt.y / (float(BackEnd::GetWindowHeight()) / 100.f) << "\n";
 
@@ -376,30 +426,31 @@ void Game::MouseMotion(SDL_MouseMotionEvent evnt)
 
 void Game::MouseClick(SDL_MouseButtonEvent evnt)
 {
-	if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() == ECS::GetComponent<Transform>(3).GetPositionX() && ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() == ECS::GetComponent<Transform>(3).GetPositionY()) {
-		vec2 mousePos = vec2((BackEnd::GetWindowWidth() / 2.f) - evnt.x, (BackEnd::GetWindowHeight() / 2.f) - evnt.y);
-		float angle;
-		if (mousePos.x <= 0.f && mousePos.y >= 0.f) {
-			angle = abs((atan(float(mousePos.y) / float(mousePos.x))) * (180.f / PI));
+	//if you left click
+	if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+		//check each bullet
+		for (int i : m_bullet) {
+			//if the bullet can be destroyed
+			if (ECS::GetComponent<Bullet>(i).GetType() == 2) {
+				//check if the attack hitbox is colliding with the bullet
+				vec2 bulletPos = vec2(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY()), attackPos = vec2(ECS::GetComponent<Transform>(3).GetPositionX(), ECS::GetComponent<Transform>(3).GetPositionY());
+				if (sqrt((bulletPos.x - attackPos.x) * (bulletPos.x - attackPos.x) + (bulletPos.y - attackPos.y) * (bulletPos.y - attackPos.y)) <= ECS::GetComponent<Transform>(3).GetScale().x / 2.f + ECS::GetComponent<Transform>(i).GetScale().x / 2.f) {
+					m_removeEntity.push_back(i);
+				}
+			}
+			//if the bullet can be reflected
+			else if (ECS::GetComponent<Bullet>(i).GetType() == 3) {
+				//check if the attack hitbox is colliding with the bullet
+				vec2 bulletPos = vec2(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY()), attackPos = vec2(ECS::GetComponent<Transform>(3).GetPositionX(), ECS::GetComponent<Transform>(3).GetPositionY());
+				if (sqrt((bulletPos.x - attackPos.x) * (bulletPos.x - attackPos.x) + (bulletPos.y - attackPos.y) * (bulletPos.y - attackPos.y)) <= ECS::GetComponent<Transform>(3).GetScale().x / 2.f + ECS::GetComponent<Transform>(i).GetScale().x / 2.f) {
+					ECS::GetComponent<Bullet>(i).SetVelocity(vec2(cos(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetRotationAngleZ()), sin(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetRotationAngleZ())));
+					ECS::GetComponent<Bullet>(i).SetReflected(true);
+				}
+			}
 		}
-		else if (mousePos.x > 0.f && mousePos.y >= 0.f) {
-			angle = (atan(float(mousePos.x) / float(mousePos.y))) * (180.f / PI) + 90.f;
-		}
-		else if (mousePos.x >= 0.f && mousePos.y < 0.f) {
-			angle = abs((atan(float(mousePos.y) / float(mousePos.x))) * (180.f / PI)) + 180.f;
-		}
-		else {
-			angle = (atan(float(mousePos.x) / float(mousePos.y))) * (180.f / PI) + 270.f;
-		}
+	}
 
-		//rotate hitbox
-		float xOffset = (ECS::GetComponent<Transform>(3).GetScale().x / 2.f) * cos(angle * (PI / 180.f)), yOffset = (ECS::GetComponent<Transform>(3).GetScale().x / 2.f) * sin(angle * (PI / 180.f));
-		ECS::GetComponent<Transform>(3).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + xOffset, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + yOffset, 99);
-	}
-	else {
-		ECS::GetComponent<Transform>(3).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY(), 99);
-		m_click = false;
-	}
+	m_click = false;
 }
 
 void Game::MouseWheel(SDL_MouseWheelEvent evnt)
