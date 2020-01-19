@@ -31,7 +31,13 @@ void Enemy::SetType(int t)
 		m_health = 1;
 		m_speed = 0.1f;
 		m_attackPattern = 1;
-		m_attackSpeed = 30;
+		m_attackSpeed = 100;
+	}
+	else if (t == 2) {
+		m_health = 10;
+		m_speed = 0.f;
+		m_attackPattern = 2;
+		m_attackSpeed = 100;
 	}
 }
 
