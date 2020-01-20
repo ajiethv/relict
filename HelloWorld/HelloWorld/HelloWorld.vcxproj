@@ -158,6 +158,7 @@
     <ClInclude Include="include\imgui\imstb_truetype.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="JSON.h" />
+    <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="PixelateEffect.h" />
     <ClInclude Include="PostEffect.h" />
@@ -208,6 +209,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="JSON.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="PixelateEffect.cpp" />
     <ClCompile Include="PostEffect.cpp" />

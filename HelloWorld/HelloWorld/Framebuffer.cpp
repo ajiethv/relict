@@ -108,10 +108,10 @@ void Framebuffer::Init()
 			glTexStorage2D(GL_TEXTURE_2D, 1, m_color.m_formats[i], m_width, m_height);
 
 			//Set texture parameters
-			glTextureParameteri(m_color.m_textures[i].m_handle, GL_TEXTURE_MIN_FILTER, m_filter);
-			glTextureParameteri(m_color.m_textures[i].m_handle, GL_TEXTURE_MAG_FILTER, m_filter);
-			glTextureParameteri(m_color.m_textures[i].m_handle, GL_TEXTURE_WRAP_S, m_wrap);
-			glTextureParameteri(m_color.m_textures[i].m_handle, GL_TEXTURE_WRAP_T, m_wrap);
+		//	glTextureParameteri(m_color.m_textures[i].m_handle, GL_TEXTURE_MIN_FILTER, m_filter);
+		//	glTextureParameteri(m_color.m_textures[i].m_handle, GL_TEXTURE_MAG_FILTER, m_filter);
+		//	glTextureParameteri(m_color.m_textures[i].m_handle, GL_TEXTURE_WRAP_S, m_wrap);
+		//	glTextureParameteri(m_color.m_textures[i].m_handle, GL_TEXTURE_WRAP_T, m_wrap);
 
 			//Bind texture to the FBO
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, m_color.m_textures[i].m_handle, 0);

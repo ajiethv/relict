@@ -41,10 +41,10 @@ bool Texture::Load(const std::string & file)
 	Bind();
 
 	//Set the parameters
-	glTextureParameteri(m_handle, GL_TEXTURE_MIN_FILTER, m_filter.m_minFilter);
-	glTextureParameteri(m_handle, GL_TEXTURE_MAG_FILTER, m_filter.m_magFilter);
-	glTextureParameteri(m_handle, GL_TEXTURE_WRAP_S, m_wrap.s);
-	glTextureParameteri(m_handle, GL_TEXTURE_WRAP_T, m_wrap.t);
+//	glTextureParameteri(m_handle, GL_TEXTURE_MIN_FILTER, m_filter.m_minFilter);
+//	glTextureParameteri(m_handle, GL_TEXTURE_MAG_FILTER, m_filter.m_magFilter);
+//	glTextureParameteri(m_handle, GL_TEXTURE_WRAP_S, m_wrap.s);
+//	glTextureParameteri(m_handle, GL_TEXTURE_WRAP_T, m_wrap.t);
 	
 	//Unbinds the texture
 	Unbind();

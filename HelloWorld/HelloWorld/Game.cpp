@@ -37,10 +37,15 @@ void Game::InitGame()
 	//Grabs the initialized window
 	m_window = BackEnd::GetWindow();
 
-	m_scenes.push_back(new HelloWorld("New Scene"));
-	m_activeScene = m_scenes[0];
-
-	//m_activeScene->InitScene(float(BackEnd::GetWindowWidth()), float(BackEnd::GetWindowHeight()));
+	
+	m_scenes.push_back(new HelloWorld("Menu"));
+	m_scenes.push_back(new HelloWorld("Game"));
+	//if (startgame == false) {
+		//m_activeScene = m_scenes[0];
+	//}
+	//if (startgame == true && pause == false) {
+		m_activeScene = m_scenes[0];
+	//}
 	m_activeScene->InitScene(float(BackEnd::GetWindowWidth()), float(BackEnd::GetWindowHeight()));
 	m_register = m_activeScene->GetScene();
 }
@@ -64,13 +69,14 @@ bool Game::Run()
 
 	//while window is still open
 	while (m_window->isOpen()) {
-		while (m_window->isOpen() && ECS::GetComponent<HealthBar>(EntityIdentifier::MainPlayer()).GetHealth() > 0)
+		while (m_window->isOpen() && ECS::GetComponent<HealthBar>(EntityIdentifier::MainPlayer()).GetHealth() > 0 && pause==false)
 		{
 			//Update timer
 			Timer::Update();
+			
 			//Update the backend
 			BackEnd::Update(m_register);
-
+	
 			//checks the speed cap
 			if (m_speedCap >= 0.01f) {
 				//Clear window with clearColor
