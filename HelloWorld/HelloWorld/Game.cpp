@@ -37,15 +37,10 @@ void Game::InitGame()
 	//Grabs the initialized window
 	m_window = BackEnd::GetWindow();
 
-	
-	m_scenes.push_back(new HelloWorld("Menu"));
+
+	m_scenes.push_back(new MainMenu("Menu"));
 	m_scenes.push_back(new HelloWorld("Game"));
-	//if (startgame == false) {
-		//m_activeScene = m_scenes[0];
-	//}
-	//if (startgame == true && pause == false) {
-		m_activeScene = m_scenes[0];
-	//}
+	m_activeScene = m_scenes[1];	
 	m_activeScene->InitScene(float(BackEnd::GetWindowWidth()), float(BackEnd::GetWindowHeight()));
 	m_register = m_activeScene->GetScene();
 }
@@ -69,7 +64,7 @@ bool Game::Run()
 
 	//while window is still open
 	while (m_window->isOpen()) {
-		while (m_window->isOpen() && ECS::GetComponent<HealthBar>(EntityIdentifier::MainPlayer()).GetHealth() > 0 && pause==false)
+		while (m_window->isOpen() && ECS::GetComponent<HealthBar>(EntityIdentifier::MainPlayer()).GetHealth() > 0)
 		{
 			//Update timer
 			Timer::Update();
