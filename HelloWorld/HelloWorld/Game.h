@@ -93,6 +93,7 @@ private:
 	
 	//Game variables
 	std::vector<int> m_bullet; //all bullet entities
+	std::vector<bool> m_bulletSprite; //if the bullet has a sprite
 	std::vector<int> m_enemy; //all enemy entities
 	std::vector<int> m_removeEntity; //all entities that need to be removed
 	float m_invunerability = 0; //player invunerability timer (after being hit)

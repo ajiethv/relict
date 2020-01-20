@@ -38,14 +38,9 @@ void Game::InitGame()
 	m_window = BackEnd::GetWindow();
 
 	
-	m_scenes.push_back(new HelloWorld("Menu"));
+	m_scenes.push_back(new MainMenu("Menu"));
 	m_scenes.push_back(new HelloWorld("Game"));
-	//if (startgame == false) {
-		//m_activeScene = m_scenes[0];
-	//}
-	//if (startgame == true && pause == false) {
-		m_activeScene = m_scenes[0];
-	//}
+	m_activeScene = m_scenes[1];
 	m_activeScene->InitScene(float(BackEnd::GetWindowWidth()), float(BackEnd::GetWindowHeight()));
 	m_register = m_activeScene->GetScene();
 }
@@ -200,6 +195,7 @@ void Game::Update()
 
 						//attach components
 						ECS::AttachComponent<Sprite>(bullet);
+						m_bulletSprite.push_back(true);
 						ECS::AttachComponent<Transform>(bullet);
 						ECS::AttachComponent<Bullet>(bullet);
 
@@ -251,41 +247,56 @@ void Game::Update()
 		}
 	}
 
-	//move bullets
-	for (int i : m_bullet) {
-		ECS::GetComponent<Transform>(i).SetPosition(ECS::GetComponent<Transform>(i).GetPositionX() + ECS::GetComponent<Bullet>(i).GetVelocity().x, ECS::GetComponent<Transform>(i).GetPositionY() + ECS::GetComponent<Bullet>(i).GetVelocity().y, 100.f);
-	}
-
 	//check bullet hitboxes
 	vec2 playerPos = vec2(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY());
-	for (int i : m_bullet) { 
-		vec2 bulletPos = vec2(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY());
+	for (int i = 0; i < m_bullet.size(); i++) {
+		ECS::GetComponent<Transform>(m_bullet[i]).SetPosition(ECS::GetComponent<Transform>(m_bullet[i]).GetPositionX() + ECS::GetComponent<Bullet>(m_bullet[i]).GetVelocity().x, ECS::GetComponent<Transform>(m_bullet[i]).GetPositionY() + ECS::GetComponent<Bullet>(m_bullet[i]).GetVelocity().y, 100.f);
+		vec2 bulletPos = vec2(ECS::GetComponent<Transform>(m_bullet[i]).GetPositionX(), ECS::GetComponent<Transform>(m_bullet[i]).GetPositionY());
+
+		if (m_bulletSprite[i] == false && (abs(bulletPos.x - playerPos.x) < 100.f * BackEnd::GetAspectRatio() || abs(bulletPos.y - playerPos.y) < 100.f)) {
+			ECS::AttachComponent<Sprite>(m_bullet[i]);
+			std::string fileName = "temp3.png";
+			if (ECS::GetComponent<Bullet>(m_bullet[i]).GetType() == 2) {
+				fileName = "temp4.png";
+			}
+			else if (ECS::GetComponent<Bullet>(m_bullet[i]).GetType() == 3) {
+				fileName = "temp5.png";
+			}
+			ECS::GetComponent<Sprite>(m_bullet[i]).LoadSprite(fileName, 3, 3);
+			m_bulletSprite[i] = true;
+		}
+		else if (m_bulletSprite[i] == true && (abs(bulletPos.x - playerPos.x) > 100.f * BackEnd::GetAspectRatio() || abs(bulletPos.y - playerPos.y) > 100.f)) {
+			ECS::RemoveComponent<Sprite>(m_bullet[i]);
+			m_bulletSprite[i] = false;
+		}
+
 		//if a bullet hits the player
-		if (sqrt((bulletPos.x - playerPos.x)* (bulletPos.x - playerPos.x) + (bulletPos.y - playerPos.y) * (bulletPos.y - playerPos.y)) <= ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetScale().x / 2.f + ECS::GetComponent<Transform>(i).GetScale().x / 2.f) {
+		if (sqrt((bulletPos.x - playerPos.x)* (bulletPos.x - playerPos.x) + (bulletPos.y - playerPos.y) * (bulletPos.y - playerPos.y)) <= ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetScale().x / 2.f + ECS::GetComponent<Transform>(m_bullet[i]).GetScale().x / 2.f) {
 			if (m_invunerability <= 0.f) {
 				ECS::GetComponent<HealthBar>(EntityIdentifier::MainPlayer()).SetHealth(ECS::GetComponent<HealthBar>(EntityIdentifier::MainPlayer()).GetHealth() - 1);
 				m_invunerability = 2.f;
-				m_removeEntity.push_back(i);
+				m_removeEntity.push_back(m_bullet[i]);
 			}
 		}
 
 		//if a bullet hits the arena wall
-		if (!(sqrt((ECS::GetComponent<Transform>(2).GetPosition().x - bulletPos.x)* (ECS::GetComponent<Transform>(2).GetPosition().x - bulletPos.x) + (ECS::GetComponent<Transform>(2).GetPosition().y - bulletPos.y) * (ECS::GetComponent<Transform>(2).GetPosition().y - bulletPos.y)) + ECS::GetComponent<Transform>(i).GetScale().x <= ECS::GetComponent<Transform>(i).GetScale().x / 2.f + ECS::GetComponent<Transform>(2).GetScale().x / 2.f)) {
-			m_removeEntity.push_back(i);
+		if (!(sqrt((ECS::GetComponent<Transform>(2).GetPosition().x - bulletPos.x)* (ECS::GetComponent<Transform>(2).GetPosition().x - bulletPos.x) + (ECS::GetComponent<Transform>(2).GetPosition().y - bulletPos.y) * (ECS::GetComponent<Transform>(2).GetPosition().y - bulletPos.y)) + ECS::GetComponent<Transform>(m_bullet[i]).GetScale().x <= ECS::GetComponent<Transform>(m_bullet[i]).GetScale().x / 2.f + ECS::GetComponent<Transform>(2).GetScale().x / 2.f)) {
+			m_removeEntity.push_back(m_bullet[i]);
 		}
 
 		//if a reflected bullet hits an enemy
-		if (ECS::GetComponent<Bullet>(i).GetReflected()) {
+		if (ECS::GetComponent<Bullet>(m_bullet[i]).GetReflected()) {
 			for (int j : m_enemy) {
 				vec2 enemyPos = vec2(ECS::GetComponent<Transform>(j).GetPositionX(), ECS::GetComponent<Transform>(j).GetPositionY());
-				if (sqrt((bulletPos.x - enemyPos.x) * (bulletPos.x - enemyPos.x) + (bulletPos.y - enemyPos.y) * (bulletPos.y - enemyPos.y)) <= ECS::GetComponent<Transform>(j).GetScale().x / 2.f + ECS::GetComponent<Transform>(i).GetScale().x / 2.f) {
+				if (sqrt((bulletPos.x - enemyPos.x) * (bulletPos.x - enemyPos.x) + (bulletPos.y - enemyPos.y) * (bulletPos.y - enemyPos.y)) <= ECS::GetComponent<Transform>(j).GetScale().x / 2.f + ECS::GetComponent<Transform>(m_bullet[i]).GetScale().x / 2.f) {
 					ECS::GetComponent<Enemy>(j).SetHealth(ECS::GetComponent<Enemy>(j).GetHealth() - 1);
-					m_removeEntity.push_back(i);
+					m_removeEntity.push_back(m_bullet[i]);
 					if (ECS::GetComponent<Enemy>(j).GetHealth() <= 0) m_removeEntity.push_back(j);
 				}
 			}
 		}
 	}
+
 	//check enemy hitboxes
 	for (int i : m_enemy) {
 		vec2 enemyPos = vec2(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY());
@@ -302,7 +313,6 @@ void Game::Update()
 		std::string fileName;
 		if ((m_invunerability <= 2.f && m_invunerability > 2.f / 9.f * 8.f) || (m_invunerability <= 2.f / 9.f * 7.f && m_invunerability > 2.f / 9.f * 6.f) || (m_invunerability <= 2.f / 9.f * 5.f && m_invunerability > 2.f / 9.f * 4.f) || (m_invunerability <= 2.f / 9.f * 3.f && m_invunerability > 2.f / 9.f * 2.f) || (m_invunerability <= 2.f / 9.f && m_invunerability > 0.f)) {
 			fileName = "tempInvunerable.png";
-			std::cout << m_invunerability << "\n";
 		}
 		else {
 			fileName = "temp.png";
@@ -331,6 +341,7 @@ void Game::Update()
 			count++;
 			if (i == j) {
 				m_bullet.erase(m_bullet.begin() + count);
+				m_bulletSprite.erase(m_bulletSprite.begin() + count);
 				deleted = true;
 				break;
 			}
