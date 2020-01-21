@@ -133,7 +133,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, 98.f));
 
 		//set player
-		unsigned int bitHolder = EntityIdentifier::TransformBit();
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
 		ECS::SetUpIdentifier(collide, bitHolder, "Arena");
 	}
 

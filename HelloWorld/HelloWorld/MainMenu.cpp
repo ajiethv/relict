@@ -24,38 +24,36 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 
 		//attach camera components
 		ECS::AttachComponent<Camera>(camera);
-		ECS::AttachComponent<HorizontalScroll>(camera);
-		ECS::AttachComponent<VerticalScroll>(camera);
 
 		vec4 temp = ECS::GetComponent<Camera>(camera).GetOrthoSize();
 
 		ECS::GetComponent<Camera>(camera).SetWindowSize(vec2(float(windowWidth), float(windowHeight)));
 		ECS::GetComponent<Camera>(camera).Orthographic(aspectRatio, temp.x, temp.y, temp.z, temp.w, -100.f, 100.f);
-		ECS::GetComponent<HorizontalScroll>(camera).SetCam(&ECS::GetComponent<Camera>(camera));
-		ECS::GetComponent<HorizontalScroll>(camera).SetOffset(0.f);
-		ECS::GetComponent<VerticalScroll>(camera).SetCam(&ECS::GetComponent<Camera>(camera));
-		ECS::GetComponent<VerticalScroll>(camera).SetOffset(0.f);
 
 		//set camera
-		unsigned int bitHolder = EntityIdentifier::VertiScrollCameraBit() | EntityIdentifier::HoriScrollCameraBit() | EntityIdentifier::CameraBit();
+		unsigned int bitHolder = EntityIdentifier::CameraBit();
 		ECS::SetUpIdentifier(camera, bitHolder, "Main Camera");
 		ECS::SetIsMainCamera(camera, true);
 	}
 
+	//set up title entity
 	{
-		auto entity = ECS::CreateEntity();
+		//create entity
+		auto title = ECS::CreateEntity();
 
-		ECS::AttachComponent<Sprite>(entity);
-		ECS::AttachComponent<Transform>(entity);
+		//attach components
+		ECS::AttachComponent<Sprite>(title);
+		ECS::AttachComponent<Transform>(title);
 
+		//set file
 		std::string fileName = "title_upscale.png";
-		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 100, 50);
-		ECS::GetComponent<Transform>(entity).SetPosition(vec3(-25.f, -25.f, 100.f));
 
-		unsigned int bitHolder = 0x0;
-		ECS::SetUpIdentifier(entity, bitHolder, "Title");
+		//set components
+		ECS::GetComponent<Sprite>(title).LoadSprite(fileName, 50, 25);
+		ECS::GetComponent<Transform>(title).SetPosition(vec3(0.f, 0.f, 100.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(title, bitHolder, "Title");
 	}
-	//set the camera to focus on the main player
-	ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
-	ECS::GetComponent<VerticalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
 }

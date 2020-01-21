@@ -182,7 +182,6 @@ void BackEnd::ReshapeWindow(int w, int h, entt::registry * mainReg)
 	//Set values
 	mainReg->get<Camera>(EntityIdentifier::MainCamera()).SetWindowSize(vec2(float(m_windowWidth), float(m_windowHeight)));
 	mainReg->get<Camera>(EntityIdentifier::MainCamera()).Orthographic(m_aspectRatio, temp.x, temp.y, temp.z, temp.w, tempCam.GetNear(), tempCam.GetFar());
-	mainReg->get<Camera>(EntityIdentifier::MainCamera()).SetPosition(vec3(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() / m_aspectRatio, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY(), ECS::GetComponent<Camera>(EntityIdentifier::MainCamera()).GetPositionZ()));
 }
 
 Window * BackEnd::GetWindow()
