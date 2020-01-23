@@ -16,27 +16,38 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		auto entity = ECS::CreateEntity();
 		EntityIdentifier::MainCamera(entity);
 
-		ECS::AttachComponent<Camera>(entity);
-		vec4 temp = ECS::GetComponent<Camera>(entity).GetOrthoSize();
-		ECS::GetComponent<Camera>(entity).SetWindowSize(vec2(float(windowWidth), float(windowHeight)));
-		ECS::GetComponent<Camera>(entity).Orthographic(aspectRatio, temp.x, temp.y, temp.z, temp.w, -100.f, 100.f);
+		//attach camera components
+		ECS::AttachComponent<Camera>(camera);
 
+		vec4 temp = ECS::GetComponent<Camera>(camera).GetOrthoSize();
+
+		ECS::GetComponent<Camera>(camera).SetWindowSize(vec2(float(windowWidth), float(windowHeight)));
+		ECS::GetComponent<Camera>(camera).Orthographic(aspectRatio, temp.x, temp.y, temp.z, temp.w, -100.f, 100.f);
+
+		//set camera
 		unsigned int bitHolder = EntityIdentifier::CameraBit();
-		ECS::SetUpIdentifier(entity, bitHolder, "Main Camera");
-		ECS::SetIsMainCamera(entity, true);
+		ECS::SetUpIdentifier(camera, bitHolder, "Main Camera");
+		ECS::SetIsMainCamera(camera, true);
 	}
-	
+
+	//set up title entity
 	{
-		auto entity = ECS::CreateEntity();
+		//create entity
+		auto title = ECS::CreateEntity();
 
-		ECS::AttachComponent<Sprite>(entity);
-		ECS::AttachComponent<Transform>(entity);
+		//attach components
+		ECS::AttachComponent<Sprite>(title);
+		ECS::AttachComponent<Transform>(title);
 
+		//set file
 		std::string fileName = "title_upscale.png";
-		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 100, 50);
-		ECS::GetComponent<Transform>(entity).SetPosition(vec3(-25.f, -25.f, 100.f));
 
-		unsigned int bitHolder = 0x0;
-		ECS::SetUpIdentifier(entity, bitHolder, "Title Sign");
+		//set components
+		ECS::GetComponent<Sprite>(title).LoadSprite(fileName, 50, 25);
+		ECS::GetComponent<Transform>(title).SetPosition(vec3(0.f, 0.f, 100.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(title, bitHolder, "Title");
 	}
 }
