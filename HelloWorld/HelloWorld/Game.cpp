@@ -103,7 +103,7 @@ bool Game::Run()
 			m_enemy.clear();
 			m_removeEntity.clear();
 			m_invunerability = 0.f;
-			m_initialStartup = true;
+			m_initialStartup = false;
 			ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
 			ECS::GetComponent<VerticalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
 
