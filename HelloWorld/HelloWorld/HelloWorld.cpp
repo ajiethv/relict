@@ -137,6 +137,27 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::SetUpIdentifier(collide, bitHolder, "Arena");
 	}
 
+	//set up pause sprite
+	{
+		//create entity
+		auto collide = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<Transform>(collide);
+
+		//set file
+		std::string fileName = "pause.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 580, 580);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, 0.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(collide, bitHolder, "Pause");
+	}
+
 	//set up temp enemies
 	{
 		//create entity
