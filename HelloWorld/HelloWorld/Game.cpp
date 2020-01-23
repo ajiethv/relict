@@ -40,6 +40,8 @@ void Game::InitGame()
 	
 	m_scenes.push_back(new MainMenu("Menu"));
 	m_scenes.push_back(new HelloWorld("Game"));
+	m_scenes.push_back(new Pause("Pause"));
+
 	m_activeScene = m_scenes[0];
 	m_activeScene->InitScene(float(BackEnd::GetWindowWidth()), float(BackEnd::GetWindowHeight()));
 	m_register = m_activeScene->GetScene();
@@ -50,7 +52,7 @@ bool Game::Run()
 	//while window is still open
 	while (m_window->isOpen()) {
 		//while on the main menu
-		while (m_window->isOpen() && m_activeScene == m_scenes[0]) {
+		while (m_window->isOpen()){// && m_activeScene == m_scenes[0]) {
 			//Update the backend
 			BackEnd::Update(m_register);
 
@@ -71,6 +73,7 @@ bool Game::Run()
 				AcceptInput();
 			}
 		}
+	
 		if (m_activeScene == m_scenes[1]) {
 			//access sprites
 			std::string fileName = "temp.png";
@@ -104,7 +107,7 @@ bool Game::Run()
 
 			m_enemy.push_back(5); //DELETE LATER =================================================================================================================================================================================================================================================================================
 
-			while (m_window->isOpen() && ECS::GetComponent<HealthBar>(EntityIdentifier::MainPlayer()).GetHealth() > 0 && pause == false)
+			while (m_window->isOpen() && ECS::GetComponent<HealthBar>(EntityIdentifier::MainPlayer()).GetHealth() > 0)// && pause == false)
 			{
 				//Update timer
 				Timer::Update();
@@ -183,7 +186,18 @@ bool Game::Run()
 
 void Game::Update()
 {
+	/*if (startgame == false) {
+		m_activeScene = m_scenes[0];
+		std::cout << '!';
+	}
+	else if (startgame == true) {
+		m_activeScene = m_scenes[1];
+		std::cout << '?';
+	}*/
 	if (m_activeScene == m_scenes[0]) {
+	
+	}
+	else if (m_activeScene == m_scenes[2]) {
 
 	}
 	else {
@@ -455,6 +469,9 @@ void Game::KeyboardHold()
 	if (m_activeScene == m_scenes[0]) {
 		
 	}
+	else if (m_activeScene == m_scenes[2]) {
+	
+	}
 	else {
 		//move player
 		vec2 position = vec2(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY());
@@ -510,7 +527,14 @@ void Game::KeyboardHold()
 
 void Game::KeyboardDown()
 {
-	
+	if (m_activeScene!=m_scenes[2]) {
+		if (Input::GetKey(Key::Escape)) {
+			pause = !pause;
+			m_activeScene = m_scenes[2];
+			m_activeScene->InitScene(float(BackEnd::GetWindowWidth()), float(BackEnd::GetWindowHeight()));
+			m_register = m_activeScene->GetScene();
+		}
+	}
 }
 
 void Game::KeyboardUp()
@@ -528,6 +552,9 @@ void Game::KeyboardUp()
 void Game::MouseMotion(SDL_MouseMotionEvent evnt)
 {
 	if (m_activeScene == m_scenes[0]) {
+		
+	}
+	else if (m_activeScene == m_scenes[2]) {
 
 	}
 	else {
@@ -560,10 +587,23 @@ void Game::MouseMotion(SDL_MouseMotionEvent evnt)
 
 void Game::MouseClick(SDL_MouseButtonEvent evnt)
 {
+	
 	if (m_activeScene == m_scenes[0]) {
-
+		//startgame = true;
+		m_activeScene = m_scenes[1];
+		m_activeScene->InitScene(float(BackEnd::GetWindowWidth()), float(BackEnd::GetWindowHeight()));
+		m_register = m_activeScene->GetScene();
+		std::cout << "HEAVEN OR HELL: LET'S ROCK" << std::endl;
+	}
+	else if (m_activeScene==m_scenes[2]) {
+		pause = !pause;
+		std::cout << "woah" << std::endl;
+		m_activeScene = m_scenes[1];
+		m_activeScene->InitScene(float(BackEnd::GetWindowWidth()), float(BackEnd::GetWindowHeight()));
+		m_register = m_activeScene->GetScene();
 	}
 	else {
+		std::cout << "cut" << std::endl;
 		//if you left click
 		if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
 			//check each bullet

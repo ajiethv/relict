@@ -1,13 +1,13 @@
-#include "MainMenu.h"
+#include "Pause.h"
 #include "Game.h"
 
 
-MainMenu::MainMenu(std::string name)
+Pause::Pause(std::string name)
 	: Scene(name)
 {
 }
 
-void MainMenu::InitScene(float windowWidth, float windowHeight)
+void Pause::InitScene(float windowWidth, float windowHeight)
 {
 	m_sceneReg = new entt::registry;
 	ECS::AttachRegister(m_sceneReg);
@@ -40,7 +40,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<Transform>(title);
 
 		//set file
-		std::string fileName = "title_upscale.png";
+		std::string fileName = "pause.png";
 
 		//set components
 		ECS::GetComponent<Sprite>(title).LoadSprite(fileName, 400, 200);
@@ -48,6 +48,6 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
-		ECS::SetUpIdentifier(title, bitHolder, "Title");
+		ECS::SetUpIdentifier(title, bitHolder, "Pause");
 	}
 }

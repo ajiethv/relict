@@ -4,6 +4,7 @@
 #include "BackEnd.h"
 #include "HelloWorld.h"
 #include "MainMenu.h"
+#include "Pause.h"
 #include "Xinput.h"
 
 //Our main class for running our game

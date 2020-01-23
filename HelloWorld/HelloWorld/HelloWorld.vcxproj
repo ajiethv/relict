@@ -160,6 +160,7 @@
     <ClInclude Include="JSON.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="Pause.h" />
     <ClInclude Include="PixelateEffect.h" />
     <ClInclude Include="PostEffect.h" />
     <ClInclude Include="RenderingSystem.h" />
@@ -211,6 +212,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="Pause.cpp" />
     <ClCompile Include="PixelateEffect.cpp" />
     <ClCompile Include="PostEffect.cpp" />
     <ClCompile Include="RenderingSystem.cpp" />
