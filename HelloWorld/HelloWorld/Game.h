@@ -100,6 +100,7 @@ private:
 	float m_invunerability = 0; //player invunerability timer (after being hit)
 	float m_speedCap = 0.f; //caps the speed of the game so it doesnt run too fast
 	float m_bossBulletOffset = 0.f; //adds a spiral effect to the bullets by offseting them a little bit
+	bool m_initialStartup = true;
 	bool startgame = false;
 	bool pause = false;
 };
