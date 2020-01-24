@@ -25,7 +25,7 @@ private:
 	//variables
 	int m_health = 0; //enemy health
 	float m_speed = 0.f; //enemy speed
-	int m_attackPattern = 0; //1 = shoot straight at player
+	int m_attackPattern = 0; //1 = shoot straight at player, 2 = spiral
 	int m_attackSpeed = 0; //enemy fire rate
 	int m_type = 0; //sets the other variables to match the enemy type, 1 = basic enemy, 2 = boss 1, 3 = boss 2, etc.
 };
