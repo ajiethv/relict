@@ -149,7 +149,7 @@ bool Game::Run()
 				m_speedCap += Timer::deltaTime;
 			}
 
-			while (pause) {
+			while (m_window->isOpen() && pause) {
 				//Update timer
 				Timer::Update();
 				//Update the backend
@@ -163,6 +163,8 @@ bool Game::Run()
 
 				BackEnd::PollEvents(m_register, &m_close, &m_motion, &m_click, &m_wheel);
 				CheckEvents();
+
+				ECS::GetComponent<Camera>(EntityIdentifier::MainCamera()).SetPosition(vec3(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() / BackEnd::GetAspectRatio(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY(), ECS::GetComponent<Camera>(EntityIdentifier::MainCamera()).GetPositionZ()));
 			}
 		}
 		BackEnd::PollEvents(m_register, &m_close, &m_motion, &m_click, &m_wheel);
@@ -278,6 +280,26 @@ void Game::Update()
 					unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
 					ECS::SetUpIdentifier(controls, bitHolder, "tooltip");
 					m_tooltip = controls;
+				}
+				{
+					//create entity
+					auto help = ECS::CreateEntity();
+
+					//attach components
+					ECS::AttachComponent<Sprite>(help);
+					ECS::AttachComponent<Transform>(help);
+
+					//set file
+					std::string fileName = "red_bullet_tooltip.png";
+
+					//set components
+					ECS::GetComponent<Sprite>(help).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 20);
+					ECS::GetComponent<Transform>(help).SetPosition(vec3(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 50, 100.f));
+
+					//set player
+					unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+					ECS::SetUpIdentifier(help, bitHolder, "tooltip");
+					m_helpTooltip = help;
 				}
 				//set the camera to focus on the main player
 				ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
@@ -435,6 +457,8 @@ void Game::Update()
 					m_tutorialBullet++;
 					std::string fileName = "attack_tooltip.png";
 					ECS::GetComponent<Sprite>(m_tooltip).LoadSprite(fileName, 30, 50);
+					fileName = "yellow_bullet_tooltip.png";
+					ECS::GetComponent<Sprite>(m_helpTooltip).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 20);
 				}
 			}
 
@@ -449,7 +473,9 @@ void Game::Update()
 						if (m_tutorial) {
 							m_tutorial = false;
 							ECS::DestroyEntity(m_tooltip);
+							ECS::DestroyEntity(m_helpTooltip);
 							m_tooltip = 0;
+							m_helpTooltip = 0;
 						}
 					}
 				}
@@ -517,6 +543,22 @@ void Game::Update()
 			}
 		}
 		m_removeEntity.clear();
+
+		if (m_helpTooltip > 0) {
+			std::string fileName = "";
+			if (m_tutorialBullet == 1) {
+				fileName = "red_bullet_tooltip.png";
+				ECS::GetComponent<Sprite>(m_helpTooltip).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 20);
+			}
+			else if (m_tutorialBullet == 2) {
+				fileName = "yellow_bullet_tooltip.png";
+				ECS::GetComponent<Sprite>(m_helpTooltip).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 20);
+			}
+			else {
+				fileName = "green_bullet_tooltip.png";
+				ECS::GetComponent<Sprite>(m_helpTooltip).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 20);
+			}
+		}
 	}
 }
 
@@ -642,6 +684,7 @@ void Game::KeyboardHold()
 		}
 		if (m_tutorial && m_tooltip != 0) {
 			ECS::GetComponent<Transform>(m_tooltip).SetPosition(vec3(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 50, 100.5f));
+			ECS::GetComponent<Transform>(m_helpTooltip).SetPosition(vec3(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 80, 100.5f));
 		}
 	}
 }
@@ -727,7 +770,11 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 						if (sqrt((bulletPos.x - attackPos.x) * (bulletPos.x - attackPos.x) + (bulletPos.y - attackPos.y) * (bulletPos.y - attackPos.y)) <= ECS::GetComponent<Transform>(3).GetScale().x / 2.f + ECS::GetComponent<Transform>(i).GetScale().x / 2.f) {
 							m_removeEntity.push_back(i);
 						}
-						if (m_tutorialBullet == 2) m_tutorialBullet++;
+						if (m_tutorialBullet == 2) {
+							m_tutorialBullet++;
+							std::string fileName = "green_bullet_tooltip.png";
+							ECS::GetComponent<Sprite>(m_helpTooltip).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 20);
+						}
 					}
 					//if the bullet can be reflected
 					else if (ECS::GetComponent<Bullet>(i).GetType() == 3) {

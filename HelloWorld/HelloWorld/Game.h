@@ -103,6 +103,7 @@ private:
 	bool m_tutorial = true; //runs the tutorial
 	int m_tutorialBullet = 1; //sets the type of the bullet in the tutorial
 	int m_tooltip = 0;
+	int m_helpTooltip = 0;
 	bool startgame = false;
 	bool pause = false;
 };
