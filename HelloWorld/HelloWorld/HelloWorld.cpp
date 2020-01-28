@@ -150,7 +150,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "pause.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 580, 580);
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200, 200);
 		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, 0.f));
 
 		//set player
