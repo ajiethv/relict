@@ -96,11 +96,13 @@ private:
 	std::vector<bool> m_bulletSprite; //if the bullet has a sprite
 	std::vector<int> m_enemy; //all enemy entities
 	std::vector<int> m_removeEntity; //all entities that need to be removed
-	float m_invunerability = 0; //player invunerability timer (after being hit)
+	float m_invunerability = 0.f; //player invunerability timer (after being hit)
+	float m_dodgeTimer = 0.f;
+	vec2 m_dodgeDirection = vec2(0.f, 0.f);
 	float m_speedCap = 0.f; //caps the speed of the game so it doesnt run too fast
 	float m_bossBulletOffset = 0.f; //adds a spiral effect to the bullets by offseting them a little bit
 	bool m_initialStartup = true; // allows the game to load on the initial startup
-	bool m_tutorial = true; //runs the tutorial
+	bool m_tutorial = false; //runs the tutorial
 	int m_tutorialBullet = 1; //sets the type of the bullet in the tutorial
 	int m_tooltip = 0;
 	int m_helpTooltip = 0;

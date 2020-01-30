@@ -158,6 +158,24 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::SetUpIdentifier(collide, bitHolder, "Pause");
 	}
 
+	//temp boss
+	{
+		auto boss = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(boss);
+		ECS::AttachComponent<Transform>(boss);
+		ECS::AttachComponent<Enemy>(boss);
+
+		std::string fileName = "temp.png";
+
+		ECS::GetComponent<Sprite>(boss).LoadSprite(fileName, 20, 20);
+		ECS::GetComponent<Transform>(boss).SetPosition(0.f, 0.f, 100.f);
+		ECS::GetComponent<Enemy>(boss).SetType(5);
+
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit() | EntityIdentifier::EnemyBit();
+		ECS::SetUpIdentifier(boss, bitHolder, "Temp boss");
+	}
+
 	//set the camera to focus on the main player
 	ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
