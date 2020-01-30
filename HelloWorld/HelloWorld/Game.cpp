@@ -106,6 +106,10 @@ bool Game::Run()
 			m_invunerability = 0.f;
 			m_initialStartup = false;
 			m_enemy.push_back(6);
+			/*m_enemy.push_back(7);
+			m_enemy.push_back(8);
+			m_enemy.push_back(9);
+			m_enemy.push_back(10);*/
 			ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
 			ECS::GetComponent<VerticalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
 		}
@@ -355,7 +359,7 @@ void Game::Update()
 
 						//set player
 						unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::BulletBit();
-						ECS::SetUpIdentifier(bullet, bitHolder, "Enemy");
+						ECS::SetUpIdentifier(bullet, bitHolder, "Bullet");
 
 						//add bullet to vector
 						m_bullet.push_back(bullet);
@@ -396,7 +400,7 @@ void Game::Update()
 
 							//set player
 							unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::BulletBit();
-							ECS::SetUpIdentifier(bullet, bitHolder, "Enemy");
+							ECS::SetUpIdentifier(bullet, bitHolder, "Bullet");
 
 							//add bullet to vector
 							m_bullet.push_back(bullet);
@@ -439,7 +443,7 @@ void Game::Update()
 
 							//set player
 							unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::BulletBit();
-							ECS::SetUpIdentifier(bullet, bitHolder, "Enemy");
+							ECS::SetUpIdentifier(bullet, bitHolder, "Bullet");
 
 							//add bullet to vector
 							m_bullet.push_back(bullet);
@@ -477,7 +481,7 @@ void Game::Update()
 
 						//set player
 						unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::BulletBit();
-						ECS::SetUpIdentifier(bullet, bitHolder, "Enemy");
+						ECS::SetUpIdentifier(bullet, bitHolder, "Bullet");
 
 						//add bullet to vector
 						m_bullet.push_back(bullet);
@@ -512,7 +516,75 @@ void Game::Update()
 
 							//set player
 							unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::BulletBit();
-							ECS::SetUpIdentifier(bullet, bitHolder, "Enemy");
+							ECS::SetUpIdentifier(bullet, bitHolder, "Bullet");
+
+							//add bullet to vector
+							m_bullet.push_back(bullet);
+							m_bulletSprite.push_back(true);
+						}
+					}
+				}
+				else if (ECS::GetComponent<Enemy>(i).GetAttackPattern() == 6) {
+					if (m_bullet.size() < 7) {
+						{
+							//create entity
+							auto bullet = ECS::CreateEntity();
+
+							//attach components
+							ECS::AttachComponent<Sprite>(bullet);
+							ECS::AttachComponent<Transform>(bullet);
+							ECS::AttachComponent<Bullet>(bullet);
+
+							//set files
+							std::string fileName = "temp3.png";
+
+							//set components
+							ECS::GetComponent<Sprite>(bullet).LoadSprite(fileName, 3, 3);
+							ECS::GetComponent<Transform>(bullet).SetPosition(vec3(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY(), 100.f));
+							ECS::GetComponent<Bullet>(bullet).SetVelocity(vec2(cos(ECS::GetComponent<Transform>(i).GetRotationAngleZ() - 90 * PI / 180.f), sin(ECS::GetComponent<Transform>(i).GetRotationAngleZ() - 90 * PI / 180.f)));
+							ECS::GetComponent<Bullet>(bullet).SetExtra(2);
+							ECS::GetComponent<Bullet>(bullet).SetType(1);
+							if (rand() % 5 == 0) {
+								ECS::GetComponent<Bullet>(bullet).SetType(3);
+								fileName = "temp5.png";
+								ECS::GetComponent<Sprite>(bullet).LoadSprite(fileName, 3, 3);
+							}
+
+							//set player
+							unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::BulletBit();
+							ECS::SetUpIdentifier(bullet, bitHolder, "Bullet");
+
+							//add bullet to vector
+							m_bullet.push_back(bullet);
+							m_bulletSprite.push_back(true);
+						}
+						{
+							//create entity
+							auto bullet = ECS::CreateEntity();
+
+							//attach components
+							ECS::AttachComponent<Sprite>(bullet);
+							ECS::AttachComponent<Transform>(bullet);
+							ECS::AttachComponent<Bullet>(bullet);
+
+							//set files
+							std::string fileName = "temp3.png";
+
+							//set components
+							ECS::GetComponent<Sprite>(bullet).LoadSprite(fileName, 3, 3);
+							ECS::GetComponent<Transform>(bullet).SetPosition(vec3(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY(), 100.f));
+							ECS::GetComponent<Bullet>(bullet).SetVelocity(vec2(cos(ECS::GetComponent<Transform>(i).GetRotationAngleZ() + 90 * PI / 180.f), sin(ECS::GetComponent<Transform>(i).GetRotationAngleZ() + 90 * PI / 180.f)));
+							ECS::GetComponent<Bullet>(bullet).SetExtra(2);
+							ECS::GetComponent<Bullet>(bullet).SetType(1);
+							if (rand() % 5 == 0) {
+								ECS::GetComponent<Bullet>(bullet).SetType(3);
+								fileName = "temp5.png";
+								ECS::GetComponent<Sprite>(bullet).LoadSprite(fileName, 3, 3);
+							}
+
+							//set player
+							unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::BulletBit();
+							ECS::SetUpIdentifier(bullet, bitHolder, "Bullet");
 
 							//add bullet to vector
 							m_bullet.push_back(bullet);
@@ -538,6 +610,12 @@ void Game::Update()
 				else if (ECS::GetComponent<Enemy>(i).GetType() == 4) {
 					ECS::GetComponent<Enemy>(i).SetAttackSpeed(60);
 				}
+				else if (ECS::GetComponent<Enemy>(i).GetType() == 5) {
+					ECS::GetComponent<Enemy>(i).SetAttackSpeed(10);
+				}
+				else if (ECS::GetComponent<Enemy>(i).GetType() == 6) {
+					ECS::GetComponent<Enemy>(i).SetAttackSpeed(60);
+				}
 				if (m_tutorial) {
 					ECS::GetComponent<Enemy>(i).SetAttackSpeed(300);
 				}
@@ -561,10 +639,8 @@ void Game::Update()
 					fileName = "temp5.png";
 				}
 
-				if (ECS::GetComponent<Bullet>(m_bullet[i]).GetExtra() == 0) {
-					ECS::GetComponent<Sprite>(m_bullet[i]).LoadSprite(fileName, 3, 3);
-				}
-				else if (ECS::GetComponent<Bullet>(m_bullet[i]).GetExtra() == 1) {
+				ECS::GetComponent<Sprite>(m_bullet[i]).LoadSprite(fileName, 3, 3);
+				if (ECS::GetComponent<Bullet>(m_bullet[i]).GetExtra() == 1) {
 					ECS::GetComponent<Sprite>(m_bullet[i]).LoadSprite(fileName, 15, 15);
 				}
 
@@ -656,6 +732,13 @@ void Game::Update()
 				//set the camera to focus on the main player
 				ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
 				ECS::GetComponent<VerticalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
+			}
+			//make the bullet follow you if it can
+			if (ECS::GetComponent<Bullet>(m_bullet[i]).GetExtra() == 2) {
+				vec2 acc = vec2(playerPos.x - bulletPos.x, playerPos.y - bulletPos.y).Normalize();
+				acc.DivScalar(100.f);
+				ECS::GetComponent<Bullet>(m_bullet[i]).SetAcceleration(acc);
+				ECS::GetComponent<Bullet>(m_bullet[i]).SetVelocity(ECS::GetComponent<Bullet>(m_bullet[i]).GetVelocity() + ECS::GetComponent<Bullet>(m_bullet[i]).GetAcceleration());
 			}
 		}
 
@@ -895,7 +978,7 @@ void Game::KeyboardHold()
 
 			//rotate enemies
 			for (int i : m_enemy) {
-				if (ECS::GetComponent<Enemy>(i).GetType() == 1 || ECS::GetComponent<Enemy>(i).GetType() == 4 || ECS::GetComponent<Enemy>(i).GetType() == 5) {
+				if (ECS::GetComponent<Enemy>(i).GetType() == 1 || ECS::GetComponent<Enemy>(i).GetType() == 4 || ECS::GetComponent<Enemy>(i).GetType() == 5 || ECS::GetComponent<Enemy>(i).GetType() == 6) {
 					float angle = 0;
 					vec2 playerPos = vec2(ECS::GetComponent<Transform>(i).GetPositionX() - newPosition.x, newPosition.y - ECS::GetComponent<Transform>(i).GetPositionY());
 

@@ -33,7 +33,7 @@ float vec2::Dot(vec2 v2)
 	return x * v2.x + y * v2.y;
 }
 
-vec2 vec2::Normalize(vec2 v2)
+vec2 vec2::Normalize()
 {
 	return *this / GetMagnitude();
 }

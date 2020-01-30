@@ -20,7 +20,7 @@ public:
 	void DivScalar(float s);
 
 	float Dot(vec2 v2);
-	vec2 Normalize(vec2 v2);
+	vec2 Normalize();
 	vec2 Project(vec2 b);
 
 	float GetMagnitude();
