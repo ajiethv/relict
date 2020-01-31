@@ -236,10 +236,25 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Sprite>(boss).LoadSprite(fileName, 20, 20);
 		ECS::GetComponent<Transform>(boss).SetPosition(0.f, 0.f, 100.f);
 		ECS::GetComponent<Enemy>(boss).SetType(5);
+		float angle = 0;
+		vec2 playerPos = vec2(ECS::GetComponent<Transform>(boss).GetPositionX() - ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - ECS::GetComponent<Transform>(boss).GetPositionY());
+
+		if (playerPos.x <= 0.f && playerPos.y >= 0.f) {
+			angle = abs(atan(playerPos.y / playerPos.x) * (180.f / PI));
+		}
+		else if (playerPos.x > 0.f && playerPos.y >= 0.f) {
+			angle = atan(playerPos.x / playerPos.y) * (180.f / PI) + 90.f;
+		}
+		else if (playerPos.x >= 0.f && playerPos.y < 0.f) {
+			angle = abs(atan(playerPos.y / playerPos.x) * (180.f / PI)) + 180.f;
+		}
+		else {
+			angle = atan(playerPos.x / playerPos.y) * (180.f / PI) + 270.f;
+		}
 
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit() | EntityIdentifier::EnemyBit();
 		ECS::SetUpIdentifier(boss, bitHolder, "Temp boss");
-	}*/
+	}
 	{
 		auto boss = ECS::CreateEntity();
 
@@ -272,7 +287,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit() | EntityIdentifier::EnemyBit();
 		ECS::SetUpIdentifier(boss, bitHolder, "Temp boss");
-	}
+	}*/
 
 	//set the camera to focus on the main player
 	ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
