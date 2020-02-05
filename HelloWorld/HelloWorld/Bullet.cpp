@@ -4,6 +4,11 @@ Bullet::Bullet()
 {
 }
 
+void Bullet::SetPosition(vec2 p)
+{
+	m_position = p;
+}
+
 void Bullet::SetVelocity(vec2 s)
 {
 	m_velocity = s;
@@ -12,6 +17,11 @@ void Bullet::SetVelocity(vec2 s)
 void Bullet::SetAcceleration(vec2 a)
 {
 	m_acceleration = a;
+}
+
+void Bullet::SetScale(vec2 s)
+{
+	m_scale = s;
 }
 
 void Bullet::SetType(int t)
@@ -29,6 +39,11 @@ void Bullet::SetExtra(int e)
 	m_extra = e;
 }
 
+vec2 Bullet::GetPosition() const
+{
+	return m_position;
+}
+
 vec2 Bullet::GetVelocity() const
 {
 	return m_velocity;
@@ -37,6 +52,11 @@ vec2 Bullet::GetVelocity() const
 vec2 Bullet::GetAcceleration() const
 {
 	return m_acceleration;
+}
+
+vec2 Bullet::GetScale() const
+{
+	return m_scale;
 }
 
 int Bullet::GetType() const

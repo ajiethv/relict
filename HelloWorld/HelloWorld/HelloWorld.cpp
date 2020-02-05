@@ -287,7 +287,8 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit() | EntityIdentifier::EnemyBit();
 		ECS::SetUpIdentifier(boss, bitHolder, "Temp boss");
-	}*/
+	}
+	//*/
 
 	//set the camera to focus on the main player
 	ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));

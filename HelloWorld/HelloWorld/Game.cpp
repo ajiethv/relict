@@ -105,11 +105,11 @@ bool Game::Run()
 			m_removeEntity.clear();
 			m_invunerability = 0.f;
 			m_initialStartup = false;
-			/*m_enemy.push_back(6);
-			m_enemy.push_back(7);
-			m_enemy.push_back(8);
-			m_enemy.push_back(9);
-			m_enemy.push_back(10);*/
+			//m_enemy.push_back(6);
+			//m_enemy.push_back(7);
+			//m_enemy.push_back(8);
+			//m_enemy.push_back(9);
+			//m_enemy.push_back(10);
 			ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
 			ECS::GetComponent<VerticalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
 		}
@@ -363,7 +363,6 @@ void Game::Update()
 
 						//add bullet to vector
 						m_bullet.push_back(bullet);
-						m_bulletSprite.push_back(true);
 					}
 				}
 				//boss 1 attack pattern
@@ -404,7 +403,6 @@ void Game::Update()
 
 							//add bullet to vector
 							m_bullet.push_back(bullet);
-							m_bulletSprite.push_back(true);
 						}
 					}
 					if (m_bossBulletOffset >= PI / 40.f * 19.f) {
@@ -447,7 +445,6 @@ void Game::Update()
 
 							//add bullet to vector
 							m_bullet.push_back(bullet);
-							m_bulletSprite.push_back(true);
 						}
 					}
 					if (m_bossBulletOffset >= PI / 40.f) {
@@ -485,7 +482,6 @@ void Game::Update()
 
 						//add bullet to vector
 						m_bullet.push_back(bullet);
-						m_bulletSprite.push_back(true);
 					}
 				}
 				else if (ECS::GetComponent<Enemy>(i).GetAttackPattern() == 5) {
@@ -520,7 +516,6 @@ void Game::Update()
 
 							//add bullet to vector
 							m_bullet.push_back(bullet);
-							m_bulletSprite.push_back(true);
 						}
 					}
 				}
@@ -556,7 +551,7 @@ void Game::Update()
 
 							//add bullet to vector
 							m_bullet.push_back(bullet);
-							m_bulletSprite.push_back(true);
+							m_trackingBulletCount++;
 						}
 						{
 							//create entity
@@ -588,7 +583,6 @@ void Game::Update()
 
 							//add bullet to vector
 							m_bullet.push_back(bullet);
-							m_bulletSprite.push_back(true);
 							m_trackingBulletCount++;
 						}
 					}
@@ -625,31 +619,23 @@ void Game::Update()
 
 		//do all bullet stuff
 		vec2 playerPos = vec2(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY());
+		//if the bullet is on screen
 		for (int i = 0; i < m_bullet.size(); i++) {
+			//set the position
 			ECS::GetComponent<Transform>(m_bullet[i]).SetPosition(ECS::GetComponent<Transform>(m_bullet[i]).GetPositionX() + ECS::GetComponent<Bullet>(m_bullet[i]).GetVelocity().x, ECS::GetComponent<Transform>(m_bullet[i]).GetPositionY() + ECS::GetComponent<Bullet>(m_bullet[i]).GetVelocity().y, 100.f);
 			vec2 bulletPos = vec2(ECS::GetComponent<Transform>(m_bullet[i]).GetPositionX(), ECS::GetComponent<Transform>(m_bullet[i]).GetPositionY());
 
-			//turn the sprite on/off
-			if (m_bulletSprite[i] == false && (abs(bulletPos.x - playerPos.x) < 100.f * BackEnd::GetAspectRatio() || abs(bulletPos.y - playerPos.y) < 100.f)) {
-				ECS::AttachComponent<Sprite>(m_bullet[i]);
-				std::string fileName = "Red_bullet.png";
-				if (ECS::GetComponent<Bullet>(m_bullet[i]).GetType() == 2) {
-					fileName = "Yellow_bullet.png";
-				}
-				else if (ECS::GetComponent<Bullet>(m_bullet[i]).GetType() == 3) {
-					fileName = "Blue_bullet.png";
-				}
-
-				ECS::GetComponent<Sprite>(m_bullet[i]).LoadSprite(fileName, 3, 3);
-				if (ECS::GetComponent<Bullet>(m_bullet[i]).GetExtra() == 1) {
-					ECS::GetComponent<Sprite>(m_bullet[i]).LoadSprite(fileName, 15, 15);
-				}
-
-				m_bulletSprite[i] = true;
-			}
-			else if (m_bulletSprite[i] == true && (abs(bulletPos.x - playerPos.x) > 100.f * BackEnd::GetAspectRatio() || abs(bulletPos.y - playerPos.y) > 100.f)) {
-				ECS::RemoveComponent<Sprite>(m_bullet[i]);
-				m_bulletSprite[i] = false;
+			//if it goes offscreen
+			if (abs(bulletPos.x - playerPos.x) > 100.f * BackEnd::GetAspectRatio() || abs(bulletPos.y - playerPos.y) > 100.f) {
+				//set the offscreen bullet variable
+				m_offscreenBullet.push_back(ECS::GetComponent<Bullet>(m_bullet[i]));
+				m_offscreenBullet[m_offscreenBullet.size() - 1].SetPosition(bulletPos);
+				m_offscreenBullet[m_offscreenBullet.size() - 1].SetScale(vec2(ECS::GetComponent<Transform>(m_bullet[i]).GetScale().x, ECS::GetComponent<Transform>(m_bullet[i]).GetScale().y));
+				//delete the entity
+				ECS::DestroyEntity(m_bullet[i]);
+				m_bullet.erase(m_bullet.begin() + i);
+				i--;
+				continue;
 			}
 
 			//if a bullet hits the player
@@ -673,6 +659,7 @@ void Game::Update()
 					fileName = "yellow_bullet_tooltip.png";
 					ECS::GetComponent<Sprite>(m_helpTooltip).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 20);
 				}
+				continue;
 			}
 
 			//if a reflected bullet hits an enemy
@@ -693,6 +680,7 @@ void Game::Update()
 						}
 					}
 				}
+				if (m_removeEntity.size() > 0 && m_removeEntity[m_removeEntity.size() - 1] == m_bullet[i]) continue;
 			}
 
 			//if it explodes, make it explode when it is halfway to the wall
@@ -726,16 +714,17 @@ void Game::Update()
 
 						//set bullet
 						unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::BulletBit();
-						ECS::SetUpIdentifier(bullet, bitHolder, "Enemy");
+						ECS::SetUpIdentifier(bullet, bitHolder, "Bullet");
 
 						//add bullet to vector
 						m_bullet.push_back(bullet);
-						m_bulletSprite.push_back(true);
 					}
 				}
 				//set the camera to focus on the main player
 				ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
 				ECS::GetComponent<VerticalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
+
+				if (m_removeEntity.size() > 0 && m_removeEntity[m_removeEntity.size() - 1] == m_bullet[i]) continue;
 			}
 			//make the bullet follow you if it can
 			if (ECS::GetComponent<Bullet>(m_bullet[i]).GetExtra() == 2) {
@@ -743,6 +732,149 @@ void Game::Update()
 				acc.DivScalar(100.f);
 				ECS::GetComponent<Bullet>(m_bullet[i]).SetAcceleration(acc);
 				ECS::GetComponent<Bullet>(m_bullet[i]).SetVelocity(ECS::GetComponent<Bullet>(m_bullet[i]).GetVelocity() + ECS::GetComponent<Bullet>(m_bullet[i]).GetAcceleration());
+			}
+		}
+		//if it is offscreen
+		for (int i = 0; i < m_offscreenBullet.size(); i++) {
+			//set the position
+			m_offscreenBullet[i].SetPosition(m_offscreenBullet[i].GetPosition() + m_offscreenBullet[i].GetVelocity());
+			vec2 bulletPos = m_offscreenBullet[i].GetPosition();
+
+			//if it comes on screen
+			if (abs(bulletPos.x - playerPos.x) < 100.f * BackEnd::GetAspectRatio() && abs(bulletPos.y - playerPos.y) < 100.f) {
+				//crete a new bullet entity
+				{
+					//create entity
+					auto bullet = ECS::CreateEntity();
+
+					//attach components
+					ECS::AttachComponent<Sprite>(bullet);
+					ECS::AttachComponent<Transform>(bullet);
+					ECS::AttachComponent<Bullet>(bullet);
+
+					//set files
+					std::string fileName = "Red_bullet.png";
+					if (m_offscreenBullet[i].GetType() == 2) fileName = "Yellow_bullet.png";
+					else if (m_offscreenBullet[i].GetType() == 3) fileName = "Blue_bullet.png";
+
+					//set components
+					ECS::GetComponent<Sprite>(bullet).LoadSprite(fileName, 3, 3);
+					if (m_offscreenBullet[i].GetExtra() == 1) ECS::GetComponent<Sprite>(bullet).LoadSprite(fileName, 15, 15);
+					ECS::GetComponent<Transform>(bullet).SetPosition(vec3(bulletPos.x, bulletPos.y, 100.f));
+					ECS::GetComponent<Bullet>(bullet).SetVelocity(m_offscreenBullet[i].GetVelocity());
+					ECS::GetComponent<Bullet>(bullet).SetReflected(m_offscreenBullet[i].GetReflected());
+					ECS::GetComponent<Bullet>(bullet).SetType(m_offscreenBullet[i].GetType());
+					ECS::GetComponent<Bullet>(bullet).SetExtra(m_offscreenBullet[i].GetExtra());
+					if (m_offscreenBullet[i].GetExtra() == 2) ECS::GetComponent<Bullet>(bullet).SetAcceleration(m_offscreenBullet[i].GetAcceleration());
+
+					//set bullet
+					unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::BulletBit();
+					ECS::SetUpIdentifier(bullet, bitHolder, "Bullet");
+
+					//add bullet to vector
+					m_bullet.push_back(bullet);
+				}
+				//set the camera to focus on the main player
+				ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
+				ECS::GetComponent<VerticalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
+
+				m_offscreenBullet.erase(m_offscreenBullet.begin() + i);
+				i--;
+				continue;
+			}
+
+			//if a bullet hits the arena wall
+			if (!(sqrt((ECS::GetComponent<Transform>(2).GetPosition().x - bulletPos.x)* (ECS::GetComponent<Transform>(2).GetPosition().x - bulletPos.x) + (ECS::GetComponent<Transform>(2).GetPosition().y - bulletPos.y) * (ECS::GetComponent<Transform>(2).GetPosition().y - bulletPos.y)) + 3.f <= 3.f / 2.f + ECS::GetComponent<Transform>(2).GetScale().x / 2.f)) {
+				if (m_offscreenBullet[i].GetExtra() == 2) m_trackingBulletCount--;
+				if (m_tutorial && m_tutorialBullet == 1) {
+					m_tutorialBullet++;
+					std::string fileName = "attack_tooltip.png";
+					ECS::GetComponent<Sprite>(m_tooltip).LoadSprite(fileName, 30, 50);
+					fileName = "yellow_bullet_tooltip.png";
+					ECS::GetComponent<Sprite>(m_helpTooltip).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 20);
+				}
+				m_offscreenBullet.erase(m_offscreenBullet.begin() + i);
+				i--;
+				continue;
+			}
+			
+			//if a reflected bullet hits an enemy
+			if (m_offscreenBullet[i].GetReflected()) {
+				bool deleteIt = false;
+				for (int j : m_enemy) {
+					vec2 enemyPos = vec2(ECS::GetComponent<Transform>(j).GetPositionX(), ECS::GetComponent<Transform>(j).GetPositionY());
+					if (sqrt((bulletPos.x - enemyPos.x) * (bulletPos.x - enemyPos.x) + (bulletPos.y - enemyPos.y) * (bulletPos.y - enemyPos.y)) <= ECS::GetComponent<Transform>(j).GetScale().x / 2.f + m_offscreenBullet[i].GetScale().x / 2.f) {
+						ECS::GetComponent<Enemy>(j).SetHealth(ECS::GetComponent<Enemy>(j).GetHealth() - 1);
+						deleteIt = true;
+						if (m_offscreenBullet[i].GetExtra() == 2) m_trackingBulletCount--;
+						if (ECS::GetComponent<Enemy>(j).GetHealth() <= 0) m_removeEntity.push_back(j);
+						if (m_tutorial) {
+							m_tutorial = false;
+							ECS::DestroyEntity(m_tooltip);
+							ECS::DestroyEntity(m_helpTooltip);
+							m_tooltip = 0;
+							m_helpTooltip = 0;
+						}
+					}
+				}
+				if (deleteIt) {
+					m_offscreenBullet.erase(m_offscreenBullet.begin() + i);
+					i--;
+					continue;
+				}
+			}
+			
+			//if it explodes, make it explode when it is halfway to the wall
+			if (m_offscreenBullet[i].GetExtra() == 1 && !(sqrt((ECS::GetComponent<Transform>(2).GetPosition().x - bulletPos.x) * (ECS::GetComponent<Transform>(2).GetPosition().x - bulletPos.x) + (ECS::GetComponent<Transform>(2).GetPosition().y - bulletPos.y) * (ECS::GetComponent<Transform>(2).GetPosition().y - bulletPos.y)) + m_offscreenBullet[i].GetScale().x <= m_offscreenBullet[i].GetScale().x / 4.f + ECS::GetComponent<Transform>(2).GetScale().x / 4.f)) {
+				
+				float randAngle = rand() % 180;
+				for (int j = 0; j < 20; j++) {
+					//create a bullet
+					{
+						//create entity
+						auto bullet = ECS::CreateEntity();
+
+						//attach components
+						ECS::AttachComponent<Sprite>(bullet);
+						ECS::AttachComponent<Transform>(bullet);
+						ECS::AttachComponent<Bullet>(bullet);
+
+						//set files
+						std::string fileName = "Red_bullet.png";
+						if (m_offscreenBullet[i].GetType() == 2) fileName = "Yellow_bullet.png";
+						else if (m_offscreenBullet[i].GetType() == 3) fileName = "Blue_bullet.png";
+
+						//set components
+						ECS::GetComponent<Sprite>(bullet).LoadSprite(fileName, 3, 3);
+						if (m_offscreenBullet[i].GetExtra() == 1) ECS::GetComponent<Sprite>(bullet).LoadSprite(fileName, 15, 15);
+						ECS::GetComponent<Transform>(bullet).SetPosition(vec3(bulletPos.x, bulletPos.y, 100.f));
+						ECS::GetComponent<Bullet>(bullet).SetVelocity(m_offscreenBullet[i].GetVelocity());
+						ECS::GetComponent<Bullet>(bullet).SetReflected(m_offscreenBullet[i].GetReflected());
+						ECS::GetComponent<Bullet>(bullet).SetType(m_offscreenBullet[i].GetType());
+						ECS::GetComponent<Bullet>(bullet).SetExtra(m_offscreenBullet[i].GetExtra());
+						if (m_offscreenBullet[i].GetExtra() == 2) ECS::GetComponent<Bullet>(bullet).SetAcceleration(m_offscreenBullet[i].GetAcceleration());
+
+						//set bullet
+						unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::BulletBit();
+						ECS::SetUpIdentifier(bullet, bitHolder, "Bullet");
+
+						//add bullet to vector
+						m_bullet.push_back(bullet);
+					}
+					m_offscreenBullet.erase(m_offscreenBullet.begin() + i);
+					i--;
+					continue;
+				}
+				//set the camera to focus on the main player
+				ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
+				ECS::GetComponent<VerticalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
+			}
+			//make the bullet follow you if it can
+			if (m_offscreenBullet[i].GetExtra() == 2) {
+				vec2 acc = vec2(playerPos.x - bulletPos.x, playerPos.y - bulletPos.y).Normalize();
+				acc.DivScalar(100.f);
+				m_offscreenBullet[i].SetAcceleration(acc);
+				m_offscreenBullet[i].SetVelocity(m_offscreenBullet[i].GetVelocity() + m_offscreenBullet[i].GetAcceleration());
 			}
 		}
 
@@ -790,7 +922,6 @@ void Game::Update()
 				count++;
 				if (i == j) {
 					m_bullet.erase(m_bullet.begin() + count);
-					m_bulletSprite.erase(m_bulletSprite.begin() + count);
 					deleted = true;
 					break;
 				}

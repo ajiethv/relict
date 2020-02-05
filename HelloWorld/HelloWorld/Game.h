@@ -93,9 +93,9 @@ private:
 	
 	//Game variables
 	std::vector<int> m_bullet; //all bullet entities
-	std::vector<bool> m_bulletSprite; //if the bullet has a sprite
 	std::vector<int> m_enemy; //all enemy entities
 	std::vector<int> m_removeEntity; //all entities that need to be removed
+	std::vector<Bullet> m_offscreenBullet; //all the information needed for offscreen bullets
 	float m_invunerability = 0.f; //player invunerability timer (after being hit)
 	float m_dodgeTimer = 0.f; //the time dodging
 	vec2 m_dodgeDirection = vec2(0.f, 0.f); //the direction of motion when dodging
