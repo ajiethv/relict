@@ -101,18 +101,14 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		auto collide = ECS::CreateEntity();
 
 		//attach components
-		ECS::AttachComponent<Sprite>(collide);
 		ECS::AttachComponent<Transform>(collide);
 
-		//set files
-		std::string fileName = "temp2.png";
-
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 20, 20);
-		ECS::GetComponent<Transform>(3).SetPosition((20.f / 3.f), 0.f, 0.f);
+		ECS::GetComponent<Transform>(collide).SetScale(20, 20, 0);
+		ECS::GetComponent<Transform>(collide).SetPosition((20.f / 3.f), 0.f, 0.f);
 
 		//set player
-		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit();
+		unsigned int bitHolder = EntityIdentifier::TransformBit();
 		ECS::SetUpIdentifier(collide, bitHolder, "Attack box");
 	}
 
@@ -251,6 +247,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		else {
 			angle = atan(playerPos.x / playerPos.y) * (180.f / PI) + 270.f;
 		}
+		ECS::GetComponent<Transform>(boss).SetRotationAngleZ(angle * (PI / 180.f));
 
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit() | EntityIdentifier::EnemyBit();
 		ECS::SetUpIdentifier(boss, bitHolder, "Temp boss");
@@ -288,7 +285,22 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit() | EntityIdentifier::EnemyBit();
 		ECS::SetUpIdentifier(boss, bitHolder, "Temp boss");
 	}
-	//*/
+	{
+		auto boss = ECS::CreateEntity();
+
+		ECS::AttachComponent<Sprite>(boss);
+		ECS::AttachComponent<Transform>(boss);
+		ECS::AttachComponent<Enemy>(boss);
+
+		std::string fileName = "temp.png";
+
+		ECS::GetComponent<Sprite>(boss).LoadSprite(fileName, 20, 20);
+		ECS::GetComponent<Transform>(boss).SetPosition(0.f, 0.f, 100.f);
+		ECS::GetComponent<Enemy>(boss).SetType(7);
+
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit() | EntityIdentifier::EnemyBit();
+		ECS::SetUpIdentifier(boss, bitHolder, "Temp boss");
+	}*/
 
 	//set the camera to focus on the main player
 	ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));

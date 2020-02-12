@@ -96,11 +96,13 @@ private:
 	std::vector<int> m_enemy; //all enemy entities
 	std::vector<int> m_removeEntity; //all entities that need to be removed
 	std::vector<Bullet> m_offscreenBullet; //all the information needed for offscreen bullets
+	std::vector<unsigned int> m_offscreenEnemy; //all the offscreen enemies
+	std::vector<unsigned int> m_offscreenEnemyPos; //all the offscreen enemy tips
 	float m_invunerability = 0.f; //player invunerability timer (after being hit)
 	float m_dodgeTimer = 0.f; //the time dodging
 	vec2 m_dodgeDirection = vec2(0.f, 0.f); //the direction of motion when dodging
 	float m_speedCap = 0.f; //caps the speed of the game so it doesnt run too fast
-	float m_bossBulletOffset = 0.f; //adds a spiral effect to the bullets by offseting them a little bit
+	float m_bossBulletOffsetSpiral = 0.f, m_bossBulletOffsetPulse = 0.f, m_bossBulletOffsetBig = 0.f; //adds a little bit of offset to the bullets to get some of the patterns
 	int m_trackingBulletCount = 0; //how many bullets can track you
 	bool m_initialStartup = true; // allows the game to load on the initial startup
 	bool m_tutorial = true; //runs the tutorial

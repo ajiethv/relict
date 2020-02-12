@@ -63,6 +63,12 @@ void Enemy::SetType(int t)
 		m_attackPattern = 6;
 		m_attackSpeed = 100;
 	}
+	else if (t == 7) {
+		m_health = 10;
+		m_speed = 0;
+		m_attackPattern = 7;
+		m_attackSpeed = 100;
+	}
 }
 
 int Enemy::GetHealth() const
