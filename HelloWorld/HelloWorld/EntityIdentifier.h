@@ -31,7 +31,7 @@ public:
 	static unsigned int AnimationBit();
 	static unsigned int LinkBit();
 	static unsigned int PhysicsBit();
-	static unsigned int HealthBarBit();
+	static unsigned int StatsBit();
 	static unsigned int HoriScrollCameraBit();
 	static unsigned int VertiScrollCameraBit();
 	static unsigned int BulletBit();
@@ -80,7 +80,7 @@ private:
 	static unsigned int m_animationBit;
 	static unsigned int m_linkBit;
 	static unsigned int m_physicsBit;
-	static unsigned int m_healthBarBit;
+	static unsigned int m_StatsBit;
 	static unsigned int m_horiScrollCameraBit;
 	static unsigned int m_vertiScrollCameraBit;
 	static unsigned int m_bulletBit;

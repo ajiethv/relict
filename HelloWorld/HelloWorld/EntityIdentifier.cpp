@@ -9,7 +9,7 @@ unsigned int EntityIdentifier::m_transformBit			= 0x100;
 unsigned int EntityIdentifier::m_animationBit			= 0x1000;
 unsigned int EntityIdentifier::m_linkBit				= 0x10000;
 unsigned int EntityIdentifier::m_physicsBit				= 0x100000;
-unsigned int EntityIdentifier::m_healthBarBit			= 0x1000000;
+unsigned int EntityIdentifier::m_StatsBit			= 0x1000000;
 unsigned int EntityIdentifier::m_horiScrollCameraBit	= 0x10000000;
 unsigned int EntityIdentifier::m_vertiScrollCameraBit	= 0x2;
 unsigned int EntityIdentifier::m_bulletBit				= 0x20;
@@ -112,9 +112,9 @@ unsigned int EntityIdentifier::PhysicsBit()
 	return m_physicsBit;
 }
 
-unsigned int EntityIdentifier::HealthBarBit()
+unsigned int EntityIdentifier::StatsBit()
 {
-	return m_healthBarBit;
+	return m_StatsBit;
 }
 
 unsigned int EntityIdentifier::HoriScrollCameraBit()

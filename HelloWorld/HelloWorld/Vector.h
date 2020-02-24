@@ -54,7 +54,7 @@ public:
 	void DivScalar(float s);
 
 	float Dot(vec3 v3);
-	vec3 Normalize(vec3 v3);
+	vec3 Normalize();
 	vec3 Project(vec3 b);
 
 	float GetMagnitude();
@@ -89,7 +89,7 @@ public:
 	void DivScalar(float s);
 
 	float Dot(vec4 v4);
-	vec4 Normalize(vec4 v4);
+	vec4 Normalize();
 	vec4 Project(vec4 b);
 
 	float GetMagnitude();

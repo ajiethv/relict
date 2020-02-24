@@ -12,7 +12,7 @@
 #include "AnimationController.h"
 #include "Transform.h"
 #include "EntityIdentifier.h"
-#include "HealthBar.h"
+#include "Stats.h"
 
 class ECS abstract
 {

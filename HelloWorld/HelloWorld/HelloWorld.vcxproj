@@ -147,7 +147,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GrainEffect.h" />
     <ClInclude Include="GreyscaleEffect.h" />
-    <ClInclude Include="HealthBar.h" />
+    <ClInclude Include="Stats.h" />
     <ClInclude Include="HorizontalScroll.h" />
     <ClInclude Include="include\imgui\imconfig.h" />
     <ClInclude Include="include\imgui\imgui.h" />
@@ -199,7 +199,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GrainEffect.cpp" />
     <ClCompile Include="GreyscaleEffect.cpp" />
-    <ClCompile Include="HealthBar.cpp" />
+    <ClCompile Include="Stats.cpp" />
     <ClCompile Include="HorizontalScroll.cpp" />
     <ClCompile Include="include\imgui\imgui.cpp" />
     <ClCompile Include="include\imgui\imgui_demo.cpp" />

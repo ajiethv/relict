@@ -10,18 +10,31 @@ MotionEvent BackEnd::m_motion;
 ClickEvent BackEnd::m_click;
 WheelEvent BackEnd::m_wheel;
 
+void GetDesktopResolution(int& horizontal, int& vertical)
+{
+	RECT desktop;
+	// Get a handle to the desktop window
+	const HWND hDesktop = GetDesktopWindow();
+	// Get the size of screen to the variable desktop
+	GetWindowRect(hDesktop, &desktop);
+	// The top left corner will have coordinates (0,0)
+	// and the bottom right corner will have coordinates
+	// (horizontal, vertical)
+	horizontal = desktop.right;
+	vertical = desktop.bottom;
+}
+
 void BackEnd::InitBackEnd(std::string name)
 {
 	//Initializes SDL
 	InitSDL();
 
 	//Sets the backend window width, height, and aspect ratio
-	m_windowWidth = 700;
-	m_windowHeight = 700;
+	GetDesktopResolution(m_windowWidth, m_windowHeight);
 	m_aspectRatio = float(m_windowWidth) / float(m_windowHeight);
 	//Creates new window with name of the scene as a caption
 	m_window = new Window(name, BackEnd::GetWindowWidth(), BackEnd::GetWindowHeight());
-
+	
 	//Initializes GLEW
 	InitGLEW();
 
@@ -166,8 +179,9 @@ void BackEnd::ReshapeWindow(int w, int h, entt::registry * mainReg)
 {
 	//Reshapes the window when the window is resized
 	glViewport(0, 0, GLsizei(w), GLsizei(h));
-	//Resize all framebuffers here
+	m_window->SetFullscreen(m_window->GetFullscreen());
 
+	//Resize all framebuffers here
 	m_windowWidth = w;
 	m_windowHeight = h;
 	m_aspectRatio = float(w) / float(h);

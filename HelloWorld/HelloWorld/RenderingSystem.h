@@ -6,7 +6,7 @@
 #include "Shader.h"
 #include "VertexManager.h"
 #include "EffectManager.h"
-#include "HealthBar.h"
+#include "Stats.h"
 
 //A system utilizing ECS, the namespace just holds all the different functions
 namespace RenderingSystem

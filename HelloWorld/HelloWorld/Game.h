@@ -98,6 +98,11 @@ private:
 	std::vector<Bullet> m_offscreenBullet; //all the information needed for offscreen bullets
 	std::vector<unsigned int> m_offscreenEnemy; //all the offscreen enemies
 	std::vector<unsigned int> m_offscreenEnemyPos; //all the offscreen enemy tips
+	int m_spawnPoint[8]; //who the spawn point is taken by
+	int m_waveNum = 0; //the current wave
+	int m_enemiesKilled = 0; //the number of enemies killed
+	int m_bossesKilled = 0; //the number of bosses killed
+	int m_enemyNum = 0; //the number of enemies in the wave
 	float m_invunerability = 0.f; //player invunerability timer (after being hit)
 	float m_dodgeTimer = 0.f; //the time dodging
 	vec2 m_dodgeDirection = vec2(0.f, 0.f); //the direction of motion when dodging
@@ -105,10 +110,10 @@ private:
 	float m_bossBulletOffsetSpiral = 0.f, m_bossBulletOffsetPulse = 0.f, m_bossBulletOffsetBig = 0.f; //adds a little bit of offset to the bullets to get some of the patterns
 	int m_trackingBulletCount = 0; //how many bullets can track you
 	bool m_initialStartup = true; // allows the game to load on the initial startup
-	bool m_tutorial = true; //runs the tutorial
+	bool m_tutorial = false; //runs the tutorial
 	int m_tutorialBullet = 1; //sets the type of the bullet in the tutorial
-	int m_tooltip = 0;
-	int m_helpTooltip = 0;
+	int m_tooltip = 0; //the picture in the tutorial
+	int m_helpTooltip = 0; //the text in the tutorial
 	bool startgame = false;
 	bool pause = false;
 };

@@ -92,9 +92,9 @@ inline void to_json(nlohmann::json& j, const Scene& scene)
 		//you need to #1 add a static (unique) bit for that class
 		//And then add more if statements after this point
 
-		if (identity & EntityIdentifier::HealthBarBit())
+		if (identity & EntityIdentifier::StatsBit())
 		{
-			j[std::to_string(counter)]["HealthBar"] = scene.GetScene()->get<HealthBar>(entity);
+			j[std::to_string(counter)]["Stats"] = scene.GetScene()->get<Stats>(entity);
 		}
 
 		if (identity & EntityIdentifier::HoriScrollCameraBit())
@@ -226,9 +226,9 @@ inline void from_json(const nlohmann::json& j, Scene& scene)
 			//Transforms require no further initialization
 		}
 
-		if (identity & EntityIdentifier::HealthBarBit()) {
-			reg.assign<HealthBar>(entity);
-			reg.get<HealthBar>(entity) = j["Scene"][std::to_string(i)]["HealthBar"];
+		if (identity & EntityIdentifier::StatsBit()) {
+			reg.assign<Stats>(entity);
+			reg.get<Stats>(entity) = j["Scene"][std::to_string(i)]["Stats"];
 		}
 
 		if (identity & EntityIdentifier::HoriScrollCameraBit())

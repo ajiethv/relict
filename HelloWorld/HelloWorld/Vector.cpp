@@ -126,7 +126,7 @@ float vec3::Dot(vec3 v3)
 	return x * v3.x + y * v3.y + z * v3.z;
 }
 
-vec3 vec3::Normalize(vec3 v3)
+vec3 vec3::Normalize()
 {
 	return *this / GetMagnitude();
 }
@@ -220,7 +220,7 @@ float vec4::Dot(vec4 v4)
 	return x * v4.x + y * v4.y + z * v4.z + w * v4.w;
 }
 
-vec4 vec4::Normalize(vec4 v4)
+vec4 vec4::Normalize()
 {
 	return *this / GetMagnitude();
 }
