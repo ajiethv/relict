@@ -134,6 +134,10 @@ public:
 	int GetActiveAnim() const;
 	//Gets the UVs VBO so that you can connect it to the VAO for use
 	GLuint GetUVVBO() const;
+	//gets whether or not the animation is done
+	bool GetAnimationDone();
+	//resets the current animation
+	void Reset();
 	
 	//Setters
 	//Sets the filename for the texture the animation references

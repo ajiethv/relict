@@ -239,6 +239,16 @@ GLuint AnimationController::GetUVVBO() const
 	return m_spritePlaneUVVBO;
 }
 
+void AnimationController::Reset()
+{
+	m_animations[m_activeAnimation].Reset();
+}
+
+bool AnimationController::GetAnimationDone()
+{
+	return m_animations[m_activeAnimation].GetAnimationDone();
+}
+
 void AnimationController::SetFileName(std::string fileName)
 {
 	m_fileName = fileName;

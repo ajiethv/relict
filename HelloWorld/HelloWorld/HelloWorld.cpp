@@ -105,15 +105,15 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<Transform>(collide);
 		ECS::AttachComponent<Sprite>(collide);
 
-		std::string fileName = "temp2.png";
+		std::string fileName = "Slash.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 15, 15);
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 20, 20);
 		ECS::GetComponent<Transform>(collide).SetScale(15, 15, 0);
 		ECS::GetComponent<Transform>(collide).SetPosition((20.f / 3.f), 0.f, 0.f);
 
 		//set player
-		unsigned int bitHolder = EntityIdentifier::TransformBit();
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
 		ECS::SetUpIdentifier(collide, bitHolder, "Attack box");
 	}
 

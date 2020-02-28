@@ -102,7 +102,7 @@ bool Game::Run()
 			ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetRotationAngleZ(0.f);
 			float xOffset = (ECS::GetComponent<Transform>(3).GetScale().x / 3.f), yOffset = 0.f;
 			ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetPosition(0.f, (m_tutorial) ? -40.f : 0.f, 100.f);
-			ECS::GetComponent<Transform>(3).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + xOffset, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + yOffset, 90.f);
+			ECS::GetComponent<Transform>(3).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + xOffset, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + yOffset, 0.f);
 			for (int x : m_bullet) {
 				ECS::DestroyEntity(x);
 			}
@@ -291,7 +291,7 @@ bool Game::Run()
 					ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetPosition(0.f, 0.f, 100.f);
 					ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetRotationAngleZ(0.f);
 					float xOffset = (ECS::GetComponent<Transform>(3).GetScale().x / 3.f), yOffset = 0.f;
-					ECS::GetComponent<Transform>(3).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + xOffset, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + yOffset, 90.f);
+					ECS::GetComponent<Transform>(3).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + xOffset, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + yOffset, 0.f);
 					ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(fileName, 6, 6);
 					for (int x : m_bullet) {
 						ECS::DestroyEntity(x);
@@ -345,11 +345,19 @@ void Game::Update()
 
 	}
 	else {
+		//remove the slash
+		if (ECS::GetComponent<Transform>(3).GetPositionZ() == 100.1f) {
+			ECS::GetComponent<Transform>(3).SetPositionZ(100.2f);
+		}
+		else if (ECS::GetComponent<Transform>(3).GetPositionZ() == 100.2f) {
+			ECS::GetComponent<Transform>(3).SetPositionZ(0.f);
+		}
+
 		//count waves and get number of enemies in the wave
 		if (!m_tutorial && m_enemyNum == 0 && m_enemy.size() == 0) {
 			m_waveNum++;
 			m_spawnTimer = 200;
-			m_enemyNum = (m_waveNum % 5 == 0) ? 1 : m_waveNum * 2 + 3;
+			m_enemyNum = (m_waveNum % 5 == 0) ? 1 : m_waveNum + 4;
 		}
 
 		//make the player dodge
@@ -381,7 +389,7 @@ void Game::Update()
 			}
 
 			//move attack hitbox
-			ECS::GetComponent<Transform>(3).SetPosition(ECS::GetComponent<Transform>(3).GetPositionX() + (newPosition.x - position.x), ECS::GetComponent<Transform>(3).GetPositionY() + (newPosition.y - position.y), 90.f);
+			ECS::GetComponent<Transform>(3).SetPosition(ECS::GetComponent<Transform>(3).GetPositionX() + (newPosition.x - position.x), ECS::GetComponent<Transform>(3).GetPositionY() + (newPosition.y - position.y), ECS::GetComponent<Transform>(3).GetPositionZ());
 
 			//move tutorial tooltips
 			if (m_tutorial && m_tooltip != 0) {
@@ -1531,7 +1539,7 @@ void Game::KeyboardHold()
 			newPosition = vec2(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY());
 
 			//move attack hitbox
-			ECS::GetComponent<Transform>(3).SetPosition(ECS::GetComponent<Transform>(3).GetPositionX() + (newPosition.x - position.x), ECS::GetComponent<Transform>(3).GetPositionY() + (newPosition.y - position.y), 90.f);
+			ECS::GetComponent<Transform>(3).SetPosition(ECS::GetComponent<Transform>(3).GetPositionX() + (newPosition.x - position.x), ECS::GetComponent<Transform>(3).GetPositionY() + (newPosition.y - position.y), ECS::GetComponent<Transform>(3).GetPositionZ());
 
 			if (m_tutorial && m_tooltip != 0) {
 				ECS::GetComponent<Transform>(m_tooltip).SetPosition(vec3(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 50, 100.5f));
@@ -1684,7 +1692,8 @@ void Game::MouseMotion(SDL_MouseMotionEvent evnt)
 
 		//rotate attack hitbox
 		float xOffset = (ECS::GetComponent<Transform>(3).GetScale().x / 3.f) * cos(angle * (PI / 180.f)), yOffset = (ECS::GetComponent<Transform>(3).GetScale().x / 3.f) * sin(angle * (PI / 180.f));
-		ECS::GetComponent<Transform>(3).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + xOffset, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + yOffset, 90.f);
+		ECS::GetComponent<Transform>(3).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + xOffset, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + yOffset, ECS::GetComponent<Transform>(3).GetPositionZ());
+		ECS::GetComponent<Transform>(3).SetRotationAngleZ(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetRotationAngleZ());
 	}
 	//std::cout << evnt.x / (float(BackEnd::GetWindowWidth()) / 100.f) << " " << evnt.y / (float(BackEnd::GetWindowHeight()) / 100.f) << "\n";
 
@@ -1712,6 +1721,9 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 				std::cout << "cut" << std::endl;
 				//if you left click
 				if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+					//show the animation
+					ECS::GetComponent<Transform>(3).SetPosition(ECS::GetComponent<Transform>(3).GetPositionX(), ECS::GetComponent<Transform>(3).GetPositionY(), 100.1f);
+
 					//check each bullet
 					for (int i : m_bullet) {
 						//if the bullet can be destroyed
