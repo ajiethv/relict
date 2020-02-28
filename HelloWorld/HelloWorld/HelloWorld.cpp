@@ -131,7 +131,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 
 		//set components
 		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 580, 580);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, 98.f));
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, 10.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -157,6 +157,50 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
 		ECS::SetUpIdentifier(collide, bitHolder, "Pause");
+	}
+
+	//set up health sprites
+	for (int i = 0; i < 3; i++) {
+		{
+			//create entity
+			auto health = ECS::CreateEntity();
+
+			//attach components
+			ECS::AttachComponent<Sprite>(health);
+			ECS::AttachComponent<Transform>(health);
+
+			//set file
+			std::string fileName = "Heart.png";
+
+			//set components
+			ECS::GetComponent<Sprite>(health).LoadSprite(fileName, 10, 10);
+			ECS::GetComponent<Transform>(health).SetPosition((70.f + (12.f * i)), 90.f, 101.f);
+
+			//set player
+			unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+			ECS::SetUpIdentifier(health, bitHolder, "Health");
+		}
+	}
+
+	//set up stamina sprite
+	{
+		//create entity
+		auto stamina = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(stamina);
+		ECS::AttachComponent<Transform>(stamina);
+
+		//set file
+		std::string fileName = "Stamina.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(stamina).LoadSprite(fileName, 10, 2);
+		ECS::GetComponent<Transform>(stamina).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 5.f, 0.f);
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(stamina, bitHolder, "Health");
 	}
 
 	//set the camera to focus on the main player

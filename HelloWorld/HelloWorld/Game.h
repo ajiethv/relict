@@ -99,9 +99,11 @@ private:
 	std::vector<unsigned int> m_offscreenEnemy; //all the offscreen enemies
 	std::vector<unsigned int> m_offscreenEnemyPos; //all the offscreen enemy tips
 	int m_spawnPoint[8]; //who the spawn point is taken by
+	int m_spawnTimer = 0; //the delay between spawning enemies
 	int m_waveNum = 0; //the current wave
 	int m_enemiesKilled = 0; //the number of enemies killed
 	int m_bossesKilled = 0; //the number of bosses killed
+	int m_enemyHealth = 0; //the id of the boss health bar
 	int m_enemyNum = 0; //the number of enemies in the wave
 	float m_invunerability = 0.f; //player invunerability timer (after being hit)
 	float m_dodgeTimer = 0.f; //the time dodging
