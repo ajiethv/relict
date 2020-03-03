@@ -61,6 +61,8 @@ public:
 	bool GetAnimationDone() const;
 	//Gets the current UVCoordinate frame
 	UVCoordinates GetCurrentFrame() const;
+	//gets the current frame number
+	int GetCurrentFrameNum();
 	//Get the frames within the animation
 	std::vector<UVCoordinates> GetFrames() const;
 	//Get if the animation repeats
@@ -138,6 +140,8 @@ public:
 	bool GetAnimationDone();
 	//resets the current animation
 	void Reset();
+	//gets the current frame number
+	int GetCurrentFrameNum();
 	
 	//Setters
 	//Sets the filename for the texture the animation references

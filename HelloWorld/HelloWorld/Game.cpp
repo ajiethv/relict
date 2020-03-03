@@ -308,7 +308,7 @@ bool Game::Run()
 					fileName = "Heart.png";
 					for (int i = 6; i < 9; i++) {
 						ECS::GetComponent<Sprite>(i).LoadSprite(fileName, 10, 10);
-						ECS::GetComponent<Transform>(i).SetPosition((66.f * BackEnd::GetAspectRatio() + ((BackEnd::GetAspectRatio() - 1) * 35) + (12.f * (i - 6))), 90.f, 100.5f);
+						ECS::GetComponent<Transform>(i).SetPosition((26.f * BackEnd::GetAspectRatio() + ((BackEnd::GetAspectRatio() - 1) * 35) + (12.f * (i - 6))), 50.f, 100.5f);
 					}
 					fileName = "temp.png";
 					ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetPosition(0.f, 0.f, 0.f);
@@ -330,6 +330,14 @@ bool Game::Run()
 					}
 					for (int i = 0; i < 8; i++) {
 						m_spawnPoint[i] = 0;
+					}
+					if (m_enemyHealth > 0) {
+						ECS::DestroyEntity(m_enemyHealth);
+						m_enemyHealth = 0;
+					}
+					if (m_enemyHealthBorder > 0) {
+						ECS::DestroyEntity(m_enemyHealthBorder);
+						m_enemyHealthBorder = 0;
 					}
 					m_offscreenEnemyPos.clear();
 					m_removeEntity.clear();
@@ -436,7 +444,7 @@ void Game::Update()
 			vec2 bulletPos = vec2(ECS::GetComponent<Transform>(m_bullet[i]).GetPositionX(), ECS::GetComponent<Transform>(m_bullet[i]).GetPositionY());
 
 			//if it goes offscreen
-			if (abs(bulletPos.x - playerPos.x) > (100.f + ECS::GetComponent<Transform>(m_bullet[i]).GetScale().x / 2.f)* BackEnd::GetAspectRatio() || abs(bulletPos.y - playerPos.y) > (100.f + ECS::GetComponent<Transform>(m_bullet[i]).GetScale().y / 2.f)) {
+			if (abs(bulletPos.x - playerPos.x) > (60.f + ECS::GetComponent<Transform>(m_bullet[i]).GetScale().x / 2.f)* BackEnd::GetAspectRatio() || abs(bulletPos.y - playerPos.y) > (60.f + ECS::GetComponent<Transform>(m_bullet[i]).GetScale().y / 2.f)) {
 				//set the offscreen bullet variable
 				m_offscreenBullet.push_back(ECS::GetComponent<Bullet>(m_bullet[i]));
 				m_offscreenBullet[m_offscreenBullet.size() - 1].SetPosition(bulletPos);
@@ -608,7 +616,7 @@ void Game::Update()
 			vec2 bulletPos = m_offscreenBullet[i].GetPosition();
 
 			//if it comes on screen
-			if (!(abs(bulletPos.x - playerPos.x) > (100.f + m_offscreenBullet[i].GetScale().x / 2.f)* BackEnd::GetAspectRatio() || abs(bulletPos.y - playerPos.y) > (100.f + m_offscreenBullet[i].GetScale().y / 2.f))) {
+			if (!(abs(bulletPos.x - playerPos.x) > (60.f + m_offscreenBullet[i].GetScale().x / 2.f)* BackEnd::GetAspectRatio() || abs(bulletPos.y - playerPos.y) > (60.f + m_offscreenBullet[i].GetScale().y / 2.f))) {
 				//crete a new bullet entity
 				{
 					//create entity
@@ -1176,7 +1184,7 @@ void Game::Update()
 			}
 
 			//if the enemy is offscreen
-			if (abs(ECS::GetComponent<Transform>(i).GetPositionX() - playerPos.x) > (100.f + ECS::GetComponent<Transform>(i).GetScale().x / 2.f)* BackEnd::GetAspectRatio() || abs(ECS::GetComponent<Transform>(i).GetPositionY() - playerPos.y) > (100.f + ECS::GetComponent<Transform>(i).GetScale().y / 2.f)) {
+			if (abs(ECS::GetComponent<Transform>(i).GetPositionX() - playerPos.x) > (60.f + ECS::GetComponent<Transform>(i).GetScale().x / 2.f)* BackEnd::GetAspectRatio() || abs(ECS::GetComponent<Transform>(i).GetPositionY() - playerPos.y) > (60.f + ECS::GetComponent<Transform>(i).GetScale().y / 2.f)) {
 				bool wasOnScreen = true;
 				for (int j : m_offscreenEnemy) {
 					if (i == j) {
@@ -1204,10 +1212,10 @@ void Game::Update()
 
 						vec2 tipPos = vec2(ECS::GetComponent<Transform>(i).GetPositionX() - ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY() - ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY());
 						float divideBy;
-						(tipPos.x > tipPos.y) ? divideBy = tipPos.x / 90.f : divideBy = tipPos.y / 90.f;
+						divideBy = (tipPos.x > tipPos.y) ? tipPos.x / 50.f : tipPos.y / 50.f;
 						tipPos.DivScalar(divideBy);
 						tipPos = vec2(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + tipPos.x, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + tipPos.y);
-						ECS::GetComponent<Transform>(tip).SetPosition(tipPos.x, tipPos.y, 100.f);
+						ECS::GetComponent<Transform>(tip).SetPosition(tipPos.x, tipPos.y, 50.f);
 
 						tipPos = vec2(tipPos.x - ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), tipPos.y - ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY());
 						float angle = 0;
@@ -1248,7 +1256,7 @@ void Game::Update()
 		//for each enemy that is offscreen
 		for (int i = 0; i < m_offscreenEnemy.size(); i++) {
 			//if it comes back on screen
-			if (abs(ECS::GetComponent<Transform>(m_offscreenEnemy[i]).GetPositionX() - playerPos.x) < (100.f + ECS::GetComponent<Transform>(m_offscreenEnemy[i]).GetScale().x / 2.f) * BackEnd::GetAspectRatio() && abs(ECS::GetComponent<Transform>(m_offscreenEnemy[i]).GetPositionY() - playerPos.y) < (100.f + ECS::GetComponent<Transform>(m_offscreenEnemy[i]).GetScale().y / 2.f)) {
+			if (abs(ECS::GetComponent<Transform>(m_offscreenEnemy[i]).GetPositionX() - playerPos.x) < (60.f + ECS::GetComponent<Transform>(m_offscreenEnemy[i]).GetScale().x / 2.f) * BackEnd::GetAspectRatio() && abs(ECS::GetComponent<Transform>(m_offscreenEnemy[i]).GetPositionY() - playerPos.y) < (60.f + ECS::GetComponent<Transform>(m_offscreenEnemy[i]).GetScale().y / 2.f)) {
 				ECS::DestroyEntity(m_offscreenEnemyPos[i]);
 				m_offscreenEnemy.erase(m_offscreenEnemy.begin() + i);
 				m_offscreenEnemyPos.erase(m_offscreenEnemyPos.begin() + i);
@@ -1259,9 +1267,9 @@ void Game::Update()
 			//set the position of the tip
 			vec2 tipDirection = vec2(ECS::GetComponent<Transform>(m_offscreenEnemy[i]).GetPositionX() - ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(m_offscreenEnemy[i]).GetPositionY() - ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY()).Normalize();
 			float multiplier;
-			(abs(tipDirection.x / BackEnd::GetAspectRatio()) > abs(tipDirection.y)) ? multiplier = 90 * BackEnd::GetAspectRatio() / abs(tipDirection.x) : multiplier = 90 / abs(tipDirection.y);
+			multiplier = (abs(tipDirection.x / BackEnd::GetAspectRatio()) > abs(tipDirection.y)) ? 50 * BackEnd::GetAspectRatio() / abs(tipDirection.x) : 50 / abs(tipDirection.y);
 			vec2 tipPos = vec2(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (tipDirection.x * multiplier), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + (tipDirection.y * multiplier));
-			ECS::GetComponent<Transform>(m_offscreenEnemyPos[i]).SetPosition(tipPos.x, tipPos.y, 101.f);
+			ECS::GetComponent<Transform>(m_offscreenEnemyPos[i]).SetPosition(tipPos.x, tipPos.y, 40.f);
 
 			//set the rotation of the tip
 			tipPos = vec2(tipPos.x - ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), tipPos.y - ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY());
@@ -1372,7 +1380,7 @@ void Game::Update()
 
 					//set components
 					ECS::GetComponent<Sprite>(bossHealth).LoadSprite(fileName, 190 * BackEnd::GetAspectRatio(), 10);
-					ECS::GetComponent<Transform>(bossHealth).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 90.f, 100.5f);
+					ECS::GetComponent<Transform>(bossHealth).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 50.f, 100.5f);
 
 					//set up identifier
 					unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit() | EntityIdentifier::EnemyBit();
@@ -1392,8 +1400,8 @@ void Game::Update()
 					std::string fileName = "HealthBorder.png";
 
 					//set components
-					ECS::GetComponent<Sprite>(bossHealthBorder).LoadSprite(fileName, 191 * BackEnd::GetAspectRatio(), 11);
-					ECS::GetComponent<Transform>(bossHealthBorder).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 90.f, 100.5f);
+					ECS::GetComponent<Sprite>(bossHealthBorder).LoadSprite(fileName, 111 * BackEnd::GetAspectRatio(), 11);
+					ECS::GetComponent<Transform>(bossHealthBorder).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 50.f, 100.5f);
 
 					//set up identifier
 					unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit() | EntityIdentifier::EnemyBit();
@@ -1609,10 +1617,10 @@ void Game::KeyboardHold()
 
 		//output boss health
 		if (m_enemyHealth > 0) {
-			ECS::GetComponent<Transform>(m_enemyHealth).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - float(int(190 * BackEnd::GetAspectRatio() - ((ECS::GetComponent<Enemy>(m_enemy[0]).GetHealth() * 19) * BackEnd::GetAspectRatio()))) / 2.f, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 94.f, 100.5f);
+			ECS::GetComponent<Transform>(m_enemyHealth).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - float(int(110 * BackEnd::GetAspectRatio() - ((ECS::GetComponent<Enemy>(m_enemy[0]).GetHealth() * 11) * BackEnd::GetAspectRatio()))) / 2.f, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 54.f, 91.f);
 			fileName = "Health.png";
-			ECS::GetComponent<Sprite>(m_enemyHealth).LoadSprite(fileName, (ECS::GetComponent<Enemy>(m_enemy[0]).GetHealth() * 19) * BackEnd::GetAspectRatio(), 10);
-			ECS::GetComponent<Transform>(m_enemyHealthBorder).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 94.f, 100.1f);
+			ECS::GetComponent<Sprite>(m_enemyHealth).LoadSprite(fileName, (ECS::GetComponent<Enemy>(m_enemy[0]).GetHealth() * 11) * BackEnd::GetAspectRatio(), 10);
+			ECS::GetComponent<Transform>(m_enemyHealthBorder).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 54.f, 90.f);
 		}
 
 		//rotate enemies
@@ -1640,7 +1648,7 @@ void Game::KeyboardHold()
 
 		//move the UI
 		for (int i = 6; i < 9; i++) {
-			ECS::GetComponent<Transform>(i).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (66.f * BackEnd::GetAspectRatio() + ((BackEnd::GetAspectRatio() - 1) * 35) + (12.f * (i - 6))), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 90.f, 100.5f);
+			ECS::GetComponent<Transform>(i).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (26.f * BackEnd::GetAspectRatio() + ((BackEnd::GetAspectRatio() - 1) * 35) + (12.f * (i - 6))), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 50.f, 100.5f);
 		}
 	}
 }
@@ -1749,9 +1757,11 @@ void Game::MouseMotion(SDL_MouseMotionEvent evnt)
 		ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetRotationAngleZ(angle * (PI / 180.f));
 
 		//rotate attack hitbox
-		float xOffset = (ECS::GetComponent<Transform>(3).GetScale().x / 3.f) * cos(angle * (PI / 180.f)), yOffset = (ECS::GetComponent<Transform>(3).GetScale().x / 3.f) * sin(angle * (PI / 180.f));
-		ECS::GetComponent<Transform>(3).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + xOffset, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + yOffset, ECS::GetComponent<Transform>(3).GetPositionZ());
-		ECS::GetComponent<Transform>(3).SetRotationAngleZ(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetRotationAngleZ());
+		if (ECS::GetComponent<AnimationController>(3).GetAnimationDone() || ECS::GetComponent<AnimationController>(3).GetCurrentFrameNum() == 0) {
+			float xOffset = (ECS::GetComponent<Transform>(3).GetScale().x / 3.f) * cos(angle * (PI / 180.f)), yOffset = (ECS::GetComponent<Transform>(3).GetScale().x / 3.f) * sin(angle * (PI / 180.f));
+			ECS::GetComponent<Transform>(3).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + xOffset, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + yOffset, ECS::GetComponent<Transform>(3).GetPositionZ());
+			ECS::GetComponent<Transform>(3).SetRotationAngleZ(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetRotationAngleZ());
+		}
 	}
 	//std::cout << evnt.x / (float(BackEnd::GetWindowWidth()) / 100.f) << " " << evnt.y / (float(BackEnd::GetWindowHeight()) / 100.f) << "\n";
 
