@@ -16,7 +16,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 
 	float aspectRatio = windowWidth / windowHeight;
 
-	//set up camera component
+	//set up camera component (0)
 	{
 		//create entity
 		auto camera = ECS::CreateEntity();
@@ -43,11 +43,8 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::SetIsMainCamera(camera, true);
 	}
 
-	//set up main player
+	//set up main player (1)
 	{
-		//set animation file
-		//auto animations = File::LoadJSON("JSON FILE NAME");
-
 		//create entity
 		auto player = ECS::CreateEntity();
 		EntityIdentifier::MainPlayer(player);
@@ -56,31 +53,23 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<Sprite>(player);
 		ECS::AttachComponent<Transform>(player);
 		ECS::AttachComponent<Stats>(player);
-		//ECS::AttachComponent<AnimationController>(player);
 
 		//set files
-		std::string fileName = "temp.png";
-		//auto& animController = ECS::GetComponent<AnimationController>(player);
-		//animController.InitUVs(fileName);
-
-		//set animations
-		//animController.AddAnimation(animations["ANIMATION NAME"]);
-
-		//animController.SetActiveAnim(0);
+		std::string fileName = "Stamina.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(player).LoadSprite(fileName, 6, 6/*, true, &animController*/);
+		ECS::GetComponent<Sprite>(player).LoadSprite(fileName, 6, 6);
 		ECS::GetComponent<Transform>(player).SetPosition(vec3(0.f, 0.f, 0.f));
 		ECS::GetComponent<Stats>(player).SetHealth(3.f);
 		ECS::GetComponent<Stats>(player).SetStamina(50.f);
 
 		//set player
-		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit()/* | EntityIdentifier::AnimationBit()*/ | EntityIdentifier::StatsBit();
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::StatsBit();
 		ECS::SetUpIdentifier(player, bitHolder, "Main Character");
 		ECS::SetIsMainPlayer(player, true);
 	}
 
-	//set up map collision box
+	//set up map collision box (2)
 	{
 		//create entity
 		auto collide = ECS::CreateEntity();
@@ -97,7 +86,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::SetUpIdentifier(collide, bitHolder, "Arena collision");
 	}
 
-	//set up attack hitbox
+	//set up attack hitbox (3)
 	{
 		//set animation file
 		auto animations = File::LoadJSON("Slash.json");
@@ -129,7 +118,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::SetUpIdentifier(collide, bitHolder, "Attack box");
 	}
 
-	//set up map sprite
+	//set up map sprite (4)
 	{
 		//create entity
 		auto collide = ECS::CreateEntity();
@@ -150,7 +139,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::SetUpIdentifier(collide, bitHolder, "Map");
 	}
 
-	//set up pause sprite
+	//set up pause sprite (5)
 	{
 		//create entity
 		auto collide = ECS::CreateEntity();
@@ -171,7 +160,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::SetUpIdentifier(collide, bitHolder, "Pause");
 	}
 
-	//set up health sprites
+	//set up health sprites (6, 7, 8)
 	for (int i = 0; i < 3; i++) {
 		{
 			//create entity
@@ -186,7 +175,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 
 			//set components
 			ECS::GetComponent<Sprite>(health).LoadSprite(fileName, 10, 10);
-			ECS::GetComponent<Transform>(health).SetPosition((70.f + (12.f * i)), 90.f, 101.f);
+			ECS::GetComponent<Transform>(health).SetPosition((70.f + (12.f * i)), 90.f, 90.f);
 
 			//set health
 			unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -194,7 +183,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		}
 	}
 
-	//set up stamina sprite
+	//set up stamina sprite (9)
 	{
 		//create entity
 		auto stamina = ECS::CreateEntity();
@@ -215,7 +204,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::SetUpIdentifier(stamina, bitHolder, "Health");
 	}
 
-	//set up clounds sprite
+	//set up clounds sprite (10)
 	{
 		//create entity
 		auto clouds = ECS::CreateEntity();
@@ -236,7 +225,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::SetUpIdentifier(clouds, bitHolder, "Clouds");
 	}
 
-	//set up player sprite
+	//set up player sprite (11)
 	{
 		//set animation file
 		auto animations = File::LoadJSON("Character.json");

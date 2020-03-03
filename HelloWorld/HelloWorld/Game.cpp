@@ -52,7 +52,7 @@ void Game::InitGame()
 bool Game::Run()
 {
 
-	std::string fileName = "temp.png";
+	std::string fileName;
 	//while window is still open
 	while (m_window->isOpen()) {
 		//while on the main menu
@@ -79,38 +79,201 @@ bool Game::Run()
 		}
 
 		//Load everything
-		int count = 0;
 		if (m_activeScene == m_scenes[1] && m_initialStartup) {
-			//access sprites
+			int LScreen, LBarEmpty, LBar;
+
+			//set up the load screen
+			{
+				//create entity
+				auto LoadScreen = ECS::CreateEntity();
+
+				//attach components
+				ECS::AttachComponent<Sprite>(LoadScreen);
+				ECS::AttachComponent<Transform>(LoadScreen);
+
+				//set files
+				fileName = "LoadScreen.png";
+
+				//set components
+				ECS::GetComponent<Sprite>(LoadScreen).LoadSprite(fileName, 120 * BackEnd::GetAspectRatio(), 120);
+				ECS::GetComponent<Transform>(LoadScreen).SetPosition(vec3(0.f, 0.f, 100.f));
+
+				//set load screen
+				unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+				ECS::SetUpIdentifier(LoadScreen, bitHolder, "Load Screen");
+
+				//set variable
+				LScreen = LoadScreen;
+			}
+			{
+				//create entity
+				auto LoadBarEmpty = ECS::CreateEntity();
+
+				//attach components
+				ECS::AttachComponent<Sprite>(LoadBarEmpty);
+				ECS::AttachComponent<Transform>(LoadBarEmpty);
+
+				//set files
+				fileName = "LoadBarEmpty.png";
+
+				//set components
+				ECS::GetComponent<Sprite>(LoadBarEmpty).LoadSprite(fileName, 30, 50);
+				ECS::GetComponent<Transform>(LoadBarEmpty).SetPosition(vec3(0.f, -5.f, 99.f)); //top = 32, bottom = -5, 3.09 intervals
+
+				//set empty load bar
+				unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+				ECS::SetUpIdentifier(LoadBarEmpty, bitHolder, "Empty Load Bar");
+
+				//set variable
+				LBarEmpty = LoadBarEmpty;
+			}
+			{
+				//create entity
+				auto LoadBar = ECS::CreateEntity();
+
+				//attach components
+				ECS::AttachComponent<Sprite>(LoadBar);
+				ECS::AttachComponent<Transform>(LoadBar);
+
+				//set files
+				fileName = "LoadBar.png";
+
+				//set components
+				ECS::GetComponent<Sprite>(LoadBar).LoadSprite(fileName, 120 * BackEnd::GetAspectRatio(), 120);
+				ECS::GetComponent<Transform>(LoadBar).SetPosition(vec3(0.f, 0.f, 98.f));
+
+				//set empty load bar
+				unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+				ECS::SetUpIdentifier(LoadBar, bitHolder, "Load Bar");
+
+				//set variable
+				LBar = LoadBar;
+			}
+
+
+			//set the camera to focus on the main player
+			ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
+			ECS::GetComponent<VerticalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
+
+			int count = 0;
+			//access sprites for the first time
 			ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(RedBulletSprite, 6, 6);
-
-			/*ECS::GetComponent<Transform>(11).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY(), 101.f);
-			fileName = "2.png";
-			ECS::GetComponent<Sprite>(11).LoadSprite(fileName, 200.f * BackEnd::GetAspectRatio(), 200.f);
-			fileName = "tempInvunerable.png";
-			*/
+			ECS::GetComponent<Transform>(LBarEmpty).SetPositionY(ECS::GetComponent<Transform>(LBarEmpty).GetPositionY() + 3.09f);
+			//Update the backend
+			BackEnd::Update(m_register);
+			//Clear window with clearColor
+			m_window->Clear(m_clearColor);
+			//Draws the game
+			BackEnd::Draw(m_register);
+			//Flips the windows
+			m_window->Flip();
 			ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(YellowBulletSprite, 6, 6);
-			std::cout << count++ << std::endl;
-
+			ECS::GetComponent<Transform>(LBarEmpty).SetPositionY(ECS::GetComponent<Transform>(LBarEmpty).GetPositionY() + 3.09f);
+			//Update the backend
+			BackEnd::Update(m_register);
+			//Clear window with clearColor
+			m_window->Clear(m_clearColor);
+			//Draws the game
+			BackEnd::Draw(m_register);
+			//Flips the windows
+			m_window->Flip();
 			ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(GreenBulletSprite, 6, 6);
-			std::cout << count++ << std::endl;
-
+			ECS::GetComponent<Transform>(LBarEmpty).SetPositionY(ECS::GetComponent<Transform>(LBarEmpty).GetPositionY() + 3.09f);
+			//Update the backend
+			BackEnd::Update(m_register);
+			//Clear window with clearColor
+			m_window->Clear(m_clearColor);
+			//Draws the game
+			BackEnd::Draw(m_register);
+			//Flips the windows
+			m_window->Flip();
 			ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(GreenBulletSpriteRef, 6, 6);
-			fileName = "Stamina.png";
+			ECS::GetComponent<Transform>(LBarEmpty).SetPositionY(ECS::GetComponent<Transform>(LBarEmpty).GetPositionY() + 3.09f);
+			//Update the backend
+			BackEnd::Update(m_register);
+			//Clear window with clearColor
+			m_window->Clear(m_clearColor);
+			//Draws the game
+			BackEnd::Draw(m_register);
+			//Flips the windows
+			m_window->Flip();
+			fileName = "Heart.png";
 			ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(fileName, 6, 6);
+			ECS::GetComponent<Transform>(LBarEmpty).SetPositionY(ECS::GetComponent<Transform>(LBarEmpty).GetPositionY() + 3.09f);
+			//Update the backend
+			BackEnd::Update(m_register);
+			//Clear window with clearColor
+			m_window->Clear(m_clearColor);
+			//Draws the game
+			BackEnd::Draw(m_register);
+			//Flips the windows
+			m_window->Flip();
 			fileName = "NoHeart.png";
 			ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(fileName, 6, 6);
+			ECS::GetComponent<Transform>(LBarEmpty).SetPositionY(ECS::GetComponent<Transform>(LBarEmpty).GetPositionY() + 3.09f);
+			//Update the backend
+			BackEnd::Update(m_register);
+			//Clear window with clearColor
+			m_window->Clear(m_clearColor);
+			//Draws the game
+			BackEnd::Draw(m_register);
+			//Flips the windows
+			m_window->Flip();
+			fileName = "Health.png";
+			ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(fileName, 6, 6);
+			ECS::GetComponent<Transform>(LBarEmpty).SetPositionY(ECS::GetComponent<Transform>(LBarEmpty).GetPositionY() + 3.09f);
+			//Update the backend
+			BackEnd::Update(m_register);
+			//Clear window with clearColor
+			m_window->Clear(m_clearColor);
+			//Draws the game
+			BackEnd::Draw(m_register);
+			//Flips the windows
+			m_window->Flip();
+			fileName = "HealthBorder.png";
+			ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(fileName, 6, 6);
+			ECS::GetComponent<Transform>(LBarEmpty).SetPositionY(ECS::GetComponent<Transform>(LBarEmpty).GetPositionY() + 3.09f);
+			//Update the backend
+			BackEnd::Update(m_register);
+			//Clear window with clearColor
+			m_window->Clear(m_clearColor);
+			//Draws the game
+			BackEnd::Draw(m_register);
+			//Flips the windows
+			m_window->Flip();
 			fileName = "temp3.png";
 			ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(fileName, 6, 6);
-			std::cout << count++ << std::endl;
-
-			fileName = "temp4.png";
+			ECS::GetComponent<Transform>(LBarEmpty).SetPositionY(ECS::GetComponent<Transform>(LBarEmpty).GetPositionY() + 3.09f);
+			//Update the backend
+			BackEnd::Update(m_register);
+			//Clear window with clearColor
+			m_window->Clear(m_clearColor);
+			//Draws the game
+			BackEnd::Draw(m_register);
+			//Flips the windows
+			m_window->Flip();
+			fileName = "Arrow.png";
 			ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(fileName, 6, 6);
-			std::cout << count++ << std::endl;
-
-			fileName = "temp.png";
+			ECS::GetComponent<Transform>(LBarEmpty).SetPositionY(ECS::GetComponent<Transform>(LBarEmpty).GetPositionY() + 3.09f);
+			//Update the backend
+			BackEnd::Update(m_register);
+			//Clear window with clearColor
+			m_window->Clear(m_clearColor);
+			//Draws the game
+			BackEnd::Draw(m_register);
+			//Flips the windows
+			m_window->Flip();
+			fileName = "Spark.png";
 			ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(fileName, 6, 6);
-			std::cout << count++ << std::endl;
+			ECS::GetComponent<Transform>(LBarEmpty).SetPositionY(ECS::GetComponent<Transform>(LBarEmpty).GetPositionY() + 3.09f);
+			//Update the backend
+			BackEnd::Update(m_register);
+			//Clear window with clearColor
+			m_window->Clear(m_clearColor);
+			//Draws the game
+			BackEnd::Draw(m_register);
+			//Flips the windows
+			m_window->Flip();
 
 			//set everything
 			ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetHealth(3.f);
@@ -132,6 +295,22 @@ bool Game::Run()
 			m_initialStartup = false;
 			ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
 			ECS::GetComponent<VerticalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
+			ECS::GetComponent<Transform>(LBarEmpty).SetPositionY(ECS::GetComponent<Transform>(LBarEmpty).GetPositionY() + 3.09f);
+			//Update the backend
+			BackEnd::Update(m_register);
+			//Clear window with clearColor
+			m_window->Clear(m_clearColor);
+			//Draws the game
+			BackEnd::Draw(m_register);
+			//Flips the windows
+			m_window->Flip();
+
+			ECS::DestroyEntity(LScreen);
+			ECS::DestroyEntity(LBarEmpty);
+			ECS::DestroyEntity(LBar);
+			LScreen = 0;
+			LBarEmpty = 0;
+			LBar = 0;
 		}
 
 		//start tutorial
@@ -308,7 +487,7 @@ bool Game::Run()
 					fileName = "Heart.png";
 					for (int i = 6; i < 9; i++) {
 						ECS::GetComponent<Sprite>(i).LoadSprite(fileName, 10, 10);
-						ECS::GetComponent<Transform>(i).SetPosition((26.f * BackEnd::GetAspectRatio() + ((BackEnd::GetAspectRatio() - 1) * 35) + (12.f * (i - 6))), 50.f, 100.5f);
+						ECS::GetComponent<Transform>(i).SetPosition((26.f * BackEnd::GetAspectRatio() + ((BackEnd::GetAspectRatio() - 1) * 35) + (12.f * (i - 6))), 50.f, 90.f);
 					}
 					fileName = "temp.png";
 					ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetPosition(0.f, 0.f, 0.f);
@@ -365,14 +544,6 @@ bool Game::Run()
 
 void Game::Update()
 {
-	/*if (startgame == false) {
-		m_activeScene = m_scenes[0];
-		std::cout << '!';
-	}
-	else if (startgame == true) {
-		m_activeScene = m_scenes[1];
-		std::cout << '?';
-	}*/
 	if (m_activeScene == m_scenes[0]) {
 
 	}
@@ -1205,7 +1376,7 @@ void Game::Update()
 						ECS::AttachComponent<Transform>(tip);
 
 						//set files
-						std::string fileName = "temp4.png";
+						std::string fileName = "Arrow.png";
 
 						//set components
 						ECS::GetComponent<Sprite>(tip).LoadSprite(fileName, 5, 5);
@@ -1648,7 +1819,7 @@ void Game::KeyboardHold()
 
 		//move the UI
 		for (int i = 6; i < 9; i++) {
-			ECS::GetComponent<Transform>(i).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (26.f * BackEnd::GetAspectRatio() + ((BackEnd::GetAspectRatio() - 1) * 35) + (12.f * (i - 6))), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 50.f, 100.5f);
+			ECS::GetComponent<Transform>(i).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (26.f * BackEnd::GetAspectRatio() + ((BackEnd::GetAspectRatio() - 1) * 35) + (12.f * (i - 6))), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 50.f, 90.f);
 		}
 	}
 }
@@ -1658,7 +1829,7 @@ void Game::KeyboardDown()
 	if (m_activeScene == m_scenes[1]) {
 		if (Input::GetKey(Key::Escape)) {
 			pause = !pause;
-			ECS::GetComponent<Transform>(5).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY(), 101.f);
+			ECS::GetComponent<Transform>(5).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY(), 100.f);
 			std::string fileName = "pause.png";
 			ECS::GetComponent<Sprite>(5).LoadSprite(fileName, 200.f * BackEnd::GetAspectRatio(), 200.f);
 		}
@@ -1773,7 +1944,7 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 {
 	if (pause) {
 		pause = !pause;
-		ECS::GetComponent<Transform>(5).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY(), 0.f);
+		ECS::GetComponent<Transform>(5).SetPosition(0.f, 0.f, 0.f);
 	}
 	else {
 		if (m_activeScene == m_scenes[0]) {
