@@ -79,11 +79,22 @@ bool Game::Run()
 		}
 
 		//Load everything
+		int count = 0;
 		if (m_activeScene == m_scenes[1] && m_initialStartup) {
 			//access sprites
 			ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(RedBulletSprite, 6, 6);
+
+			/*ECS::GetComponent<Transform>(11).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY(), 101.f);
+			fileName = "2.png";
+			ECS::GetComponent<Sprite>(11).LoadSprite(fileName, 200.f * BackEnd::GetAspectRatio(), 200.f);
+			fileName = "tempInvunerable.png";
+			*/
 			ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(YellowBulletSprite, 6, 6);
+			std::cout << count++ << std::endl;
+
 			ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(GreenBulletSprite, 6, 6);
+			std::cout << count++ << std::endl;
+
 			ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(GreenBulletSpriteRef, 6, 6);
 			fileName = "Stamina.png";
 			ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(fileName, 6, 6);
@@ -91,10 +102,16 @@ bool Game::Run()
 			ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(fileName, 6, 6);
 			fileName = "temp3.png";
 			ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(fileName, 6, 6);
+			std::cout << count++ << std::endl;
+
 			fileName = "temp4.png";
 			ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(fileName, 6, 6);
+			std::cout << count++ << std::endl;
+
 			fileName = "temp.png";
 			ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(fileName, 6, 6);
+			std::cout << count++ << std::endl;
+
 			//set everything
 			ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetHealth(3.f);
 			ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetRotationAngleZ(0.f);
@@ -1702,7 +1719,16 @@ void Game::KeyboardUp()
 void Game::MouseMotion(SDL_MouseMotionEvent evnt)
 {
 	if (m_activeScene == m_scenes[0]) {
-		
+		vec2 mousePos = vec2((BackEnd::GetWindowWidth() / 2.f) - evnt.x, (BackEnd::GetWindowHeight() / 2.f) - evnt.y);
+	//	std::cout<< mousePos.x<<"|"<<mousePos.y << std::endl;
+		if((mousePos.x<246&&mousePos.x>-297)&&(mousePos.y<48&&mousePos.y>-32)) {
+			std::cout <<"yeh"<< std::endl;
+			ECS::GetComponent<Transform>(3).SetPosition(vec3(4.f, 0.f, 101.f));
+		}
+		else {
+			ECS::GetComponent<Transform>(3).SetPosition(vec3(4.f, 0.f, 100.f));
+
+		}
 	}
 	else {
 		//Rotate player
@@ -1738,15 +1764,17 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 	if (pause) {
 		pause = !pause;
 		ECS::GetComponent<Transform>(5).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY(), 0.f);
-		std::cout << "woah" << std::endl;
 	}
 	else {
 		if (m_activeScene == m_scenes[0]) {
-			//startgame = true;
-			m_activeScene = m_scenes[1];
-			m_activeScene->InitScene(float(BackEnd::GetWindowWidth()), float(BackEnd::GetWindowHeight()));
-			m_register = m_activeScene->GetScene();
-			std::cout << "HEAVEN OR HELL: LET'S ROCK" << std::endl;
+			vec2 mousePos = vec2((BackEnd::GetWindowWidth() / 2.f) - evnt.x, (BackEnd::GetWindowHeight() / 2.f) - evnt.y);
+			if ((mousePos.x<246 && mousePos.x>-297) && (mousePos.y<48 && mousePos.y>-32)) {
+
+				m_activeScene = m_scenes[1];
+				m_activeScene->InitScene(float(BackEnd::GetWindowWidth()), float(BackEnd::GetWindowHeight()));
+				m_register = m_activeScene->GetScene();
+				std::cout << "HEAVEN OR HELL: LET'S ROCK" << std::endl;
+			}
 		}
 		else {
 			if (m_dodgeTimer <= 0 && m_invunerability <= 0 && ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetStamina() >= 10.f) {

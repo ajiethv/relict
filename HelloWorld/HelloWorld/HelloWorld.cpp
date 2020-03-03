@@ -169,7 +169,6 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
 		ECS::SetUpIdentifier(collide, bitHolder, "Pause");
 	}
-
 	//set up health sprites
 	for (int i = 0; i < 3; i++) {
 		{
@@ -212,6 +211,44 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		//set stamina
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
 		ECS::SetUpIdentifier(stamina, bitHolder, "Health");
+	}
+	{
+		//create entity
+		auto collide = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<Transform>(collide);
+
+		//set file
+		std::string fileName = "1.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200, 200);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, 0.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(collide, bitHolder, "1");
+	}
+	{
+		//create entity
+		auto collide = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<Transform>(collide);
+
+		//set file
+		std::string fileName = "2.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200, 200);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, 0.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(collide, bitHolder, "2");
 	}
 
 	//set up clounds sprite
