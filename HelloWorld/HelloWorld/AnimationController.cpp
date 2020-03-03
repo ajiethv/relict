@@ -95,6 +95,11 @@ UVCoordinates Animation::GetCurrentFrame() const
 	return m_frames[m_currentFrame];
 }
 
+int Animation::GetCurrentFrameNum()
+{
+	return m_currentFrame;
+}
+
 std::vector<UVCoordinates> Animation::GetFrames() const
 {
 	return m_frames;
@@ -242,6 +247,11 @@ GLuint AnimationController::GetUVVBO() const
 void AnimationController::Reset()
 {
 	m_animations[m_activeAnimation].Reset();
+}
+
+int AnimationController::GetCurrentFrameNum()
+{
+	return m_animations[m_activeAnimation].GetCurrentFrameNum();
 }
 
 bool AnimationController::GetAnimationDone()

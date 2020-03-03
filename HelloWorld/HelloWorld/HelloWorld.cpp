@@ -31,6 +31,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 
 		ECS::GetComponent<Camera>(camera).SetWindowSize(vec2(float(windowWidth), float(windowHeight)));
 		ECS::GetComponent<Camera>(camera).Orthographic(aspectRatio, temp.x, temp.y, temp.z, temp.w, -100.f, 100.f);
+		ECS::GetComponent<Camera>(camera).Zoom(40.f);
 		ECS::GetComponent<HorizontalScroll>(camera).SetCam(&ECS::GetComponent<Camera>(camera));
 		ECS::GetComponent<HorizontalScroll>(camera).SetOffset(0.f);
 		ECS::GetComponent<VerticalScroll>(camera).SetCam(&ECS::GetComponent<Camera>(camera));

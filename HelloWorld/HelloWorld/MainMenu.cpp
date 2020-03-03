@@ -40,14 +40,53 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<Transform>(title);
 
 		//set file
-		std::string fileName = "title_upscale.png";
+		std::string fileName = "title_screen.png";
 
 		//set components
 		ECS::GetComponent<Sprite>(title).LoadSprite(fileName, 400, 200);
-		ECS::GetComponent<Transform>(title).SetPosition(vec3(0.f, 0.f, 100.f));
+		ECS::GetComponent<Transform>(title).SetPosition(vec3(0.f, 0.f, 0.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
 		ECS::SetUpIdentifier(title, bitHolder, "Title");
 	}
+	{
+		//create entity
+		auto collide = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<Transform>(collide);
+
+		//set file
+		std::string fileName = "start.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 150, 50);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, 100.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(collide, bitHolder, "start");
+	}
+	{
+		//create entity
+		auto collide = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<Transform>(collide);
+
+		//set file
+		std::string fileName = "hoverstart.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 150, 50);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(4.f, 0.f, -100.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(collide, bitHolder, "redstart");
+	}
+
 }
