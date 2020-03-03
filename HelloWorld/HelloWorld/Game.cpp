@@ -514,6 +514,8 @@ void Game::Update()
 								}
 								ECS::DestroyEntity(m_enemyHealth);
 								m_enemyHealth = 0;
+								ECS::DestroyEntity(m_enemyHealthBorder);
+								m_enemyHealthBorder = 0;
 							}
 						}
 						if (m_tutorial) {
@@ -682,6 +684,8 @@ void Game::Update()
 								}
 								ECS::DestroyEntity(m_enemyHealth);
 								m_enemyHealth = 0;
+								ECS::DestroyEntity(m_enemyHealthBorder);
+								m_enemyHealthBorder = 0;
 							}
 						}
 						if (m_tutorial) {
@@ -1377,6 +1381,8 @@ void Game::Update()
 					//set up identifier
 					unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit() | EntityIdentifier::EnemyBit();
 					ECS::SetUpIdentifier(bossHealthBorder, bitHolder, "Boss Health Border");
+
+					m_enemyHealthBorder = bossHealthBorder;
 				}
 				m_enemyNum--;
 				m_spawnTimer = 100;
@@ -1589,7 +1595,7 @@ void Game::KeyboardHold()
 			ECS::GetComponent<Transform>(m_enemyHealth).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - float(int(190 * BackEnd::GetAspectRatio() - ((ECS::GetComponent<Enemy>(m_enemy[0]).GetHealth() * 19) * BackEnd::GetAspectRatio()))) / 2.f, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 94.f, 100.5f);
 			fileName = "Health.png";
 			ECS::GetComponent<Sprite>(m_enemyHealth).LoadSprite(fileName, (ECS::GetComponent<Enemy>(m_enemy[0]).GetHealth() * 19) * BackEnd::GetAspectRatio(), 10);
-			ECS::GetComponent<Transform>(m_enemyHealth + 1).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 94.f, 100.1f);
+			ECS::GetComponent<Transform>(m_enemyHealthBorder).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 94.f, 100.1f);
 		}
 
 		//rotate enemies

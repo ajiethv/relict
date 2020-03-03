@@ -104,6 +104,7 @@ private:
 	int m_enemiesKilled = 0; //the number of enemies killed
 	int m_bossesKilled = 0; //the number of bosses killed
 	int m_enemyHealth = 0; //the id of the boss health bar
+	int m_enemyHealthBorder = 0;
 	int m_enemyNum = 0; //the number of enemies in the wave
 	float m_invunerability = 0.f; //player invunerability timer (after being hit)
 	float m_dodgeTimer = 0.f; //the time dodging
