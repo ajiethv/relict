@@ -353,7 +353,7 @@ void Game::Update()
 	}
 	else {
 		//end animations
-		if (ECS::GetComponent<AnimationController>(11).GetAnimationDone()) {
+		if (ECS::GetComponent<AnimationController>(3).GetAnimationDone()) {
 			ECS::GetComponent<Transform>(3).SetPositionZ(0);
 			ECS::GetComponent<AnimationController>(11).SetActiveAnim(ECS::GetComponent<AnimationController>(11).GetActiveAnim() - ECS::GetComponent<AnimationController>(11).GetActiveAnim() % 4);
 		}
@@ -1748,8 +1748,8 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 				//if you left click
 				if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
 					//show the animation
-					ECS::GetComponent<Transform>(3).SetPositionZ(45.f);
 					ECS::GetComponent<AnimationController>(3).Reset();
+					ECS::GetComponent<Transform>(3).SetPositionZ(45.f);
 					ECS::GetComponent<AnimationController>(11).SetActiveAnim((ECS::GetComponent<AnimationController>(11).GetActiveAnim() / 4 == 0) ? 2 : 6);
 
 					//check each bullet
