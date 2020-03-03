@@ -31,7 +31,7 @@ public:
 	vec2 operator-();
 	vec2 operator+(vec2 v1);
 	vec2 operator-(vec2 v1);
-
+	bool operator==(vec2 v1);
 	vec2 operator*(float f);
 	vec2 operator/(float s);
 };
@@ -66,7 +66,7 @@ public:
 	vec3 operator-();
 	vec3 operator+(vec3 v3);
 	vec3 operator-(vec3 v3);
-
+	bool operator==(vec3 v3);
 	vec3 operator*(float f);
 	vec3 operator/(float f);
 };
@@ -100,7 +100,7 @@ public:
 	vec4 operator-();
 	vec4 operator+(vec4 v4);
 	vec4 operator-(vec4 v4);
-
+	bool operator==(vec4 v4);
 	vec4 operator*(float f);
 	vec4 operator/(float f);
 };

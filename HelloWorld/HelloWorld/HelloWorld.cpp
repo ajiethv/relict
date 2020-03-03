@@ -68,8 +68,8 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		//animController.SetActiveAnim(0);
 
 		//set components
-		ECS::GetComponent<Sprite>(player).LoadSprite(fileName, 10, 10/*, true, &animController*/);
-		ECS::GetComponent<Transform>(player).SetPosition(vec3(0.f, 0.f, 100.f));
+		ECS::GetComponent<Sprite>(player).LoadSprite(fileName, 6, 6/*, true, &animController*/);
+		ECS::GetComponent<Transform>(player).SetPosition(vec3(0.f, 0.f, 0.f));
 		ECS::GetComponent<Stats>(player).SetHealth(3.f);
 		ECS::GetComponent<Stats>(player).SetStamina(50.f);
 
@@ -89,31 +89,42 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 
 		//set components
 		ECS::GetComponent<Transform>(collide).SetScale(500, 500, 0);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, 98.f));
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, 0.f));
 
-		//set player
+		//set map collision
 		unsigned int bitHolder = EntityIdentifier::TransformBit();
 		ECS::SetUpIdentifier(collide, bitHolder, "Arena collision");
 	}
 
 	//set up attack hitbox
 	{
+		//set animation file
+		auto animations = File::LoadJSON("Slash.json");
+
 		//create entity
 		auto collide = ECS::CreateEntity();
 
 		//attach components
 		ECS::AttachComponent<Transform>(collide);
 		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<AnimationController>(collide);
 
 		std::string fileName = "Slash.png";
+		auto& animController = ECS::GetComponent<AnimationController>(collide);
+		animController.InitUVs(fileName);
+
+		//set animations
+		animController.AddAnimation(animations["Slash"]);
+
+		animController.SetActiveAnim(0);
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 20, 20);
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 20, 20, true, &animController);
 		ECS::GetComponent<Transform>(collide).SetScale(15, 15, 0);
 		ECS::GetComponent<Transform>(collide).SetPosition((20.f / 3.f), 0.f, 0.f);
 
-		//set player
-		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		//set attack
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::AnimationBit() | EntityIdentifier::SpriteBit();
 		ECS::SetUpIdentifier(collide, bitHolder, "Attack box");
 	}
 
@@ -127,15 +138,15 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<Transform>(collide);
 
 		//set file
-		std::string fileName = "arena.png";
+		std::string fileName = "map.png";
 
 		//set components
 		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 580, 580);
 		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, 10.f));
 
-		//set player
+		//set map
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
-		ECS::SetUpIdentifier(collide, bitHolder, "Arena");
+		ECS::SetUpIdentifier(collide, bitHolder, "Map");
 	}
 
 	//set up pause sprite
@@ -154,7 +165,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200, 200);
 		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, 0.f));
 
-		//set player
+		//set pause
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
 		ECS::SetUpIdentifier(collide, bitHolder, "Pause");
 	}
@@ -176,7 +187,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 			ECS::GetComponent<Sprite>(health).LoadSprite(fileName, 10, 10);
 			ECS::GetComponent<Transform>(health).SetPosition((70.f + (12.f * i)), 90.f, 101.f);
 
-			//set player
+			//set health
 			unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
 			ECS::SetUpIdentifier(health, bitHolder, "Health");
 		}
@@ -198,9 +209,69 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Sprite>(stamina).LoadSprite(fileName, 10, 2);
 		ECS::GetComponent<Transform>(stamina).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 5.f, 0.f);
 
-		//set player
+		//set stamina
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
 		ECS::SetUpIdentifier(stamina, bitHolder, "Health");
+	}
+
+	//set up clounds sprite
+	{
+		//create entity
+		auto clouds = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(clouds);
+		ECS::AttachComponent<Transform>(clouds);
+
+		//set files
+		std::string fileName = "clouds.png";
+		
+		//set components
+		ECS::GetComponent<Sprite>(clouds).LoadSprite(fileName, 580, 580);
+		ECS::GetComponent<Transform>(clouds).SetPosition(vec3(0.f, 0.f, 80.f));
+
+		//set clouds
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(clouds, bitHolder, "Clouds");
+	}
+
+	//set up player sprite
+	{
+		//set animation file
+		auto animations = File::LoadJSON("Character.json");
+
+		//create entity
+		auto player = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(player);
+		ECS::AttachComponent<Transform>(player);
+		ECS::AttachComponent<AnimationController>(player);
+
+		//set files
+		std::string fileName = "Character.png";
+		auto& animController = ECS::GetComponent<AnimationController>(player);
+		animController.InitUVs(fileName);
+
+		//set animations
+		animController.AddAnimation(animations["IdleRight"]);	//Animation 0
+		animController.AddAnimation(animations["MoveRight"]);	//Animation 1
+		animController.AddAnimation(animations["AttackRight"]);	//Animation 2
+		animController.AddAnimation(animations["DamageRight"]);	//Animation 3
+		animController.AddAnimation(animations["IdleLeft"]);	//Animation 4
+		animController.AddAnimation(animations["MoveLeft"]);	//Animation 5
+		animController.AddAnimation(animations["AttackLeft"]);	//Animation 6
+		animController.AddAnimation(animations["DamageLeft"]);	//Animation 7
+
+		animController.SetActiveAnim(0);
+
+		//set components
+		ECS::GetComponent<Sprite>(player).LoadSprite(fileName, 14, 14, true, &animController);
+		ECS::GetComponent<Transform>(player).SetPosition(vec3(0.f, 0.f, 55.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::AnimationBit() | EntityIdentifier::StatsBit();
+		ECS::SetUpIdentifier(player, bitHolder, "Main Character Sprite");
 	}
 
 	//set the camera to focus on the main player

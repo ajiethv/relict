@@ -79,6 +79,14 @@ vec2 vec2::operator-(vec2 v1)
 	return vec2(this->x - v1.x, this->y - v1.y);
 }
 
+bool vec2::operator==(vec2 v1)
+{
+	if (this->x == v1.x && this->y == v1.y) {
+		return true;
+	}
+	return false;
+}
+
 vec2 vec2::operator*(float f)
 {
 	return vec2(this->x * f, this->y * f);
@@ -170,6 +178,14 @@ vec3 vec3::operator+(vec3 v3)
 vec3 vec3::operator-(vec3 v3)
 {
 	return vec3(this->x - v3.x, this->y - v3.y, this->z - v3.z);
+}
+
+bool vec3::operator==(vec3 v3)
+{
+	if (this->x == v3.x && this->y == v3.y && this->z == v3.z) {
+		return true;
+	}
+	return false;
 }
 
 vec3 vec3::operator*(float s)
@@ -264,6 +280,14 @@ vec4 vec4::operator+(vec4 v4)
 vec4 vec4::operator-(vec4 v4)
 {
 	return vec4(this->x - v4.x, this->y - v4.y, this->z - v4.z, this->w - v4.w);
+}
+
+bool vec4::operator==(vec4 v4)
+{
+	if (this->x == v4.x && this->y == v4.y && this->z == v4.z && this->w == v4.w) {
+		return true;
+	}
+	return false;
 }
 
 vec4 vec4::operator*(float s)

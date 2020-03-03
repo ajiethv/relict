@@ -36,7 +36,6 @@ public:
 	static unsigned int VertiScrollCameraBit();
 	static unsigned int BulletBit();
 	static unsigned int EnemyBit();
-	static unsigned int BarrierBit();
 
 	//Setters
 	//Sets main player entity
@@ -85,7 +84,6 @@ private:
 	static unsigned int m_vertiScrollCameraBit;
 	static unsigned int m_bulletBit;
 	static unsigned int m_enemyBit;
-	static unsigned int m_barrierBit;
 };
 
 #ifndef __ENTITYIDENTIFIERJSON_H__

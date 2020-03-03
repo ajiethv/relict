@@ -8,6 +8,7 @@
 #include "VerticalScroll.h"
 #include "Bullet.h"
 #include "Enemy.h"
+#include "Particle.h"
 #include "Sprite.h"
 #include "AnimationController.h"
 #include "Transform.h"
