@@ -39,6 +39,11 @@ void Bullet::SetExtra(int e)
 	m_extra = e;
 }
 
+void Bullet::SetSpark(bool s)
+{
+	m_spark = s;
+}
+
 vec2 Bullet::GetPosition() const
 {
 	return m_position;
@@ -72,4 +77,9 @@ bool Bullet::GetReflected() const
 int Bullet::GetExtra() const
 {
 	return m_extra;
+}
+
+bool Bullet::GetSpark() const
+{
+	return m_spark;
 }

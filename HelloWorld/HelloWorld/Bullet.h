@@ -16,6 +16,7 @@ public:
 	void SetType(int t);
 	void SetReflected(bool r);
 	void SetExtra(int e);
+	void SetSpark(bool s);
 
 	//getters
 	vec2 GetPosition() const;
@@ -25,6 +26,7 @@ public:
 	int GetType() const;
 	bool GetReflected() const;
 	int GetExtra() const;
+	bool GetSpark() const;
 
 private:
 	//variables
@@ -34,7 +36,8 @@ private:
 	vec2 m_scale = vec2(3.f, 3.f);
 	int m_type = 1; // 1 = not reflectable, 2 = breakable, 3 = reflectable
 	bool m_reflected = false; // whether or not the bullet was reflected (only reflected bullets can hit an enemy)
-	int m_extra = 0; // any extra abilities the bullet has, 0 = nothing, 1 = explode, 2 = move?
+	int m_extra = 0; // any extra abilities the bullet has, 0 = nothing, 1 = explode, 2 = move, 3 = grow
+	bool m_spark = false; //if the bullet sparked in the current hit (so it doesnt create multiple sparks in one hit)
 };
 
 //Sends bullet TO json file
@@ -58,6 +61,8 @@ inline void to_json(nlohmann::json& j, const Bullet& bullet)
 	j["BulletReflected"] = bullet.GetReflected();
 	//Save extra
 	j["BulletExtra"] = bullet.GetExtra();
+	//save if it sparked
+	j["BulletSpark"] = bullet.GetSpark();
 }
 
 //Reads bullet in FROM json file
@@ -77,4 +82,6 @@ inline void from_json(const nlohmann::json& j, Bullet& bullet)
 	bullet.SetReflected(j["BulletReflected"]);
 	//Set extra
 	bullet.SetExtra(j["BulletExtra"]);
+	//set if it sparked
+	bullet.SetSpark(j["BulletSpark"]);
 }

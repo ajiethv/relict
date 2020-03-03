@@ -89,4 +89,24 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		ECS::SetUpIdentifier(collide, bitHolder, "redstart");
 	}
 
+	//set up the load screen
+	{
+		//create entity
+		auto LoadScreen = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(LoadScreen);
+		ECS::AttachComponent<Transform>(LoadScreen);
+
+		//set files
+		std::string fileName = "LoadScreenEmpty.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(LoadScreen).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 200);
+		ECS::GetComponent<Transform>(LoadScreen).SetPosition(vec3(0.f, 0.f, 0.f));
+
+		//set load screen
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(LoadScreen, bitHolder, "Load Screen");
+	}
 }
