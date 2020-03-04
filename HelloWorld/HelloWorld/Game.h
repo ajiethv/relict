@@ -106,7 +106,7 @@ private:
 	int m_enemyHealth = 0; //the id of the boss health bar
 	int m_enemyHealthBorder = 0;
 	int m_enemyNum = 0; //the number of enemies in the wave
-	float m_invunerability = 0.f; //player invunerability timer (after being hit)
+	float m_invulnerability  = 0.f; //player invulnerability  timer (after being hit)
 	float m_dodgeTimer = 0.f; //the time dodging
 	vec2 m_dodgeDirection = vec2(0.f, 0.f); //the direction of motion when dodging
 	float m_speedCap = 0.f; //caps the speed of the game so it doesnt run too fast

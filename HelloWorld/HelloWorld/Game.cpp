@@ -299,7 +299,7 @@ bool Game::Run()
 			}
 			m_enemy.clear();
 			m_removeEntity.clear();
-			m_invunerability = 0.f;
+			m_invulnerability  = 0.f;
 			m_initialStartup = false;
 			ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
 			ECS::GetComponent<VerticalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
@@ -530,7 +530,7 @@ bool Game::Run()
 					m_removeEntity.clear();
 					m_offscreenBullet.clear();
 					m_offscreenEnemy.clear();
-					m_invunerability = 0.f;
+					m_invulnerability  = 0.f;
 					m_dodgeTimer = 0.f;
 					m_dodgeDirection = vec2(0.f, 0.f);
 					m_bossBulletOffsetSpiral = 0.f;
@@ -559,10 +559,12 @@ void Game::Update()
 		//end animations
 		if (ECS::GetComponent<AnimationController>(3).GetAnimationDone()) {
 			ECS::GetComponent<Transform>(3).SetPositionZ(0);
-			ECS::GetComponent<AnimationController>(11).SetActiveAnim(ECS::GetComponent<AnimationController>(11).GetActiveAnim() - ECS::GetComponent<AnimationController>(11).GetActiveAnim() % 4);
 			for (int i : m_bullet) {
 				ECS::GetComponent<Bullet>(i).SetSpark(false);
 			}
+		}
+		if (ECS::GetComponent<AnimationController>(11).GetAnimationDone() && ECS::GetComponent<AnimationController>(3).GetAnimationDone()) {
+			ECS::GetComponent<AnimationController>(11).SetActiveAnim(ECS::GetComponent<AnimationController>(11).GetActiveAnim() - ECS::GetComponent<AnimationController>(11).GetActiveAnim() % 4);
 		}
 
 		//count waves and get number of enemies in the wave
@@ -644,16 +646,17 @@ void Game::Update()
 
 			//if a bullet hits the player
 			if (sqrt((bulletPos.x - playerPos.x) * (bulletPos.x - playerPos.x) + (bulletPos.y - playerPos.y) * (bulletPos.y - playerPos.y)) <= ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetScale().x / 2.f + ECS::GetComponent<Transform>(m_bullet[i]).GetScale().x / 2.f) {
-				if (m_invunerability <= 0.f && m_dodgeTimer <= 0.f) {
+				if (m_invulnerability  <= 0.f && m_dodgeTimer <= 0.f) {
 					if (!m_tutorial) {
 						ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetHealth(ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() - 1);
 						std::string fileName = "NoHeart.png";
 						ECS::GetComponent<Sprite>(ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() + 6).LoadSprite(fileName, 10, 10);
 					}
-					m_invunerability = 2.f;
+					m_invulnerability  = 2.f;
 					m_removeEntity.push_back(m_bullet[i]);
 					if (ECS::GetComponent<Bullet>(m_bullet[i]).GetExtra() == 2) m_trackingBulletCount--;
 					ECS::GetComponent<AnimationController>(11).SetActiveAnim((ECS::GetComponent<AnimationController>(11).GetActiveAnim() / 4 == 0) ? 3 : 7);
+					ECS::GetComponent<AnimationController>(11).Reset();
 				}
 			}
 
@@ -1642,9 +1645,14 @@ void Game::Update()
 			}
 		}
 
-		//count down the invunerability
-		if (m_invunerability > 0) {
-			m_invunerability -= 0.02;
+		//count down the invulnerability 
+		if (m_invulnerability  > 0) {
+			m_invulnerability  -= 0.02;
+
+			//show invulnerability 
+			std::string fileName = "Character.png";
+			if (int(m_invulnerability  / (2.f / 9.f)) % 2 == 0 && m_invulnerability  > 0) fileName = "CharacterInvulnerable.png";
+			ECS::GetComponent<Sprite>(11).LoadSprite(fileName, 14, 14);
 		}
 
 		//count down spawn timer
@@ -2027,7 +2035,7 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 			}
 		}
 		else {
-			if (m_dodgeTimer <= 0 && m_invunerability <= 0 && ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetStamina() >= 10.f) {
+			if (m_dodgeTimer <= 0 && m_invulnerability  <= 0 && ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetStamina() >= 10.f) {
 				//if you left click
 				if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
 					//show the animation
