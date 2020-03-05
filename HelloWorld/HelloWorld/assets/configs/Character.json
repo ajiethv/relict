@@ -26,7 +26,7 @@
     "Frame3": [ 256.0, 64.0, 193.0, 1.0 ],
     "NumFrames": 4,
     "Repeating": true,
-    "SecsPerFrame": 0.10000000074505806
+    "SecsPerFrame": 0.20000000074505806
   },
   "IdleRight": {
     "Frame0": [ 1.0, 64.0, 64.0, 1.0 ],
@@ -35,7 +35,7 @@
     "Frame3": [ 193.0, 64.0, 256.0, 1.0 ],
     "NumFrames": 4,
     "Repeating": true,
-    "SecsPerFrame": 0.10000000074505806
+    "SecsPerFrame": 0.20000000074505806
   },
   "MoveLeft": {
     "Frame0": [ 64.0, 128.0, 1.0, 65.0 ],
@@ -48,7 +48,7 @@
     "Frame7": [ 256.0, 192.0, 193.0, 129.0 ],
     "NumFrames": 8,
     "Repeating": true,
-    "SecsPerFrame": 0.05000000074505806
+    "SecsPerFrame": 0.06250000074505806
   },
   "MoveRight": {
     "Frame0": [ 1.0, 128.0, 64.0, 65.0 ],
@@ -61,7 +61,7 @@
     "Frame7": [ 193.0, 192.0, 256.0, 129.0 ],
     "NumFrames": 8,
     "Repeating": true,
-    "SecsPerFrame": 0.05000000074505806
+    "SecsPerFrame": 0.06250000074505806
   },
   "DamageLeft": {
     "Frame0": [ 128.0, 320.0, 65.0, 257.0 ],
