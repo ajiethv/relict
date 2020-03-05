@@ -479,6 +479,8 @@ bool Game::Run()
 		}
 
 		if (m_activeScene == m_scenes[1] && ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() <= 0) {
+
+
 			//Update timer
 			Timer::Update();
 			//Update the backend
@@ -1669,6 +1671,11 @@ void Game::Update()
 			m_spawnTimer--;
 		}
 
+		//count down stamina
+		if (m_staminaTimer > 0) {
+			m_staminaTimer -= Timer::deltaTime;
+		}
+
 		if (m_tutorial && m_helpTooltip > 0) {
 			std::string fileName = "";
 			if (m_tutorialBullet == 1) {
@@ -1842,7 +1849,9 @@ void Game::KeyboardHold()
 			}
 
 			//get less stamina
-			staminaIncrease = 0.1f;
+			if (m_staminaTimer > 0.f) {
+				staminaIncrease = 0.1f;
+			}
 		}
 		
 		//set to an idle animation if you arent moving
@@ -1951,6 +1960,7 @@ void Game::KeyboardDown()
 			}
 			m_dodgeDirection.MultScalar(2.f);
 			ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetStamina(ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetStamina() - 10);
+			m_staminaTimer = 0.2f;
 		}
 	}
 }
@@ -2055,6 +2065,8 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 					for (int i : m_bullet) {
 						ECS::GetComponent<Bullet>(i).SetSpark(false);
 					}
+					//timer for the stamina
+					m_staminaTimer = 0.2f;
 
 					//check each bullet
 					for (int i : m_bullet) {

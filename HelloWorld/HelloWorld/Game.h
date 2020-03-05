@@ -117,6 +117,7 @@ private:
 	int m_tutorialBullet = 1; //sets the type of the bullet in the tutorial
 	int m_tooltip = 0; //the picture in the tutorial
 	int m_helpTooltip = 0; //the text in the tutorial
+	float m_staminaTimer = 0.f; //timer for when you start getting stamina faster
 	bool startgame = false;
 	bool pause = false;
 };
