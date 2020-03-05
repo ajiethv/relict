@@ -263,6 +263,64 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::AnimationBit() | EntityIdentifier::StatsBit();
 		ECS::SetUpIdentifier(player, bitHolder, "Main Character Sprite");
 	}
+	//Set up Death Screen(12)
+	{
+		//create entity
+		auto title = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(title);
+		ECS::AttachComponent<Transform>(title);
+
+		//set file
+		std::string fileName = "deathscreen.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(title).LoadSprite(fileName, 225, 125);
+		ECS::GetComponent<Transform>(title).SetPosition(vec3(0.f, 0.f, -110.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(title, bitHolder, "Death Screen");
+	}
+	{
+		//set up continue button(13)
+		auto collide = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<Transform>(collide);
+
+		//set file
+		std::string fileName = "fight.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 50, 20);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-200.f, -59.f, -100.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(collide, bitHolder, "fight");
+	}
+	{
+		//set the red hover effect for continue (14)
+		auto collide = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<Transform>(collide);
+
+		//set file
+		std::string fileName = "fightred.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 50, 20);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-200.f, -59.f, -100.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(collide, bitHolder, "red fight");
+	}
 
 	//set the camera to focus on the main player
 	ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));

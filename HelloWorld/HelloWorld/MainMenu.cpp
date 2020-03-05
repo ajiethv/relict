@@ -16,7 +16,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		auto entity = ECS::CreateEntity();
 		EntityIdentifier::MainCamera(entity);
 
-		//attach camera components
+		//set up camera component (0)
 		ECS::AttachComponent<Camera>(entity);
 
 		vec4 temp = ECS::GetComponent<Camera>(entity).GetOrthoSize();
@@ -30,7 +30,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		ECS::SetIsMainCamera(entity, true);
 	}
 
-	//set up title entity
+	//set up title screen (1)
 	{
 		//create entity
 		auto title = ECS::CreateEntity();
@@ -51,7 +51,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		ECS::SetUpIdentifier(title, bitHolder, "Title");
 	}
 	{
-		//create entity
+		//set up start button(2)
 		auto collide = ECS::CreateEntity();
 
 		//attach components
@@ -70,7 +70,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		ECS::SetUpIdentifier(collide, bitHolder, "start");
 	}
 	{
-		//create entity
+		//set the red hover effect for start (3)
 		auto collide = ECS::CreateEntity();
 
 		//attach components
@@ -89,7 +89,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		ECS::SetUpIdentifier(collide, bitHolder, "redstart");
 	}
 
-	//set up the load screen
+	//set up the load screen(4)
 	{
 		//create entity
 		auto LoadScreen = ECS::CreateEntity();

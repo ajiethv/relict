@@ -496,6 +496,7 @@ bool Game::Run()
 			CheckEvents();
 
 			if (Input::m_windowFocus) {
+
 				if (Input::GetKeyUp(Key::Escape)) {
 					//close the game
 					m_window->Close();
@@ -662,6 +663,10 @@ void Game::Update()
 						ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetHealth(ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() - 1);
 						std::string fileName = "NoHeart.png";
 						ECS::GetComponent<Sprite>(ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() + 6).LoadSprite(fileName, 10, 10);
+						if (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() <= 0) {
+							ECS::GetComponent<Transform>(12).SetPosition(0.f, 0.f, 100.f);
+							std::cout << "yo" << std::endl;
+						}
 					}
 					m_invulnerability  = 2.f;
 					m_removeEntity.push_back(m_bullet[i]);
@@ -1988,8 +1993,19 @@ void Game::MouseMotion(SDL_MouseMotionEvent evnt)
 		}
 		else {
 			ECS::GetComponent<Transform>(3).SetPosition(vec3(4.f, 0.f, 100.f));
-
 		}
+	}
+	else if (m_activeScene == m_scenes[1] && ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() <= 0) {
+		vec2 mousePos = vec2((BackEnd::GetWindowWidth() / 2.f) - evnt.x, (BackEnd::GetWindowHeight() / 2.f) - evnt.y);
+
+		std::cout<< mousePos.x<<"|"<<mousePos.y << std::endl;
+		/*if ((mousePos.x<246 && mousePos.x>-297) && (mousePos.y<48 && mousePos.y>-32)) {
+			std::cout << "yeh" << std::endl;
+				ECS::GetComponent<Transform>(3).SetPosition(vec3(4.f, 0.f, 101.f));
+		}
+		else {
+			ECS::GetComponent<Transform>(3).SetPosition(vec3(4.f, 0.f, 100.f));
+		}*/
 	}
 	else {
 		//Rotate player
