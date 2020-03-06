@@ -488,7 +488,6 @@ bool Game::Run()
 
 			std::cout << mousePos.x << "|" << mousePos.y << std::endl;
 			if ((mousePos.x < 599 && mousePos.x>349) && (mousePos.y<-131 && mousePos.y>-296)) {//continue message
-				//std::cout << "ohyeh" << std::endl;
 				ECS::GetComponent<Transform>(13).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - 50, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 24, 100.f);
 				ECS::GetComponent<Transform>(14).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - 50, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 24, 101.f);
 			}
@@ -497,7 +496,6 @@ bool Game::Run()
 				ECS::GetComponent<Transform>(13).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - 50, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 24, 101.f);
 			}
 			if ((mousePos.x < -332 && mousePos.x>-588 ) && (mousePos.y<-128 && mousePos.y>-282)) {//quit message
-				std::cout << "ohyeh" << std::endl;
 				ECS::GetComponent<Transform>(15).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + 80, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 24, 100.f);
 				ECS::GetComponent<Transform>(16).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + 80, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 24, 101.f);
 			}
@@ -527,7 +525,6 @@ bool Game::Run()
 				}
 				if (Input::GetKeyUp(Key::Enter) || (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) 
 					&&((mousePos.x < 599 && mousePos.x>349) && (mousePos.y<-131 && mousePos.y>-296)))) {
-					std::cout << "wooloo" << std::endl;
 					//reset everything
 					ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetHealth(3.f);
 					fileName = "Heart.png";
@@ -2019,13 +2016,22 @@ void Game::MouseMotion(SDL_MouseMotionEvent evnt)
 {
 	if (m_activeScene == m_scenes[0]) {
 		vec2 mousePos = vec2((BackEnd::GetWindowWidth() / 2.f) - evnt.x, (BackEnd::GetWindowHeight() / 2.f) - evnt.y);
-	//	std::cout<< mousePos.x<<"|"<<mousePos.y << std::endl;
+		std::cout<< mousePos.x<<"|"<<mousePos.y << std::endl;
+		
 		if((mousePos.x<246&&mousePos.x>-297)&&(mousePos.y<48&&mousePos.y>-32)) {
 			ECS::GetComponent<Transform>(3).SetPosition(vec3(4.f, 0.f, 101.f));
 		}
 		else {
 			ECS::GetComponent<Transform>(3).SetPosition(vec3(4.f, 0.f, 100.f));
 		}
+		if ((mousePos.x<157 && mousePos.x>-126) && (mousePos.y<-345 && mousePos.y>-393)) {
+			ECS::GetComponent<Transform>(6).SetPosition(vec3(0.f, -85.f, 101.f));
+		}
+		else {
+			ECS::GetComponent<Transform>(6).SetPosition(vec3(0.f, -85.f, -100.f));
+		}
+
+
 	}
 	//else if (m_activeScene == m_scenes[1] && ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() <= 0) {
 	
@@ -2069,7 +2075,7 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 	}
 	else {
 		if (m_activeScene == m_scenes[0]) {
-			if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+			if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {//advance to loading screen
 				vec2 mousePos = vec2((BackEnd::GetWindowWidth() / 2.f) - evnt.x, (BackEnd::GetWindowHeight() / 2.f) - evnt.y);
 				if ((mousePos.x<246 && mousePos.x>-297) && (mousePos.y<48 && mousePos.y>-32)) {
 					for (int i = 0; i < 3; i++) {
@@ -2089,6 +2095,9 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 					m_activeScene = m_scenes[1];
 					m_activeScene->InitScene(float(BackEnd::GetWindowWidth()), float(BackEnd::GetWindowHeight()));
 					m_register = m_activeScene->GetScene();
+				}
+				if ((mousePos.x<157 && mousePos.x>-126) && (mousePos.y<-345 && mousePos.y>-393)) {
+					m_window->Close();
 				}
 			}
 		}
