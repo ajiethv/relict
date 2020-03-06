@@ -295,7 +295,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "fight.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 50, 20);
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 75, 50);
 		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-200.f, -59.f, -100.f));
 
 		//set player
@@ -314,12 +314,50 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "fightred.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 50, 20);
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 75, 50);
 		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-200.f, -59.f, -100.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
 		ECS::SetUpIdentifier(collide, bitHolder, "red fight");
+	}
+	{
+		//set up continue button(15)
+		auto collide = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<Transform>(collide);
+
+		//set file
+		std::string fileName = "fade.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 75, 50);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-200.f, -59.f, -100.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(collide, bitHolder, "fade");
+	}
+	{
+		//set the red hover effect for continue (16)
+		auto collide = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<Transform>(collide);
+
+		//set file
+		std::string fileName = "fadered.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 75, 50);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-200.f, -59.f, -100.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(collide, bitHolder, "red fade");
 	}
 
 	//set the camera to focus on the main player
