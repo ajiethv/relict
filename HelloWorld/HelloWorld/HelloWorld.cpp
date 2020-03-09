@@ -260,8 +260,29 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Transform>(player).SetPosition(vec3(0.f, 0.f, 55.f));
 
 		//set player
-		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::AnimationBit() | EntityIdentifier::StatsBit();
+		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::AnimationBit();
 		ECS::SetUpIdentifier(player, bitHolder, "Main Character Sprite");
+	}
+
+	//set up wave counter sprite (12)
+	{
+		//create entity
+		auto wave = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(wave);
+		ECS::AttachComponent<Transform>(wave);
+
+		//set files
+		std::string fileName = "Wave.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(wave).LoadSprite(fileName, 14, 5);
+		ECS::GetComponent<Transform>(wave).SetPosition(vec3(-50.f * aspectRatio, 53.f, 90.f));
+
+		//set clouds
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(wave, bitHolder, "Wave:");
 	}
 
 	//set the camera to focus on the main player

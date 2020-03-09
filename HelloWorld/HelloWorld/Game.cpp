@@ -87,7 +87,7 @@ bool Game::Run()
 		}
 
 		//Load everything
-		if (m_activeScene == m_scenes[1] && m_initialStartup) {
+		if (m_window->isOpen() && m_activeScene == m_scenes[1] && m_initialStartup) {
 			int LScreen, LBarEmpty, LBar;
 
 			//set up the load screen
@@ -322,7 +322,7 @@ bool Game::Run()
 		}
 
 		//start tutorial
-		if (m_tutorial && m_window->isOpen()) {
+		if (m_window->isOpen() && m_tutorial) {
 			if (m_enemy.size() < 1) {
 				//set up tutorial enemies
 				{
@@ -411,6 +411,10 @@ bool Game::Run()
 			}
 		}
 
+		if (m_window->isOpen() && ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() > 0) {
+			Timer::Reset();
+		}
+
 		while (m_window->isOpen() && ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() > 0)
 		{
 			//Update timer
@@ -478,7 +482,11 @@ bool Game::Run()
 			}
 		}
 
-		if (m_activeScene == m_scenes[1] && ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() <= 0) {
+		if (m_window->isOpen() && m_activeScene == m_scenes[1] && ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() <= 0) {
+			if (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() == 0) {
+				ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetHealth(-1);
+				m_score = (m_enemiesKilled * 100 + Timer::time) * (m_bossesKilled + 1);
+			}
 
 
 			//Update timer
@@ -552,6 +560,9 @@ bool Game::Run()
 					m_enemyNum = 0;
 					m_bossesKilled = 0;
 					m_enemiesKilled = 0;
+					m_staminaTimer = 0;
+					m_score = 0;
+					Timer::Reset();
 				}
 			}
 			Input::ResetKeys();
@@ -583,6 +594,64 @@ void Game::Update()
 			m_waveNum++;
 			m_spawnTimer = 200;
 			m_enemyNum = (m_waveNum % 5 == 0) ? 1 : m_waveNum + 4;
+			//set the wave number sprite
+			float temp = 0.1f;
+			for (int i = 0; i < m_waveNumberSprite.size(); i++) {
+				temp *= 10.f;
+			}
+			if (float(m_waveNum) / temp >= 10.f) {
+				//create a new sprite entity
+				{
+					//set animation file
+					auto animations = File::LoadJSON("Number.json");
+
+					//create entity
+					auto number = ECS::CreateEntity();
+
+					//attach components
+					ECS::AttachComponent<Sprite>(number);
+					ECS::AttachComponent<Transform>(number);
+					ECS::AttachComponent<AnimationController>(number);
+
+					//set files
+					std::string fileName = "Number.png";
+					auto& animController = ECS::GetComponent<AnimationController>(number);
+					animController.InitUVs(fileName);
+
+					//set animations
+					animController.AddAnimation(animations["0"]);
+					animController.AddAnimation(animations["1"]);
+					animController.AddAnimation(animations["2"]);
+					animController.AddAnimation(animations["3"]);
+					animController.AddAnimation(animations["4"]);
+					animController.AddAnimation(animations["5"]);
+					animController.AddAnimation(animations["6"]);
+					animController.AddAnimation(animations["7"]);
+					animController.AddAnimation(animations["8"]);
+					animController.AddAnimation(animations["9"]);
+
+					animController.SetActiveAnim(0);
+
+					//set components
+					ECS::GetComponent<Sprite>(number).LoadSprite(fileName, 3, 5, true, &animController);
+					ECS::GetComponent<Transform>(number).SetPosition(vec3(-40.f * BackEnd::GetAspectRatio() + ((BackEnd::GetAspectRatio() - 1) * 25) + (5 * m_waveNumberSprite.size()), 53.f, 90.f));
+
+					//set number
+					unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::AnimationBit();
+					ECS::SetUpIdentifier(number, bitHolder, "Wave Number");
+
+					m_waveNumberSprite.push_back(number);
+				}
+			}
+			temp = 0.1f;
+			for (int i = 0; i < m_waveNumberSprite.size(); i++) {
+				temp *= 10.f;
+			}
+			if (temp == 0.1f) temp = 1.f;
+			for (int i : m_waveNumberSprite) {
+				ECS::GetComponent<AnimationController>(i).SetActiveAnim(int(m_waveNum % int(temp * 10) / temp));
+				temp /= 10.f;
+			}
 		}
 
 		//make the player dodge
@@ -1863,11 +1932,11 @@ void Game::KeyboardHold()
 		staminaIncrease = (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetStamina() < 50.f) ? ((m_dodgeTimer <= 0) ? staminaIncrease : 0.f) : 0.f;
 		//increase the stamina
 		ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetStamina(ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetStamina() + staminaIncrease);
-		ECS::GetComponent<Transform>(9).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - float(int(10 - (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetStamina() / 5))) / 2.f, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 9.f, (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetStamina() < 50.f) ? 100.f : 0.f);
+		ECS::GetComponent<Transform>(9).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - float(int(10 - (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetStamina() / 5))) / 2.f, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 9.f, (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetStamina() < 50.f) ? 90.f : 0.f);
 		std::string fileName = "Stamina.png";
 		ECS::GetComponent<Sprite>(9).LoadSprite(fileName, ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetStamina() / 5, 2);
 
-		//output boss health
+		//show boss health
 		if (m_enemyHealth > 0) {
 			ECS::GetComponent<Transform>(m_enemyHealth).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - float(int(110 * BackEnd::GetAspectRatio() - ((ECS::GetComponent<Enemy>(m_enemy[0]).GetHealth() * 11) * BackEnd::GetAspectRatio()))) / 2.f, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 54.f, 91.f);
 			fileName = "Health.png";
@@ -1901,6 +1970,10 @@ void Game::KeyboardHold()
 		//move the UI
 		for (int i = 6; i < 9; i++) {
 			ECS::GetComponent<Transform>(i).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (34.f * BackEnd::GetAspectRatio() + ((BackEnd::GetAspectRatio() - 1) * 25) + (8.f * (i - 6))), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 50.f, 90.f);
+		}
+		ECS::GetComponent<Transform>(12).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (-50.f * BackEnd::GetAspectRatio() - ((BackEnd::GetAspectRatio() - 1) * 10)), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 53.f, 90.f);
+		for (int i = 0; i < m_waveNumberSprite.size(); i++) {
+			ECS::GetComponent<Transform>(m_waveNumberSprite[i]).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (-40.f * BackEnd::GetAspectRatio() - ((BackEnd::GetAspectRatio() - 1) * 20) + (4 * i)), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 53.f, 90.f);
 		}
 	}
 }

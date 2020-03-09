@@ -1,0 +1,62 @@
+{
+  "0": {
+    "Frame0": [ 1.0, 81.0, 55.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": false,
+    "SecsPerFrame": 9.999999747378752e-05
+  },
+  "1": {
+    "Frame0": [ 56.0, 81.0, 110.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": false,
+    "SecsPerFrame": 9.999999747378752e-05
+  },
+  "2": {
+    "Frame0": [ 111.0, 81.0, 165.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": false,
+    "SecsPerFrame": 9.999999747378752e-05
+  },
+  "3": {
+    "Frame0": [ 166.0, 81.0, 220.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": false,
+    "SecsPerFrame": 9.999999747378752e-05
+  },
+  "4": {
+    "Frame0": [ 221.0, 81.0, 275.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": false,
+    "SecsPerFrame": 9.999999747378752e-05
+  },
+  "5": {
+    "Frame0": [ 276.0, 81.0, 330.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": false,
+    "SecsPerFrame": 9.999999747378752e-05
+  },
+  "6": {
+    "Frame0": [ 331.0, 81.0, 385.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": false,
+    "SecsPerFrame": 9.999999747378752e-05
+  },
+  "7": {
+    "Frame0": [ 386.0, 81.0, 440.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": false,
+    "SecsPerFrame": 9.999999747378752e-05
+  },
+  "8": {
+    "Frame0": [ 441.0, 81.0, 495.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": false,
+    "SecsPerFrame": 9.999999747378752e-05
+  },
+  "9": {
+    "Frame0": [ 496.0, 81.0, 550.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": false,
+    "SecsPerFrame": 9.999999747378752e-05
+  }
+}
