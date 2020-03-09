@@ -98,6 +98,7 @@ private:
 	std::vector<Bullet> m_offscreenBullet; //all the information needed for offscreen bullets
 	std::vector<unsigned int> m_offscreenEnemy; //all the offscreen enemies
 	std::vector<unsigned int> m_offscreenEnemyPos; //all the offscreen enemy tips
+	std::vector<unsigned int> m_waveNumberSprite; //the sprite id for the ewave numbers
 	int m_spawnPoint[8]; //who the spawn point is taken by
 	int m_spawnTimer = 0; //the delay between spawning enemies
 	int m_waveNum = 0; //the current wave
@@ -118,6 +119,7 @@ private:
 	int m_tooltip = 0; //the picture in the tutorial
 	int m_helpTooltip = 0; //the text in the tutorial
 	float m_staminaTimer = 0.f; //timer for when you start getting stamina faster
+	int m_score = 0; //the player score at the end
 	bool startgame = false;
 	bool pause = false;
 };
