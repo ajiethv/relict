@@ -263,6 +263,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::AnimationBit();
 		ECS::SetUpIdentifier(player, bitHolder, "Main Character Sprite");
 	}
+
 	//Set up Death Screen(12)
 	{
 		//create entity
@@ -360,7 +361,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::SetUpIdentifier(collide, bitHolder, "red fade");
 	}
 
-	//set up wave counter sprite (12)
+	//set up wave counter sprite (17)
 	{
 		//create entity
 		auto wave = ECS::CreateEntity();
@@ -381,7 +382,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::SetUpIdentifier(wave, bitHolder, "Wave:");
 	}
 
-	//set up stamina border sprite (13)
+	//set up stamina border sprite (18)
 	{
 		//create entity
 		auto staminaBorder = ECS::CreateEntity();

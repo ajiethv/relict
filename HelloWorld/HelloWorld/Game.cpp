@@ -1973,7 +1973,7 @@ void Game::KeyboardHold()
 		ECS::GetComponent<Transform>(9).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - (((30.f * BackEnd::GetAspectRatio()) - (float(ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetStamina() * 3.f / 5.f) * BackEnd::GetAspectRatio())) / 2.f) - 30.f * BackEnd::GetAspectRatio() - ((BackEnd::GetAspectRatio() - 1) * 25), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 54.f, 90.f);
 		std::string fileName = "Stamina.png";
 		ECS::GetComponent<Sprite>(9).LoadSprite(fileName, (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetStamina() * 3.f / 5.f) * BackEnd::GetAspectRatio(), 6);
-		ECS::GetComponent<Transform>(13).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - 30.f * BackEnd::GetAspectRatio() - ((BackEnd::GetAspectRatio() - 1) * 25), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 54.f, 89.f);
+		ECS::GetComponent<Transform>(18).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - 30.f * BackEnd::GetAspectRatio() - ((BackEnd::GetAspectRatio() - 1) * 25), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 54.f, 89.f);
 
 		//show boss health
 		if (m_enemyHealth > 0) {
@@ -2010,7 +2010,7 @@ void Game::KeyboardHold()
 		for (int i = 6; i < 9; i++) {
 			ECS::GetComponent<Transform>(i).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (34.f * BackEnd::GetAspectRatio() + ((BackEnd::GetAspectRatio() - 1) * 25) + (8.f * (i - 6))), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 50.f, 90.f);
 		}
-		ECS::GetComponent<Transform>(12).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (-50.f * BackEnd::GetAspectRatio() - ((BackEnd::GetAspectRatio() - 1) * 10)), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 53.f, 90.f);
+		ECS::GetComponent<Transform>(17).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (-50.f * BackEnd::GetAspectRatio() - ((BackEnd::GetAspectRatio() - 1) * 10)), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 53.f, 90.f);
 		for (int i = 0; i < m_waveNumberSprite.size(); i++) {
 			ECS::GetComponent<Transform>(m_waveNumberSprite[i]).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (-40.f * BackEnd::GetAspectRatio() - ((BackEnd::GetAspectRatio() - 1) * 20) + (4 * i)), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 53.f, 90.f);
 		}
