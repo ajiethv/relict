@@ -59,7 +59,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 
 		//set components
 		ECS::GetComponent<Sprite>(player).LoadSprite(fileName, 6, 6);
-		ECS::GetComponent<Transform>(player).SetPosition(vec3(0.f, 0.f, 0.f));
+		ECS::GetComponent<Transform>(player).SetPosition(0.f, 0.f, 0.f);
 		ECS::GetComponent<Stats>(player).SetHealth(3.f);
 		ECS::GetComponent<Stats>(player).SetStamina(50.f);
 
@@ -79,7 +79,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 
 		//set components
 		ECS::GetComponent<Transform>(collide).SetScale(500, 500, 0);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, 0.f));
+		ECS::GetComponent<Transform>(collide).SetPosition(0.f, 0.f, 0.f);
 
 		//set map collision
 		unsigned int bitHolder = EntityIdentifier::TransformBit();
@@ -132,7 +132,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 
 		//set components
 		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 580, 580);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, 10.f));
+		ECS::GetComponent<Transform>(collide).SetPosition(0.f, 0.f, 10.f);
 
 		//set map
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -153,7 +153,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 
 		//set components
 		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200, 200);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, 0.f));
+		ECS::GetComponent<Transform>(collide).SetPosition(0.f, 0.f, 0.f);
 
 		//set pause
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -218,7 +218,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		
 		//set components
 		ECS::GetComponent<Sprite>(clouds).LoadSprite(fileName, 580, 580);
-		ECS::GetComponent<Transform>(clouds).SetPosition(vec3(0.f, 0.f, 80.f));
+		ECS::GetComponent<Transform>(clouds).SetPosition(0.f, 0.f, 80.f);
 
 		//set clouds
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -257,7 +257,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 
 		//set components
 		ECS::GetComponent<Sprite>(player).LoadSprite(fileName, 14, 14, true, &animController);
-		ECS::GetComponent<Transform>(player).SetPosition(vec3(0.f, 0.f, 55.f));
+		ECS::GetComponent<Transform>(player).SetPosition(0.f, 0.f, 55.f);
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::AnimationBit();
@@ -374,11 +374,32 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 
 		//set components
 		ECS::GetComponent<Sprite>(wave).LoadSprite(fileName, 14, 5);
-		ECS::GetComponent<Transform>(wave).SetPosition(vec3(-50.f * aspectRatio, 53.f, 90.f));
+		ECS::GetComponent<Transform>(wave).SetPosition(-50.f * aspectRatio, 53.f, 90.f);
 
 		//set clouds
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
 		ECS::SetUpIdentifier(wave, bitHolder, "Wave:");
+	}
+
+	//set up stamina border sprite (13)
+	{
+		//create entity
+		auto staminaBorder = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(staminaBorder);
+		ECS::AttachComponent<Transform>(staminaBorder);
+
+		//set files
+		std::string fileName = "barback.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(staminaBorder).LoadSprite(fileName, 32 * aspectRatio, 9);
+		ECS::GetComponent<Transform>(staminaBorder).SetPosition(-30.f * aspectRatio - ((BackEnd::GetAspectRatio() - 1) * 25), -54.f, 89.f);
+
+		//set clouds
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(staminaBorder, bitHolder, "Stamina border");
 	}
 
 	//set the camera to focus on the main player

@@ -8,7 +8,7 @@ bool Particle::Update(float dt)
 		m_particlePos = m_particlePos + (m_particleVelo * dt);
 		m_particleRotation = tan(m_particleVelo.y / m_particleVelo.x);
 
-		ECS::GetComponent<Transform>(m_particle).SetPosition(m_particlePos.x, m_particlePos.y, 100.f);
+		ECS::GetComponent<Transform>(m_particle).SetPosition(m_particlePos.x, m_particlePos.y, 90.f);
 		ECS::GetComponent<Transform>(m_particle).SetRotationAngleZ(m_particleRotation);
 
 		return true;

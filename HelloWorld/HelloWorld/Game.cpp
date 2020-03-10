@@ -104,7 +104,7 @@ bool Game::Run()
 
 				//set components
 				ECS::GetComponent<Sprite>(LoadScreen).LoadSprite(fileName, 120 * BackEnd::GetAspectRatio(), 120);
-				ECS::GetComponent<Transform>(LoadScreen).SetPosition(vec3(0.f, 0.f, 100.f));
+				ECS::GetComponent<Transform>(LoadScreen).SetPosition(0.f, 0.f, 100.f);
 
 				//set load screen
 				unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -126,7 +126,7 @@ bool Game::Run()
 
 				//set components
 				ECS::GetComponent<Sprite>(LoadBarEmpty).LoadSprite(fileName, 30, 50);
-				ECS::GetComponent<Transform>(LoadBarEmpty).SetPosition(vec3(0.f, -5.f, 99.f)); //top = 32, bottom = -5, 3.09 intervals
+				ECS::GetComponent<Transform>(LoadBarEmpty).SetPosition(0.f, -5.f, 99.f); //top = 32, bottom = -5, 3.09 intervals
 
 				//set empty load bar
 				unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -148,7 +148,7 @@ bool Game::Run()
 
 				//set components
 				ECS::GetComponent<Sprite>(LoadBar).LoadSprite(fileName, 120 * BackEnd::GetAspectRatio(), 120);
-				ECS::GetComponent<Transform>(LoadBar).SetPosition(vec3(0.f, 0.f, 98.f));
+				ECS::GetComponent<Transform>(LoadBar).SetPosition(0.f, 0.f, 98.f);
 
 				//set empty load bar
 				unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -378,7 +378,7 @@ bool Game::Run()
 
 					//set components
 					ECS::GetComponent<Sprite>(controls).LoadSprite(fileName, 50, 50);
-					ECS::GetComponent<Transform>(controls).SetPosition(vec3(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 50, 100.f));
+					ECS::GetComponent<Transform>(controls).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 50, 100.f);
 
 					//set tooltip
 					unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -398,7 +398,7 @@ bool Game::Run()
 
 					//set components
 					ECS::GetComponent<Sprite>(help).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 20);
-					ECS::GetComponent<Transform>(help).SetPosition(vec3(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 80, 100.f));
+					ECS::GetComponent<Transform>(help).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 80, 100.f);
 
 					//set tooltip
 					unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -445,7 +445,7 @@ bool Game::Run()
 
 				//Polls events and then checks them
 				BackEnd::PollEvents(m_register, &m_close, &m_motion, &m_click, &m_wheel);
-				ECS::GetComponent<Camera>(EntityIdentifier::MainCamera()).SetPosition(vec3(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() / BackEnd::GetAspectRatio(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY(), ECS::GetComponent<Camera>(EntityIdentifier::MainCamera()).GetPositionZ()));
+				ECS::GetComponent<Camera>(EntityIdentifier::MainCamera()).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() / BackEnd::GetAspectRatio(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY(), ECS::GetComponent<Camera>(EntityIdentifier::MainCamera()).GetPositionZ());
 				CheckEvents();
 
 				//does the window have keyboard focus?
@@ -478,7 +478,7 @@ bool Game::Run()
 				BackEnd::PollEvents(m_register, &m_close, &m_motion, &m_click, &m_wheel);
 				CheckEvents();
 
-				ECS::GetComponent<Camera>(EntityIdentifier::MainCamera()).SetPosition(vec3(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() / BackEnd::GetAspectRatio(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY(), ECS::GetComponent<Camera>(EntityIdentifier::MainCamera()).GetPositionZ()));
+				ECS::GetComponent<Camera>(EntityIdentifier::MainCamera()).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() / BackEnd::GetAspectRatio(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY(), ECS::GetComponent<Camera>(EntityIdentifier::MainCamera()).GetPositionZ());
 			}
 		}
 
@@ -664,7 +664,7 @@ void Game::Update()
 
 					//set components
 					ECS::GetComponent<Sprite>(number).LoadSprite(fileName, 3, 5, true, &animController);
-					ECS::GetComponent<Transform>(number).SetPosition(vec3(-40.f * BackEnd::GetAspectRatio() + ((BackEnd::GetAspectRatio() - 1) * 25) + (5 * m_waveNumberSprite.size()), 53.f, 90.f));
+					ECS::GetComponent<Transform>(number).SetPosition(-40.f * BackEnd::GetAspectRatio() + ((BackEnd::GetAspectRatio() - 1) * 25) + (5 * m_waveNumberSprite.size()), 53.f, 90.f);
 
 					//set number
 					unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::AnimationBit();
@@ -719,8 +719,8 @@ void Game::Update()
 
 			//move tutorial tooltips
 			if (m_tutorial && m_tooltip != 0) {
-				ECS::GetComponent<Transform>(m_tooltip).SetPosition(vec3(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 50, 100.5f));
-				if (m_helpTooltip > 0) ECS::GetComponent<Transform>(m_helpTooltip).SetPosition(vec3(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 80, 100.5f));
+				ECS::GetComponent<Transform>(m_tooltip).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 50, 100.5f);
+				if (m_helpTooltip > 0) ECS::GetComponent<Transform>(m_helpTooltip).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 80, 100.5f);
 			}
 
 			if (m_dodgeTimer <= 0.f && m_tutorial && m_helpTooltip == 0) {
@@ -914,7 +914,7 @@ void Game::Update()
 						std::string fileName = RedBulletSprite;
 
 						//set components
-						ECS::GetComponent<Transform>(bullet).SetPosition(vec3(ECS::GetComponent<Transform>(m_bullet[i]).GetPositionX(), ECS::GetComponent<Transform>(m_bullet[i]).GetPositionY(), 50.f));
+						ECS::GetComponent<Transform>(bullet).SetPosition(ECS::GetComponent<Transform>(m_bullet[i]).GetPositionX(), ECS::GetComponent<Transform>(m_bullet[i]).GetPositionY(), 50.f);
 						ECS::GetComponent<Bullet>(bullet).SetVelocity(vec2(cos((randAngle * PI / 360.f) + (j * PI / 10.f)), sin((randAngle * PI / 360.f) + (j * PI / 10.f))));
 						ECS::GetComponent<Bullet>(bullet).SetType(1);
 						if (rand() % 10 == 0) {
@@ -977,7 +977,7 @@ void Game::Update()
 
 					//set components
 					ECS::GetComponent<Sprite>(bullet).LoadSprite(fileName, m_offscreenBullet[i].GetScale().x, m_offscreenBullet[i].GetScale().y);
-					ECS::GetComponent<Transform>(bullet).SetPosition(vec3(bulletPos.x, bulletPos.y, 50.f));
+					ECS::GetComponent<Transform>(bullet).SetPosition(bulletPos.x, bulletPos.y, 50.f);
 					ECS::GetComponent<Bullet>(bullet).SetVelocity(m_offscreenBullet[i].GetVelocity());
 					ECS::GetComponent<Bullet>(bullet).SetReflected(m_offscreenBullet[i].GetReflected());
 					ECS::GetComponent<Bullet>(bullet).SetType(m_offscreenBullet[i].GetType());
@@ -1172,7 +1172,7 @@ void Game::Update()
 						std::string fileName = YellowBulletSprite;
 
 						//set components
-						ECS::GetComponent<Transform>(bullet).SetPosition(vec3(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY(), 50.f));
+						ECS::GetComponent<Transform>(bullet).SetPosition(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY(), 50.f);
 						ECS::GetComponent<Bullet>(bullet).SetVelocity(vec2(cos(ECS::GetComponent<Transform>(i).GetRotationAngleZ()), sin(ECS::GetComponent<Transform>(i).GetRotationAngleZ())));
 						ECS::GetComponent<Bullet>(bullet).SetType(2);
 						if (rand() % 3 == 0) {
@@ -1212,7 +1212,7 @@ void Game::Update()
 							std::string fileName = RedBulletSprite;
 
 							//set components
-							ECS::GetComponent<Transform>(bullet).SetPosition(vec3(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY(), 50.f));
+							ECS::GetComponent<Transform>(bullet).SetPosition(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY(), 50.f);
 							if (j % 2 == 0) {
 								ECS::GetComponent<Bullet>(bullet).SetVelocity(vec2(cos(j * PI / 4.f + m_bossBulletOffsetSpiral), sin(j * PI / 4.f + m_bossBulletOffsetSpiral)));
 							}
@@ -1258,7 +1258,7 @@ void Game::Update()
 							std::string fileName = RedBulletSprite;
 
 							//set components
-							ECS::GetComponent<Transform>(bullet).SetPosition(vec3(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY(), 50.f));
+							ECS::GetComponent<Transform>(bullet).SetPosition(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY(), 50.f);
 							ECS::GetComponent<Bullet>(bullet).SetVelocity(vec2(cos(j * PI / 20.f + m_bossBulletOffsetPulse), sin(j * PI / 20.f + m_bossBulletOffsetPulse)));
 							ECS::GetComponent<Bullet>(bullet).SetType(1);
 							if (rand() % 10 == 0) {
@@ -1296,7 +1296,7 @@ void Game::Update()
 
 						//set components
 						ECS::GetComponent<Sprite>(bullet).LoadSprite(RedBulletSprite, 15, 15);
-						ECS::GetComponent<Transform>(bullet).SetPosition(vec3(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY(), 50.f));
+						ECS::GetComponent<Transform>(bullet).SetPosition(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY(), 50.f);
 						ECS::GetComponent<Bullet>(bullet).SetVelocity(vec2(cos(ECS::GetComponent<Transform>(i).GetRotationAngleZ()), sin(ECS::GetComponent<Transform>(i).GetRotationAngleZ())));
 						ECS::GetComponent<Bullet>(bullet).SetType(1);
 						ECS::GetComponent<Bullet>(bullet).SetExtra(1);
@@ -1326,7 +1326,7 @@ void Game::Update()
 							std::string fileName = RedBulletSprite;
 
 							//set components
-							ECS::GetComponent<Transform>(bullet).SetPosition(vec3(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY(), 50.f));
+							ECS::GetComponent<Transform>(bullet).SetPosition(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY(), 50.f);
 							ECS::GetComponent<Bullet>(bullet).SetVelocity(vec2(cos(ECS::GetComponent<Transform>(i).GetRotationAngleZ() + float(rand() % 111 - 55) * PI / 180.f), sin(ECS::GetComponent<Transform>(i).GetRotationAngleZ() + float(rand() % 111 - 55) * PI / 180.f)));
 							ECS::GetComponent<Bullet>(bullet).SetType(1);
 							if (rand() % 3 == 0) {
@@ -1364,7 +1364,7 @@ void Game::Update()
 							std::string fileName = RedBulletSprite;
 
 							//set components
-							ECS::GetComponent<Transform>(bullet).SetPosition(vec3(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY(), 50.f));
+							ECS::GetComponent<Transform>(bullet).SetPosition(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY(), 50.f);
 							ECS::GetComponent<Bullet>(bullet).SetVelocity(vec2(cos(ECS::GetComponent<Transform>(i).GetRotationAngleZ() - 90 * PI / 180.f), sin(ECS::GetComponent<Transform>(i).GetRotationAngleZ() - 90 * PI / 180.f)));
 							ECS::GetComponent<Bullet>(bullet).SetExtra(2);
 							ECS::GetComponent<Bullet>(bullet).SetType(1);
@@ -1395,7 +1395,7 @@ void Game::Update()
 							std::string fileName = RedBulletSprite;
 
 							//set components
-							ECS::GetComponent<Transform>(bullet).SetPosition(vec3(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY(), 50.f));
+							ECS::GetComponent<Transform>(bullet).SetPosition(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY(), 50.f);
 							ECS::GetComponent<Bullet>(bullet).SetVelocity(vec2(cos(ECS::GetComponent<Transform>(i).GetRotationAngleZ() + 90 * PI / 180.f), sin(ECS::GetComponent<Transform>(i).GetRotationAngleZ() + 90 * PI / 180.f)));
 							ECS::GetComponent<Bullet>(bullet).SetExtra(2);
 							ECS::GetComponent<Bullet>(bullet).SetType(1);
@@ -1433,7 +1433,7 @@ void Game::Update()
 								std::string fileName = RedBulletSprite;
 
 								//set components
-								ECS::GetComponent<Transform>(bullet).SetPosition(vec3(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY(), 50.f));
+								ECS::GetComponent<Transform>(bullet).SetPosition(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY(), 50.f);
 								ECS::GetComponent<Bullet>(bullet).SetVelocity(vec2(cos(j * PI / 40.f), sin(j * PI / 40.f)));
 								ECS::GetComponent<Bullet>(bullet).SetType(1);
 								if (rand() % 10 == 0) {
@@ -1465,7 +1465,7 @@ void Game::Update()
 
 								//set components
 								ECS::GetComponent<Sprite>(bullet).LoadSprite(RedBulletSpriteBig, 4, 4);
-								ECS::GetComponent<Transform>(bullet).SetPosition(vec3(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY(), 50.f));
+								ECS::GetComponent<Transform>(bullet).SetPosition(ECS::GetComponent<Transform>(i).GetPositionX(), ECS::GetComponent<Transform>(i).GetPositionY(), 50.f);
 								ECS::GetComponent<Bullet>(bullet).SetVelocity(vec2(cos(j * PI / 2.f + m_bossBulletOffsetBig), sin(j * PI / 2.f + m_bossBulletOffsetBig)));
 								ECS::GetComponent<Bullet>(bullet).SetExtra(3);
 								ECS::GetComponent<Bullet>(bullet).SetType(1);
@@ -1738,11 +1738,11 @@ void Game::Update()
 					ECS::AttachComponent<Transform>(bossHealthBorder);
 
 					//set files
-					std::string fileName = "HealthBorder.png";
+					std::string fileName = "barback.png";
 
 					//set components
-					ECS::GetComponent<Sprite>(bossHealthBorder).LoadSprite(fileName, 111 * BackEnd::GetAspectRatio(), 11);
-					ECS::GetComponent<Transform>(bossHealthBorder).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 50.f, 100.5f);
+					ECS::GetComponent<Sprite>(bossHealthBorder).LoadSprite(fileName, 32 * BackEnd::GetAspectRatio(), 9);
+					ECS::GetComponent<Transform>(bossHealthBorder).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + 45.f * BackEnd::GetAspectRatio() + ((BackEnd::GetAspectRatio() - 1) * 25), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 50.f, 100.5f);
 
 					//set up identifier
 					unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit() | EntityIdentifier::EnemyBit();
@@ -1908,11 +1908,15 @@ void Game::KeyboardHold()
 			vec2 newPosition = vec2(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY());
 
 			//change the animation
-			if (Input::GetKey(Key::A) && (ECS::GetComponent<AnimationController>(11).GetActiveAnim() == 1 || ECS::GetComponent<AnimationController>(11).GetActiveAnim() % 4 == 0)) {
-				ECS::GetComponent<AnimationController>(11).SetActiveAnim(5);
+			if (Input::GetKey(Key::A)) {
+				if (ECS::GetComponent<AnimationController>(11).GetActiveAnim() == 1 || ECS::GetComponent<AnimationController>(11).GetActiveAnim() % 4 == 0) {
+					ECS::GetComponent<AnimationController>(11).SetActiveAnim(5);
+				}
 			}
-			else if (Input::GetKey(Key::D) && (ECS::GetComponent<AnimationController>(11).GetActiveAnim() == 5 || ECS::GetComponent<AnimationController>(11).GetActiveAnim() % 4 == 0)) {
-				ECS::GetComponent<AnimationController>(11).SetActiveAnim(1);
+			else if (Input::GetKey(Key::D)) {
+				if (ECS::GetComponent<AnimationController>(11).GetActiveAnim() == 5 || ECS::GetComponent<AnimationController>(11).GetActiveAnim() % 4 == 0) {
+					ECS::GetComponent<AnimationController>(11).SetActiveAnim(1);
+				}
 			}
 			else if ((Input::GetKey(Key::W) || Input::GetKey(Key::S)) && ECS::GetComponent<AnimationController>(11).GetActiveAnim() % 4 == 0) {
 				ECS::GetComponent<AnimationController>(11).SetActiveAnim(ECS::GetComponent<AnimationController>(11).GetActiveAnim() + 1);
@@ -1947,8 +1951,8 @@ void Game::KeyboardHold()
 
 			//move tooltips
 			if (m_tutorial && m_tooltip != 0) {
-				ECS::GetComponent<Transform>(m_tooltip).SetPosition(vec3(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 50, 100.5f));
-				if (m_helpTooltip > 0) ECS::GetComponent<Transform>(m_helpTooltip).SetPosition(vec3(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 80, 100.5f));
+				ECS::GetComponent<Transform>(m_tooltip).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 50, 100.5f);
+				if (m_helpTooltip > 0) ECS::GetComponent<Transform>(m_helpTooltip).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 80, 100.5f);
 			}
 
 			//get less stamina
@@ -1966,16 +1970,17 @@ void Game::KeyboardHold()
 		staminaIncrease = (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetStamina() < 50.f) ? ((m_dodgeTimer <= 0) ? staminaIncrease : 0.f) : 0.f;
 		//increase the stamina
 		ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetStamina(ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetStamina() + staminaIncrease);
-		ECS::GetComponent<Transform>(9).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - float(int(10 - (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetStamina() / 5))) / 2.f, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 9.f, (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetStamina() < 50.f) ? 90.f : 0.f);
+		ECS::GetComponent<Transform>(9).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - (((30.f * BackEnd::GetAspectRatio()) - (float(ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetStamina() * 3.f / 5.f) * BackEnd::GetAspectRatio())) / 2.f) - 30.f * BackEnd::GetAspectRatio() - ((BackEnd::GetAspectRatio() - 1) * 25), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 54.f, 90.f);
 		std::string fileName = "Stamina.png";
-		ECS::GetComponent<Sprite>(9).LoadSprite(fileName, ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetStamina() / 5, 2);
+		ECS::GetComponent<Sprite>(9).LoadSprite(fileName, (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetStamina() * 3.f / 5.f) * BackEnd::GetAspectRatio(), 6);
+		ECS::GetComponent<Transform>(13).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - 30.f * BackEnd::GetAspectRatio() - ((BackEnd::GetAspectRatio() - 1) * 25), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 54.f, 89.f);
 
 		//show boss health
 		if (m_enemyHealth > 0) {
-			ECS::GetComponent<Transform>(m_enemyHealth).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - float(int(110 * BackEnd::GetAspectRatio() - ((ECS::GetComponent<Enemy>(m_enemy[0]).GetHealth() * 11) * BackEnd::GetAspectRatio()))) / 2.f, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 54.f, 91.f);
+			ECS::GetComponent<Transform>(m_enemyHealth).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - (((30.f * BackEnd::GetAspectRatio()) - (float(ECS::GetComponent<Enemy>(m_enemy[0]).GetHealth()) * 3.f * BackEnd::GetAspectRatio())) / 2.f) + 30.f * BackEnd::GetAspectRatio() + ((BackEnd::GetAspectRatio() - 1) * 25), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 54.f, 90.f);
 			fileName = "Health.png";
-			ECS::GetComponent<Sprite>(m_enemyHealth).LoadSprite(fileName, (ECS::GetComponent<Enemy>(m_enemy[0]).GetHealth() * 11) * BackEnd::GetAspectRatio(), 10);
-			ECS::GetComponent<Transform>(m_enemyHealthBorder).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 54.f, 90.f);
+			ECS::GetComponent<Sprite>(m_enemyHealth).LoadSprite(fileName, (ECS::GetComponent<Enemy>(m_enemy[0]).GetHealth() * 3) * BackEnd::GetAspectRatio(), 6);
+			ECS::GetComponent<Transform>(m_enemyHealthBorder).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + 30.f * BackEnd::GetAspectRatio() + ((BackEnd::GetAspectRatio() - 1) * 25), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 54.f, 89.f);
 		}
 
 		//rotate enemies
