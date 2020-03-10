@@ -175,7 +175,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<Transform>(collide);
 
 		//set file
-		std::string fileName = "quitred.png";
+		std::string fileName = "tutorialcheck.png";
 
 		//set components
 		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 75, 25);
@@ -183,6 +183,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
-		ECS::SetUpIdentifier(collide, bitHolder, "redquit");
+		ECS::SetUpIdentifier(collide, bitHolder, "check");
 	}
+
 }
