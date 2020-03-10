@@ -1610,7 +1610,7 @@ void Game::Update()
 			float multiplier;
 			multiplier = (abs(tipDirection.x / BackEnd::GetAspectRatio()) > abs(tipDirection.y)) ? 50 * BackEnd::GetAspectRatio() / abs(tipDirection.x) : 50 / abs(tipDirection.y);
 			vec2 tipPos = vec2(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (tipDirection.x * multiplier), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + (tipDirection.y * multiplier));
-			ECS::GetComponent<Transform>(m_offscreenEnemyPos[i]).SetPosition(tipPos.x, tipPos.y, 40.f);
+			ECS::GetComponent<Transform>(m_offscreenEnemyPos[i]).SetPosition(tipPos.x, tipPos.y, 91.f);
 
 			//set the rotation of the tip
 			tipPos = vec2(tipPos.x - ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), tipPos.y - ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY());
@@ -1960,7 +1960,7 @@ void Game::KeyboardHold()
 				staminaIncrease = 0.1f;
 			}
 		}
-		
+
 		//set to an idle animation if you arent moving
 		if (!(Input::GetKey(Key::W) || Input::GetKey(Key::A) || Input::GetKey(Key::S) || Input::GetKey(Key::D)) && ECS::GetComponent<AnimationController>(11).GetActiveAnim() % 4 == 1) {
 			ECS::GetComponent<AnimationController>(11).SetActiveAnim(ECS::GetComponent<AnimationController>(11).GetActiveAnim() - 1);
@@ -2013,6 +2013,33 @@ void Game::KeyboardHold()
 		ECS::GetComponent<Transform>(17).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (-50.f * BackEnd::GetAspectRatio() - ((BackEnd::GetAspectRatio() - 1) * 10)), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 53.f, 90.f);
 		for (int i = 0; i < m_waveNumberSprite.size(); i++) {
 			ECS::GetComponent<Transform>(m_waveNumberSprite[i]).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (-40.f * BackEnd::GetAspectRatio() - ((BackEnd::GetAspectRatio() - 1) * 20) + (4 * i)), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 53.f, 90.f);
+		}
+
+		//for each enemy that is offscreen
+		for (int i = 0; i < m_offscreenEnemy.size(); i++) {
+			//set the position of the tip
+			vec2 tipDirection = vec2(ECS::GetComponent<Transform>(m_offscreenEnemy[i]).GetPositionX() - ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(m_offscreenEnemy[i]).GetPositionY() - ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY()).Normalize();
+			float multiplier;
+			multiplier = (abs(tipDirection.x / BackEnd::GetAspectRatio()) > abs(tipDirection.y)) ? 50 * BackEnd::GetAspectRatio() / abs(tipDirection.x) : 50 / abs(tipDirection.y);
+			vec2 tipPos = vec2(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (tipDirection.x * multiplier), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + (tipDirection.y * multiplier));
+			ECS::GetComponent<Transform>(m_offscreenEnemyPos[i]).SetPosition(tipPos.x, tipPos.y, 91.f);
+
+			//set the rotation of the tip
+			tipPos = vec2(tipPos.x - ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), tipPos.y - ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY());
+			float angle = 0;
+			if (tipPos.x <= 0.f && tipPos.y >= 0.f) {
+				angle = abs(atan(tipPos.x / tipPos.y) * (180.f / PI)) + 90.f;
+			}
+			else if (tipPos.x > 0.f && tipPos.y >= 0.f) {
+				angle = atan(tipPos.y / tipPos.x) * (180.f / PI);
+			}
+			else if (tipPos.x >= 0.f && tipPos.y < 0.f) {
+				angle = abs(atan(tipPos.x / tipPos.y) * (180.f / PI)) + 270.f;
+			}
+			else {
+				angle = atan(tipPos.y / tipPos.x) * (180.f / PI) + 180.f;
+			}
+			ECS::GetComponent<Transform>(m_offscreenEnemyPos[i]).SetRotationAngleZ(angle * (PI / 180.f));
 		}
 	}
 }
@@ -2092,7 +2119,7 @@ void Game::KeyboardUp()
 void Game::MouseMotion(SDL_MouseMotionEvent evnt)
 {
 	if (m_activeScene == m_scenes[0]) {
-		vec2 mousePos = vec2((BackEnd::GetWindowWidth() / 2.f) - evnt.x, (BackEnd::GetWindowHeight() / 2.f) - evnt.y);
+		vec2 mousePos = vec2(((BackEnd::GetWindowWidth() / 2.f) - evnt.x) / (float(BackEnd::GetWindowWidth()) / 1536.f), ((BackEnd::GetWindowHeight() / 2.f) - evnt.y) / (float(BackEnd::GetWindowHeight()) / 864.f));
 		std::cout<< mousePos.x<<"|"<<mousePos.y << std::endl;
 		
 		if((mousePos.x<246&&mousePos.x>-297)&&(mousePos.y<48&&mousePos.y>-32)) {
@@ -2115,7 +2142,7 @@ void Game::MouseMotion(SDL_MouseMotionEvent evnt)
 	//}
 	else {
 		//Rotate player
-		vec2 mousePos = vec2((BackEnd::GetWindowWidth() / 2.f) - evnt.x, (BackEnd::GetWindowHeight() / 2.f) - evnt.y);
+		vec2 mousePos = vec2(((BackEnd::GetWindowWidth() / 2.f) - evnt.x) / (float(BackEnd::GetWindowWidth()) / 1536.f), ((BackEnd::GetWindowHeight() / 2.f) - evnt.y) / (float(BackEnd::GetWindowHeight()) / 864.f));
 		float angle;
 		if (mousePos.x <= 0.f && mousePos.y >= 0.f) {
 			angle = abs(atan(float(mousePos.y) / float(mousePos.x)) * (180.f / PI));

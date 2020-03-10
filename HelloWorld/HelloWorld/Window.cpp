@@ -7,6 +7,9 @@ Window::Window(const std::string title, int windowWidth, int windowHeight, bool 
 
 	//Create the window
 	m_window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowWidth, windowHeight, SDL_WINDOW_OPENGL);
+	//set fullscreen
+	SDL_SetWindowFullscreen(m_window, SDL_WINDOW_FULLSCREEN);
+
 	//change to 20% zoom
 	//clear = 0000, black = F444, red = FF10
 	Uint16 pixels[54 * 54] = {

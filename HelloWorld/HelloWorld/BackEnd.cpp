@@ -28,7 +28,7 @@ void BackEnd::InitBackEnd(std::string name)
 {
 	//Initializes SDL
 	InitSDL();
-
+	//1536 864
 	//Sets the backend window width, height, and aspect ratio
 	GetDesktopResolution(m_windowWidth, m_windowHeight);
 	m_aspectRatio = float(m_windowWidth) / float(m_windowHeight);

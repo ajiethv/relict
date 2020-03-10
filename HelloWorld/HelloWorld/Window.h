@@ -56,6 +56,8 @@ private:
 	bool m_open = false;
 	//Is the window fullscreen?
 	Uint32 m_fullscreen;
+	//better is the window fullscreen
+	bool m_isFullscreen = true;
 };
 
 #endif
