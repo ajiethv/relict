@@ -99,6 +99,7 @@ private:
 	std::vector<unsigned int> m_offscreenEnemy; //all the offscreen enemies
 	std::vector<unsigned int> m_offscreenEnemyPos; //all the offscreen enemy tips
 	std::vector<unsigned int> m_waveNumberSprite; //the sprite id for the ewave numbers
+	std::vector<unsigned int> m_enemySprite;
 	int m_spawnPoint[8]; //who the spawn point is taken by
 	int m_spawnTimer = 0; //the delay between spawning enemies
 	int m_waveNum = 0; //the current wave

@@ -491,7 +491,7 @@ bool Game::Run()
 			//death screen
 			ECS::GetComponent<Transform>(11).SetPosition(0, -8, -100.f);
 			ECS::GetComponent<Transform>(12).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY(), 100.f);
-			vec2 mousePos = vec2((BackEnd::GetWindowWidth() / 2.f) - BackEnd::GetMotionEvent().x, (BackEnd::GetWindowHeight() / 2.f) - BackEnd::GetMotionEvent().y);
+			vec2 mousePos = vec2(((BackEnd::GetWindowWidth() / 2.f) - BackEnd::GetMotionEvent().x) / (float(BackEnd::GetWindowWidth()) / 1536.f), ((BackEnd::GetWindowHeight() / 2.f) - BackEnd::GetMotionEvent().y) / (float(BackEnd::GetWindowHeight()) / 864.f));
 
 			std::cout << mousePos.x << "|" << mousePos.y << std::endl;
 			if ((mousePos.x < 599 && mousePos.x>349) && (mousePos.y<-131 && mousePos.y>-296)) {//continue message
@@ -534,6 +534,7 @@ bool Game::Run()
 					&&((mousePos.x < 599 && mousePos.x>349) && (mousePos.y<-131 && mousePos.y>-296)))) {
 					//reset everything
 					ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetHealth(3.f);
+					ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetStamina(50.f);
 					fileName = "Heart.png";
 					for (int i = 6; i < 9; i++) {
 						ECS::GetComponent<Sprite>(i).LoadSprite(fileName, 10, 10);
@@ -1143,6 +1144,10 @@ void Game::Update()
 					count++;
 					if (i == j) {
 						m_enemy.erase(m_enemy.begin() + count);
+						ECS::DestroyEntity(m_enemySprite[count * 2]);
+						m_enemySprite.erase(m_enemySprite.begin() + (count * 2));
+						ECS::DestroyEntity(m_enemySprite[count * 2]);
+						m_enemySprite.erase(m_enemySprite.begin() + (count * 2));
 						break;
 					}
 				}
@@ -1653,25 +1658,90 @@ void Game::Update()
 						auto enemy = ECS::CreateEntity();
 
 						//attach the components
-						ECS::AttachComponent<Sprite>(enemy);
 						ECS::AttachComponent<Transform>(enemy);
 						ECS::AttachComponent<Enemy>(enemy);
 
-						//set files
-						std::string fileName = "temp3.png";
-
 						//set components
-						ECS::GetComponent<Sprite>(enemy).LoadSprite(fileName, 10, 10);
 						ECS::GetComponent<Transform>(enemy).SetPosition((ECS::GetComponent<Transform>(2).GetScale().x / 2.f - 25.f) * cos((spawn * 45) * (PI / 180.f)), (ECS::GetComponent<Transform>(2).GetScale().x / 2.f - 25.f) * sin((spawn * 45) * (PI / 180.f)), 50.f);
+						ECS::GetComponent<Transform>(enemy).SetScale(10, 10, 0);
 						ECS::GetComponent<Enemy>(enemy).SetType(1);
 
 						//set up identifier
-						unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit() | EntityIdentifier::EnemyBit();
+						unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::EnemyBit();
 						ECS::SetUpIdentifier(enemy, bitHolder, "enemy");
 
 						//add to enemy vector
 						m_enemy.push_back(enemy);
 						m_spawnPoint[spawn] = enemy;
+					}
+					{
+						//set animation file
+						auto animations = File::LoadJSON("Gunner.json");
+
+						//create entity
+						auto enemy1 = ECS::CreateEntity();
+
+						//attach components
+						ECS::AttachComponent<Sprite>(enemy1);
+						ECS::AttachComponent<Transform>(enemy1);
+						ECS::AttachComponent<AnimationController>(enemy1);
+
+						//set files
+						std::string fileName = "Gunner.png";
+						auto& animController = ECS::GetComponent<AnimationController>(enemy1);
+						animController.InitUVs(fileName);
+
+						//set animations
+						animController.AddAnimation(animations["Right"]);	//Animation 0
+						animController.AddAnimation(animations["Left"]);	//Animation 1
+
+						animController.SetActiveAnim(0);
+
+						//set components
+						ECS::GetComponent<Sprite>(enemy1).LoadSprite(fileName, 14, 14, true, &animController);
+						ECS::GetComponent<Transform>(enemy1).SetPosition(ECS::GetComponent<Transform>(m_enemy[m_enemy.size() - 1]).GetPosition());
+						ECS::GetComponent<Transform>(enemy1).SetPositionZ(ECS::GetComponent<Transform>(enemy1).GetPositionZ() - 1.f);
+
+						//set player
+						unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::AnimationBit();
+						ECS::SetUpIdentifier(enemy1, bitHolder, "Enemy Sprite");
+
+						//add to vector
+						m_enemySprite.push_back(enemy1);
+					}
+					{
+						//set animation file
+						auto animations = File::LoadJSON("Gunner.json");
+
+						//create entity
+						auto enemy2 = ECS::CreateEntity();
+
+						//attach components
+						ECS::AttachComponent<Sprite>(enemy2);
+						ECS::AttachComponent<Transform>(enemy2);
+						ECS::AttachComponent<AnimationController>(enemy2);
+
+						//set files
+						std::string fileName = "GunnerArm.png";
+						auto& animController = ECS::GetComponent<AnimationController>(enemy2);
+						animController.InitUVs(fileName);
+
+						//set animations
+						animController.AddAnimation(animations["Right"]);	//Animation 0
+						animController.AddAnimation(animations["Left"]);	//Animation 1
+
+						animController.SetActiveAnim(0);
+
+						//set components
+						ECS::GetComponent<Sprite>(enemy2).LoadSprite(fileName, 14, 14, true, &animController);
+						ECS::GetComponent<Transform>(enemy2).SetPosition(ECS::GetComponent<Transform>(m_enemy[m_enemy.size() - 1]).GetPositionX() - 1.2f, ECS::GetComponent<Transform>(m_enemy[m_enemy.size() - 1]).GetPositionY() + 2.f, ECS::GetComponent<Transform>(m_enemy[m_enemy.size() - 1]).GetPositionZ());
+
+						//set player
+						unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::AnimationBit();
+						ECS::SetUpIdentifier(enemy2, bitHolder, "Enemy Sprite");
+
+						//add to vector
+						m_enemySprite.push_back(enemy2);
 					}
 					m_enemyNum--;
 					m_spawnTimer = 100;
@@ -2015,6 +2085,42 @@ void Game::KeyboardHold()
 			ECS::GetComponent<Transform>(m_waveNumberSprite[i]).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (-40.f * BackEnd::GetAspectRatio() - ((BackEnd::GetAspectRatio() - 1) * 20) + (4 * i)), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 53.f, 90.f);
 		}
 
+		//change enemy sprite
+		for (int i = 0; i < m_enemySprite.size(); i += 2) {
+			float angle = 0;
+			vec2 playerPos = vec2(ECS::GetComponent<Transform>(m_enemySprite[i]).GetPositionX() - ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - ECS::GetComponent<Transform>(m_enemySprite[i]).GetPositionY());
+			
+			//rotate
+			if (playerPos.x <= 0.f && playerPos.y >= 0.f) {
+				angle = abs(atan(playerPos.y / playerPos.x) * (180.f / PI));
+			}
+			else if (playerPos.x > 0.f && playerPos.y >= 0.f) {
+				angle = atan(playerPos.x / playerPos.y) * (180.f / PI) + 90.f;
+			}
+			else if (playerPos.x >= 0.f && playerPos.y < 0.f) {
+				angle = abs(atan(playerPos.y / playerPos.x) * (180.f / PI)) + 180.f;
+			}
+			else {
+				angle = atan(playerPos.x / playerPos.y) * (180.f / PI) + 270.f;
+			}
+			ECS::GetComponent<Transform>(m_enemySprite[i + 1]).SetRotationAngleZ(angle * (PI / 180.f));
+
+			//flip
+			if (playerPos.x >= 0 && ECS::GetComponent<AnimationController>(m_enemySprite[i]).GetActiveAnim() == 0) {
+				ECS::GetComponent<Transform>(m_enemySprite[i]).SetPositionX(ECS::GetComponent<Transform>(m_enemySprite[i]).GetPositionX() - 2.4f);
+				ECS::GetComponent<AnimationController>(m_enemySprite[i]).SetActiveAnim(1);
+				ECS::GetComponent<AnimationController>(m_enemySprite[i + 1]).SetActiveAnim(1);
+			}
+			else if (playerPos.x < 0 && ECS::GetComponent<AnimationController>(m_enemySprite[i]).GetActiveAnim() == 1) {
+				ECS::GetComponent<Transform>(m_enemySprite[i]).SetPositionX(ECS::GetComponent<Transform>(m_enemySprite[i]).GetPositionX() + 2.4f);
+				ECS::GetComponent<AnimationController>(m_enemySprite[i]).SetActiveAnim(0);
+				ECS::GetComponent<AnimationController>(m_enemySprite[i + 1]).SetActiveAnim(0);
+			}
+			if (ECS::GetComponent<AnimationController>(m_enemySprite[i]).GetActiveAnim() == 1) {
+				ECS::GetComponent<Transform>(m_enemySprite[i + 1]).SetRotationAngleZ((angle + 180.f)* (PI / 180.f));
+			}
+		}
+
 		//for each enemy that is offscreen
 		for (int i = 0; i < m_offscreenEnemy.size(); i++) {
 			//set the position of the tip
@@ -2137,9 +2243,6 @@ void Game::MouseMotion(SDL_MouseMotionEvent evnt)
 
 
 	}
-	//else if (m_activeScene == m_scenes[1] && ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() <= 0) {
-	
-	//}
 	else {
 		//Rotate player
 		vec2 mousePos = vec2(((BackEnd::GetWindowWidth() / 2.f) - evnt.x) / (float(BackEnd::GetWindowWidth()) / 1536.f), ((BackEnd::GetWindowHeight() / 2.f) - evnt.y) / (float(BackEnd::GetWindowHeight()) / 864.f));
@@ -2180,7 +2283,7 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 	else {
 		if (m_activeScene == m_scenes[0]) {
 			if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {//advance to loading screen
-				vec2 mousePos = vec2((BackEnd::GetWindowWidth() / 2.f) - evnt.x, (BackEnd::GetWindowHeight() / 2.f) - evnt.y);
+				vec2 mousePos = vec2(((BackEnd::GetWindowWidth() / 2.f) - evnt.x) / (float(BackEnd::GetWindowWidth()) / 1536.f), ((BackEnd::GetWindowHeight() / 2.f) - evnt.y) / (float(BackEnd::GetWindowHeight()) / 864.f));
 				if ((mousePos.x<246 && mousePos.x>-297) && (mousePos.y<48 && mousePos.y>-32)) {
 					for (int i = 0; i < 3; i++) {
 						ECS::GetComponent<Transform>(i + 1).SetPositionZ(0);

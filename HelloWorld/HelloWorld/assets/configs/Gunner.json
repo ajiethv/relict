@@ -1,0 +1,14 @@
+{
+  "Left": {
+    "Frame0": [ 64.0, 64.0, 1.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": false,
+    "SecsPerFrame": 9.999999747378752e-05
+  },
+  "Right": {
+    "Frame0": [ 1.0, 64.0, 64.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": false,
+    "SecsPerFrame": 9.999999747378752e-05
+  }
+}
