@@ -2,6 +2,7 @@
 
 #include <random>
 #include <conio.h>
+#pragma comment(lib, "winmm.lib")
 
 std::string RedBulletSprite = "RedBullet.png", YellowBulletSprite = "OrangeBullet.png", GreenBulletSprite = "GreenBullet.png", GreenBulletSpriteRef = "WhiteBullet.png", RedBulletSpriteBig = "RedBullet2.png";
 std::vector<Particle> particle;
@@ -51,6 +52,8 @@ void Game::InitGame()
 
 bool Game::Run()
 {
+	mciSendString("open assets\\music\\gamemusic.mp3 type mpegvideo alias music", NULL, 0, 0);
+	mciSendString("play music repeat", NULL, 0, 0);
 
 	std::string fileName;
 	//while window is still open
@@ -88,6 +91,9 @@ bool Game::Run()
 
 		//Load everything
 		if (m_window->isOpen() && m_activeScene == m_scenes[1] && m_initialStartup) {
+			//overlap music //overlap sound
+			//mciSendString("open assets\\music\\gotem.mp3 type mpegvideo alias musicAgain", NULL, 0, 0);
+			//mciSendString("play musicAgain repeat", NULL, 0, 0);
 			int LScreen, LBarEmpty, LBar;
 
 			//set up the load screen
@@ -238,7 +244,7 @@ bool Game::Run()
 			BackEnd::Draw(m_register);
 			//Flips the windows
 			m_window->Flip();
-			fileName = "HealthBorder.png";
+			fileName = "barback.png";
 			ECS::GetComponent<Sprite>(EntityIdentifier::MainPlayer()).LoadSprite(fileName, 6, 6);
 			ECS::GetComponent<Transform>(LBarEmpty).SetPositionY(ECS::GetComponent<Transform>(LBarEmpty).GetPositionY() + 3.09f);
 			//Update the backend
@@ -454,6 +460,49 @@ bool Game::Run()
 					ECS::SetUpIdentifier(help, bitHolder, "tooltip");
 					m_helpTooltip = help;
 				}
+				//create a new sprite entity
+				{
+					//set animation file
+					auto animations = File::LoadJSON("Number.json");
+
+					//create entity
+					auto number = ECS::CreateEntity();
+
+					//attach components
+					ECS::AttachComponent<Sprite>(number);
+					ECS::AttachComponent<Transform>(number);
+					ECS::AttachComponent<AnimationController>(number);
+
+					//set files
+					std::string fileName = "Number.png";
+					auto& animController = ECS::GetComponent<AnimationController>(number);
+					animController.InitUVs(fileName);
+
+					//set animations
+					animController.AddAnimation(animations["0"]);
+					animController.AddAnimation(animations["1"]);
+					animController.AddAnimation(animations["2"]);
+					animController.AddAnimation(animations["3"]);
+					animController.AddAnimation(animations["4"]);
+					animController.AddAnimation(animations["5"]);
+					animController.AddAnimation(animations["6"]);
+					animController.AddAnimation(animations["7"]);
+					animController.AddAnimation(animations["8"]);
+					animController.AddAnimation(animations["9"]);
+
+					animController.SetActiveAnim(0);
+
+					//set components
+					ECS::GetComponent<Sprite>(number).LoadSprite(fileName, 3, 5, true, &animController);
+					ECS::GetComponent<Transform>(number).SetPosition(-40.f * BackEnd::GetAspectRatio() + ((BackEnd::GetAspectRatio() - 1) * 25) + (5 * m_waveNumberSprite.size()), 53.f, 90.f);
+
+					//set number
+					unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::AnimationBit();
+					ECS::SetUpIdentifier(number, bitHolder, "Wave Number");
+
+					m_waveNumberSprite.push_back(number);
+				}
+
 				//set the camera to focus on the main player
 				ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
 				ECS::GetComponent<VerticalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
@@ -464,6 +513,7 @@ bool Game::Run()
 			Timer::Reset();
 		}
 
+		//run the game
 		while (m_window->isOpen() && ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() > 0)
 		{
 			//Update timer
