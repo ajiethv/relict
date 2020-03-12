@@ -2228,13 +2228,13 @@ void Game::MouseMotion(SDL_MouseMotionEvent evnt)
 		vec2 mousePos = vec2(((BackEnd::GetWindowWidth() / 2.f) - evnt.x) / (float(BackEnd::GetWindowWidth()) / 1536.f), ((BackEnd::GetWindowHeight() / 2.f) - evnt.y) / (float(BackEnd::GetWindowHeight()) / 864.f));
 		std::cout<< mousePos.x<<"|"<<mousePos.y << std::endl;
 		
-		if((mousePos.x<246&&mousePos.x>-297)&&(mousePos.y<48&&mousePos.y>-32)) {
+		if((mousePos.x<250&&mousePos.x>-297)&&(mousePos.y<48&&mousePos.y>-40)) {
 			ECS::GetComponent<Transform>(3).SetPosition(vec3(4.f, 0.f, 101.f));
 		}
 		else {
 			ECS::GetComponent<Transform>(3).SetPosition(vec3(4.f, 0.f, 100.f));
 		}
-		if ((mousePos.x<157 && mousePos.x>-126) && (mousePos.y<-345 && mousePos.y>-393)) {
+		if ((mousePos.x<164 && mousePos.x>-131) && (mousePos.y<-345 && mousePos.y>-393)) {
 			ECS::GetComponent<Transform>(6).SetPosition(vec3(0.f, -85.f, 101.f));
 		}
 		else {
@@ -2284,7 +2284,7 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 		if (m_activeScene == m_scenes[0]) {
 			if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {//advance to loading screen
 				vec2 mousePos = vec2(((BackEnd::GetWindowWidth() / 2.f) - evnt.x) / (float(BackEnd::GetWindowWidth()) / 1536.f), ((BackEnd::GetWindowHeight() / 2.f) - evnt.y) / (float(BackEnd::GetWindowHeight()) / 864.f));
-				if ((mousePos.x<246 && mousePos.x>-297) && (mousePos.y<48 && mousePos.y>-32)) {
+				if ((mousePos.x<250 && mousePos.x>-297) && (mousePos.y<48 && mousePos.y>-40)) {
 					for (int i = 0; i < 3; i++) {
 						ECS::GetComponent<Transform>(i + 1).SetPositionZ(0);
 					}
@@ -2303,7 +2303,7 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 					m_activeScene->InitScene(float(BackEnd::GetWindowWidth()), float(BackEnd::GetWindowHeight()));
 					m_register = m_activeScene->GetScene();
 				}
-				if ((mousePos.x<85 && mousePos.x>-131) && (mousePos.y<-48 && mousePos.y>-76)) {
+				if ((mousePos.x<85 && mousePos.x>-131) && (mousePos.y<-48 && mousePos.y>-78)) {
 					m_tutorial=!m_tutorial;
 					if (m_tutorial) {
 						ECS::GetComponent<Transform>(8).SetPositionZ(100.f);
@@ -2314,7 +2314,7 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 						ECS::GetComponent<Transform>(8).SetPositionZ(-100.f);
 					}
 				}
-				if ((mousePos.x<157 && mousePos.x>-126) && (mousePos.y<-345 && mousePos.y>-393)) {
+				if ((mousePos.x<164 && mousePos.x>-131) && (mousePos.y<-345 && mousePos.y>-393)) {
 					m_window->Close();
 				}
 			}
