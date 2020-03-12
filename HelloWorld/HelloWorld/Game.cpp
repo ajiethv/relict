@@ -324,46 +324,95 @@ bool Game::Run()
 		//start tutorial
 		if (m_window->isOpen() && m_tutorial) {
 			if (m_enemy.size() < 1) {
-				//set up tutorial enemies
+				//set up tutorial enemy
 				{
-					//create entity
+					//create the entity
 					auto enemy = ECS::CreateEntity();
 
-					//attach components
-					ECS::AttachComponent<Sprite>(enemy);
+					//attach the components
 					ECS::AttachComponent<Transform>(enemy);
 					ECS::AttachComponent<Enemy>(enemy);
 
-					//set files
-					std::string fileName = "temp3.png";
-
 					//set components
-					ECS::GetComponent<Sprite>(enemy).LoadSprite(fileName, 10, 10);
 					ECS::GetComponent<Transform>(enemy).SetPosition(0.f, 0.f, 50.f);
+					ECS::GetComponent<Transform>(enemy).SetScale(10, 10, 0);
 					ECS::GetComponent<Enemy>(enemy).SetType(1);
 
-					float angle = 0;
-					vec2 enemyPos = vec2(ECS::GetComponent<Transform>(enemy).GetPositionX() - ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - ECS::GetComponent<Transform>(enemy).GetPositionY());
+					//set up identifier
+					unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::EnemyBit();
+					ECS::SetUpIdentifier(enemy, bitHolder, "tutorial enemy");
 
-					if (enemyPos.x <= 0.f && enemyPos.y >= 0.f) {
-						angle = abs(atan(enemyPos.y / enemyPos.x) * (180.f / PI));
-					}
-					else if (enemyPos.x > 0.f && enemyPos.y >= 0.f) {
-						angle = atan(enemyPos.x / enemyPos.y) * (180.f / PI) + 90.f;
-					}
-					else if (enemyPos.x >= 0.f && enemyPos.y < 0.f) {
-						angle = abs(atan(enemyPos.y / enemyPos.x) * (180.f / PI)) + 180.f;
-					}
-					else {
-						angle = atan(enemyPos.x / enemyPos.y) * (180.f / PI) + 270.f;
-					}
-
-					ECS::GetComponent<Transform>(enemy).SetRotationAngleZ(angle * (PI / 180.f));
-
-					//set enemy
-					unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::EnemyBit();
-					ECS::SetUpIdentifier(enemy, bitHolder, "Tutorial Enemy");
+					//add to enemy vector
 					m_enemy.push_back(enemy);
+				}
+				{
+					//set animation file
+					auto animations = File::LoadJSON("Gunner.json");
+
+					//create entity
+					auto enemy1 = ECS::CreateEntity();
+
+					//attach components
+					ECS::AttachComponent<Sprite>(enemy1);
+					ECS::AttachComponent<Transform>(enemy1);
+					ECS::AttachComponent<AnimationController>(enemy1);
+
+					//set files
+					std::string fileName = "Gunner.png";
+					auto& animController = ECS::GetComponent<AnimationController>(enemy1);
+					animController.InitUVs(fileName);
+
+					//set animations
+					animController.AddAnimation(animations["Right"]);	//Animation 0
+					animController.AddAnimation(animations["Left"]);	//Animation 1
+
+					animController.SetActiveAnim(0);
+
+					//set components
+					ECS::GetComponent<Sprite>(enemy1).LoadSprite(fileName, 14, 14, true, &animController);
+					ECS::GetComponent<Transform>(enemy1).SetPosition(ECS::GetComponent<Transform>(m_enemy[m_enemy.size() - 1]).GetPosition());
+					ECS::GetComponent<Transform>(enemy1).SetPositionZ(ECS::GetComponent<Transform>(enemy1).GetPositionZ() - 1.f);
+
+					//set player
+					unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::AnimationBit();
+					ECS::SetUpIdentifier(enemy1, bitHolder, "Enemy Sprite");
+
+					//add to vector
+					m_enemySprite.push_back(enemy1);
+				}
+				{
+					//set animation file
+					auto animations = File::LoadJSON("Gunner.json");
+
+					//create entity
+					auto enemy2 = ECS::CreateEntity();
+
+					//attach components
+					ECS::AttachComponent<Sprite>(enemy2);
+					ECS::AttachComponent<Transform>(enemy2);
+					ECS::AttachComponent<AnimationController>(enemy2);
+
+					//set files
+					std::string fileName = "GunnerArm.png";
+					auto& animController = ECS::GetComponent<AnimationController>(enemy2);
+					animController.InitUVs(fileName);
+
+					//set animations
+					animController.AddAnimation(animations["Right"]);	//Animation 0
+					animController.AddAnimation(animations["Left"]);	//Animation 1
+
+					animController.SetActiveAnim(0);
+
+					//set components
+					ECS::GetComponent<Sprite>(enemy2).LoadSprite(fileName, 14, 14, true, &animController);
+					ECS::GetComponent<Transform>(enemy2).SetPosition(ECS::GetComponent<Transform>(m_enemy[m_enemy.size() - 1]).GetPositionX() - 1.2f, ECS::GetComponent<Transform>(m_enemy[m_enemy.size() - 1]).GetPositionY() + 2.f, ECS::GetComponent<Transform>(m_enemy[m_enemy.size() - 1]).GetPositionZ());
+
+					//set player
+					unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::AnimationBit();
+					ECS::SetUpIdentifier(enemy2, bitHolder, "Enemy Sprite");
+
+					//add to vector
+					m_enemySprite.push_back(enemy2);
 				}
 				{
 					//create entity
@@ -377,8 +426,8 @@ bool Game::Run()
 					std::string fileName = "move_tooltip.png";
 
 					//set components
-					ECS::GetComponent<Sprite>(controls).LoadSprite(fileName, 50, 50);
-					ECS::GetComponent<Transform>(controls).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 50, 100.f);
+					ECS::GetComponent<Sprite>(controls).LoadSprite(fileName, 20 * BackEnd::GetAspectRatio(), 20);
+					ECS::GetComponent<Transform>(controls).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 40, 100.f);
 
 					//set tooltip
 					unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -397,8 +446,8 @@ bool Game::Run()
 					std::string fileName = "red_bullet_tooltip.png";
 
 					//set components
-					ECS::GetComponent<Sprite>(help).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 20);
-					ECS::GetComponent<Transform>(help).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 80, 100.f);
+					ECS::GetComponent<Sprite>(help).LoadSprite(fileName, 50 * BackEnd::GetAspectRatio(), 5);
+					ECS::GetComponent<Transform>(help).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 50, 100.f);
 
 					//set tooltip
 					unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -720,8 +769,8 @@ void Game::Update()
 
 			//move tutorial tooltips
 			if (m_tutorial && m_tooltip != 0) {
-				ECS::GetComponent<Transform>(m_tooltip).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 50, 100.5f);
-				if (m_helpTooltip > 0) ECS::GetComponent<Transform>(m_helpTooltip).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 80, 100.5f);
+				ECS::GetComponent<Transform>(m_tooltip).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 40, 100.5f);
+				if (m_helpTooltip > 0) ECS::GetComponent<Transform>(m_helpTooltip).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 50, 100.5f);
 			}
 
 			if (m_dodgeTimer <= 0.f && m_tutorial && m_helpTooltip == 0) {
@@ -784,7 +833,7 @@ void Game::Update()
 					if (m_tutorialBullet == 2) {
 						m_tutorialBullet++;
 						std::string fileName = "green_bullet_tooltip.png";
-						ECS::GetComponent<Sprite>(m_helpTooltip).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 20);
+						ECS::GetComponent<Sprite>(m_helpTooltip).LoadSprite(fileName, 50 * BackEnd::GetAspectRatio(), 5);
 					}
 
 					if (!ECS::GetComponent<Bullet>(m_bullet[i]).GetSpark()) {
@@ -825,9 +874,9 @@ void Game::Update()
 					if (m_tutorial && m_tutorialBullet == 1) {
 						m_tutorialBullet++;
 						std::string fileName = "attack_tooltip.png";
-						ECS::GetComponent<Sprite>(m_tooltip).LoadSprite(fileName, 30, 50);
+						ECS::GetComponent<Sprite>(m_tooltip).LoadSprite(fileName, 11 * BackEnd::GetAspectRatio(), 25);
 						fileName = "orange_bullet_tooltip.png";
-						ECS::GetComponent<Sprite>(m_helpTooltip).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 20);
+						ECS::GetComponent<Sprite>(m_helpTooltip).LoadSprite(fileName, 50 * BackEnd::GetAspectRatio(), 5);
 					}
 					continue;
 				}
@@ -839,9 +888,9 @@ void Game::Update()
 					if (m_tutorial && m_tutorialBullet == 1) {
 						m_tutorialBullet++;
 						std::string fileName = "attack_tooltip.png";
-						ECS::GetComponent<Sprite>(m_tooltip).LoadSprite(fileName, 30, 50);
+						ECS::GetComponent<Sprite>(m_tooltip).LoadSprite(fileName, 30 * BackEnd::GetAspectRatio(), 50);
 						fileName = "orange_bullet_tooltip.png";
-						ECS::GetComponent<Sprite>(m_helpTooltip).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 20);
+						ECS::GetComponent<Sprite>(m_helpTooltip).LoadSprite(fileName, 50 * BackEnd::GetAspectRatio(), 5);
 					}
 					continue;
 				}
@@ -889,7 +938,7 @@ void Game::Update()
 							ECS::DestroyEntity(m_helpTooltip);
 							m_helpTooltip = 0;
 							std::string fileName = "dodge_tooltip.png";
-							ECS::GetComponent<Sprite>(m_tooltip).LoadSprite(fileName, 150, 50);
+							ECS::GetComponent<Sprite>(m_tooltip).LoadSprite(fileName, 50 * BackEnd::GetAspectRatio(), 20);
 						}
 					}
 				}
@@ -1007,9 +1056,9 @@ void Game::Update()
 				if (m_tutorial && m_tutorialBullet == 1) {
 					m_tutorialBullet++;
 					std::string fileName = "attack_tooltip.png";
-					ECS::GetComponent<Sprite>(m_tooltip).LoadSprite(fileName, 30, 50);
+					ECS::GetComponent<Sprite>(m_tooltip).LoadSprite(fileName, 11 * BackEnd::GetAspectRatio(), 25);
 					fileName = "orange_bullet_tooltip.png";
-					ECS::GetComponent<Sprite>(m_helpTooltip).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 20);
+					ECS::GetComponent<Sprite>(m_helpTooltip).LoadSprite(fileName, 50 * BackEnd::GetAspectRatio(), 5);
 				}
 				m_offscreenBullet.erase(m_offscreenBullet.begin() + i);
 				i--;
@@ -1059,7 +1108,7 @@ void Game::Update()
 							ECS::DestroyEntity(m_helpTooltip);
 							m_helpTooltip = 0;
 							std::string fileName = "dodge_tooltip.png";
-							ECS::GetComponent<Sprite>(m_tooltip).LoadSprite(fileName, 150, 50);
+							ECS::GetComponent<Sprite>(m_tooltip).LoadSprite(fileName, 50 * BackEnd::GetAspectRatio(), 20);
 						}
 					}
 				}
@@ -1144,10 +1193,12 @@ void Game::Update()
 					count++;
 					if (i == j) {
 						m_enemy.erase(m_enemy.begin() + count);
-						ECS::DestroyEntity(m_enemySprite[count * 2]);
-						m_enemySprite.erase(m_enemySprite.begin() + (count * 2));
-						ECS::DestroyEntity(m_enemySprite[count * 2]);
-						m_enemySprite.erase(m_enemySprite.begin() + (count * 2));
+						if (m_enemySprite.size() >= count * 2 + 1) {
+							ECS::DestroyEntity(m_enemySprite[count * 2]);
+							m_enemySprite.erase(m_enemySprite.begin() + (count * 2));
+							ECS::DestroyEntity(m_enemySprite[count * 2]);
+							m_enemySprite.erase(m_enemySprite.begin() + (count * 2));
+						}
 						break;
 					}
 				}
@@ -1860,7 +1911,7 @@ void Game::Update()
 			else {
 				fileName = "green_bullet_tooltip.png";
 			}
-			ECS::GetComponent<Sprite>(m_helpTooltip).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 20);
+			ECS::GetComponent<Sprite>(m_helpTooltip).LoadSprite(fileName, 50 * BackEnd::GetAspectRatio(), 5);
 		}
 	}
 }
@@ -2021,8 +2072,8 @@ void Game::KeyboardHold()
 
 			//move tooltips
 			if (m_tutorial && m_tooltip != 0) {
-				ECS::GetComponent<Transform>(m_tooltip).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 50, 100.5f);
-				if (m_helpTooltip > 0) ECS::GetComponent<Transform>(m_helpTooltip).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 80, 100.5f);
+				ECS::GetComponent<Transform>(m_tooltip).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 40, 100.5f);
+				if (m_helpTooltip > 0) ECS::GetComponent<Transform>(m_helpTooltip).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 50, 100.5f);
 			}
 
 			//get less stamina
@@ -2107,12 +2158,12 @@ void Game::KeyboardHold()
 
 			//flip
 			if (playerPos.x >= 0 && ECS::GetComponent<AnimationController>(m_enemySprite[i]).GetActiveAnim() == 0) {
-				ECS::GetComponent<Transform>(m_enemySprite[i]).SetPositionX(ECS::GetComponent<Transform>(m_enemySprite[i]).GetPositionX() - 2.4f);
+				ECS::GetComponent<Transform>(m_enemySprite[i + 1]).SetPositionX(ECS::GetComponent<Transform>(m_enemySprite[i + 1]).GetPositionX() + 2.4f);
 				ECS::GetComponent<AnimationController>(m_enemySprite[i]).SetActiveAnim(1);
 				ECS::GetComponent<AnimationController>(m_enemySprite[i + 1]).SetActiveAnim(1);
 			}
 			else if (playerPos.x < 0 && ECS::GetComponent<AnimationController>(m_enemySprite[i]).GetActiveAnim() == 1) {
-				ECS::GetComponent<Transform>(m_enemySprite[i]).SetPositionX(ECS::GetComponent<Transform>(m_enemySprite[i]).GetPositionX() + 2.4f);
+				ECS::GetComponent<Transform>(m_enemySprite[i + 1]).SetPositionX(ECS::GetComponent<Transform>(m_enemySprite[i + 1]).GetPositionX() - 2.4f);
 				ECS::GetComponent<AnimationController>(m_enemySprite[i]).SetActiveAnim(0);
 				ECS::GetComponent<AnimationController>(m_enemySprite[i + 1]).SetActiveAnim(0);
 			}
@@ -2346,7 +2397,7 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 								if (m_tutorialBullet == 2) {
 									m_tutorialBullet++;
 									std::string fileName = "green_bullet_tooltip.png";
-									ECS::GetComponent<Sprite>(m_helpTooltip).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 20);
+									ECS::GetComponent<Sprite>(m_helpTooltip).LoadSprite(fileName, 50 * BackEnd::GetAspectRatio(), 5);
 								}
 
 								for (int i = 0; i < 5; i++) {
