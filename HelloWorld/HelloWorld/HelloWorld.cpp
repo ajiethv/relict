@@ -128,7 +128,14 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<Transform>(collide);
 
 		//set file
-		std::string fileName = "map.png";
+		std::string fileName;
+		int randNum = rand() % 2;
+		if (randNum == 3) {
+			fileName = "map.png";
+		}
+		else {
+			fileName = "wasteland.png";
+		}
 
 		//set components
 		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 580, 580);
