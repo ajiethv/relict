@@ -52,6 +52,7 @@ void Game::InitGame()
 
 bool Game::Run()
 {
+	//play music (make a different alias to overlap)
 	mciSendString("open assets\\music\\gamemusic.mp3 type mpegvideo alias music", NULL, 0, 0);
 	mciSendString("play music repeat", NULL, 0, 0);
 
@@ -664,6 +665,10 @@ bool Game::Run()
 					for (int x : m_offscreenEnemyPos) {
 						ECS::DestroyEntity(x);
 					}
+					for (int x : m_enemySprite) {
+						ECS::DestroyEntity(x);
+					}
+					m_enemySprite.clear();
 					for (int i = 0; i < 8; i++) {
 						m_spawnPoint[i] = 0;
 					}
@@ -2305,7 +2310,9 @@ void Game::KeyboardDown()
 				}
 			}
 			m_dodgeDirection.MultScalar(2.f);
-			ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetStamina(ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetStamina() - 10);
+			if (Input::GetKey(Key::W) || Input::GetKey(Key::A) || Input::GetKey(Key::S) || Input::GetKey(Key::D)) {
+				ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetStamina(ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetStamina() - 10);
+			}
 			m_staminaTimer = 0.2f;
 		}
 	}
