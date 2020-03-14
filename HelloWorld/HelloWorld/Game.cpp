@@ -54,6 +54,7 @@ bool Game::Run()
 {
 	//play music (make a different alias to overlap)
 	mciSendString("open assets\\music\\gamemusic.mp3 type mpegvideo alias music", NULL, 0, 0);
+	//mciSendString("setaudio music volume to 10", NULL, 0, 0);
 	mciSendString("play music repeat", NULL, 0, 0);
 
 	std::string fileName;
@@ -669,6 +670,10 @@ bool Game::Run()
 						ECS::DestroyEntity(x);
 					}
 					m_enemySprite.clear();
+					for (int x : m_waveNumberSprite) {
+						ECS::DestroyEntity(x);
+					}
+					m_waveNumberSprite.clear();
 					for (int i = 0; i < 8; i++) {
 						m_spawnPoint[i] = 0;
 					}
