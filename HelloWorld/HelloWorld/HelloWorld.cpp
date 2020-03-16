@@ -130,7 +130,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		//set file
 		std::string fileName;
 		int randNum = rand() % 2;
-		if (randNum == 3) {
+		if (randNum == 0) {
 			fileName = "map.png";
 		}
 		else {
@@ -160,7 +160,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 
 		//set components
 		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200, 200);
-		ECS::GetComponent<Transform>(collide).SetPosition(0.f, 0.f, 0.f);
+		ECS::GetComponent<Transform>(collide).SetPosition(0.f, 0.f, -100.f);
 
 		//set pause
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -408,6 +408,48 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		//set clouds
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
 		ECS::SetUpIdentifier(staminaBorder, bitHolder, "Stamina border");
+	}
+
+	//set up enemy health sprite (19)
+	{
+		//create the entity
+		auto bossHealth = ECS::CreateEntity();
+
+		//attach the components
+		ECS::AttachComponent<Sprite>(bossHealth);
+		ECS::AttachComponent<Transform>(bossHealth);
+
+		//set files
+		std::string fileName = "Health.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(bossHealth).LoadSprite(fileName, 190 * BackEnd::GetAspectRatio(), 10);
+		ECS::GetComponent<Transform>(bossHealth).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 50.f, 100.5f);
+
+		//set up identifier
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit() | EntityIdentifier::EnemyBit();
+		ECS::SetUpIdentifier(bossHealth, bitHolder, "Enemy Health");
+	}
+
+	//set up enemy health border sprite (20)
+	{
+		//create the entity
+		auto bossHealthBorder = ECS::CreateEntity();
+
+		//attach the components
+		ECS::AttachComponent<Sprite>(bossHealthBorder);
+		ECS::AttachComponent<Transform>(bossHealthBorder);
+
+		//set files
+		std::string fileName = "barback.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(bossHealthBorder).LoadSprite(fileName, 32 * BackEnd::GetAspectRatio(), 9);
+		ECS::GetComponent<Transform>(bossHealthBorder).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + 45.f * BackEnd::GetAspectRatio() + ((BackEnd::GetAspectRatio() - 1) * 25), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 50.f, 100.5f);
+
+		//set up identifier
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit() | EntityIdentifier::EnemyBit();
+		ECS::SetUpIdentifier(bossHealthBorder, bitHolder, "Enemy Health Border");
 	}
 
 	//set the camera to focus on the main player
