@@ -53,10 +53,10 @@ void Game::InitGame()
 bool Game::Run()
 {
 	//play music (make a different alias to overlap)
-	mciSendString("open assets\\music\\gamemusic.mp3 type mpegvideo alias music", NULL, 0, 0);
+	mciSendString("open assets\\music\\GameRmusic.mp3 type mpegvideo alias music", NULL, 0, 0);
 	//mciSendString("setaudio music volume to 10", NULL, 0, 0);
 	mciSendString("play music repeat", NULL, 0, 0);
-
+	
 	std::string fileName;
 	//while window is still open
 	while (m_window->isOpen()) {
@@ -327,6 +327,12 @@ bool Game::Run()
 			LScreen = 0;
 			LBarEmpty = 0;
 			LBar = 0;
+
+			//play music (make a different alias to overlap)
+			mciSendString("open assets\\music\\Violator.mp3 type mpegvideo alias music", NULL, 0, 0);
+			//mciSendString("setaudio music volume to 10", NULL, 0, 0);
+			mciSendString("play music repeat", NULL, 0, 0);
+
 		}
 
 		//start tutorial
@@ -2299,19 +2305,30 @@ void Game::MouseMotion(SDL_MouseMotionEvent evnt)
 		vec2 mousePos = vec2(((BackEnd::GetWindowWidth() / 2.f) - evnt.x) / (float(BackEnd::GetWindowWidth()) / 1536.f), ((BackEnd::GetWindowHeight() / 2.f) - evnt.y) / (float(BackEnd::GetWindowHeight()) / 864.f));
 		std::cout<< mousePos.x<<"|"<<mousePos.y << std::endl;
 		
-		if((mousePos.x<250&&mousePos.x>-297)&&(mousePos.y<48&&mousePos.y>-40)) {
+		if((mousePos.x<250&&mousePos.x>-297)&&(mousePos.y<48&&mousePos.y>-40)) {//start button highlight
 			ECS::GetComponent<Transform>(3).SetPosition(vec3(4.f, 0.f, 101.f));
 		}
 		else {
 			ECS::GetComponent<Transform>(3).SetPosition(vec3(4.f, 0.f, 100.f));
 		}
-		if ((mousePos.x<164 && mousePos.x>-131) && (mousePos.y<-345 && mousePos.y>-393)) {
+		if ((mousePos.x<164 && mousePos.x>-131) && (mousePos.y<-345 && mousePos.y>-393)) {//quit button highlight
 			ECS::GetComponent<Transform>(6).SetPosition(vec3(0.f, -85.f, 101.f));
 		}
 		else {
 			ECS::GetComponent<Transform>(6).SetPosition(vec3(0.f, -85.f, -100.f));
 		}
-
+		if ((mousePos.x<220 && mousePos.x>-237) && (mousePos.y<-126 && mousePos.y>-172)) {//instruction button highlight
+			ECS::GetComponent<Transform>(10).SetPositionZ(101.f);;
+		}
+		else {
+			ECS::GetComponent<Transform>(10).SetPositionZ(100.f);;
+		}
+		if ((mousePos.x<151 && mousePos.x>-143) && (mousePos.y<-242 && mousePos.y>-290)) {//options button highlight
+			ECS::GetComponent<Transform>(12).SetPositionZ(101.f);;
+		}
+		else {
+			ECS::GetComponent<Transform>(12).SetPositionZ(100.f);;
+		}
 
 	}
 	else {
@@ -2355,38 +2372,56 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 		if (m_activeScene == m_scenes[0]) {
 			if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {//advance to loading screen
 				vec2 mousePos = vec2(((BackEnd::GetWindowWidth() / 2.f) - evnt.x) / (float(BackEnd::GetWindowWidth()) / 1536.f), ((BackEnd::GetWindowHeight() / 2.f) - evnt.y) / (float(BackEnd::GetWindowHeight()) / 864.f));
-				if ((mousePos.x<250 && mousePos.x>-297) && (mousePos.y<48 && mousePos.y>-40)) {
-					for (int i = 0; i < 3; i++) {
-						ECS::GetComponent<Transform>(i + 1).SetPositionZ(0);
-					}
-					ECS::GetComponent<Transform>(4).SetPositionZ(100.f);
+				if (m_instruct) {//instruction screen
 
-					//Update the backend
-					BackEnd::Update(m_register);
-					//Clear window with clearColor
-					m_window->Clear(m_clearColor);
-					//Draws the game
-					BackEnd::Draw(m_register);
-					//Flips the windows
-					m_window->Flip();
+				}
+				else if (m_option) {//option screen
 
-					m_activeScene = m_scenes[1];
-					m_activeScene->InitScene(float(BackEnd::GetWindowWidth()), float(BackEnd::GetWindowHeight()));
-					m_register = m_activeScene->GetScene();
 				}
-				if ((mousePos.x<85 && mousePos.x>-131) && (mousePos.y<-48 && mousePos.y>-78)) {
-					m_tutorial=!m_tutorial;
-					if (m_tutorial) {
-						ECS::GetComponent<Transform>(8).SetPositionZ(100.f);
-						ECS::GetComponent<Transform>(7).SetPositionZ(-100.f);
+				else {
+					if ((mousePos.x<250 && mousePos.x>-297) && (mousePos.y<48 && mousePos.y>-40)) {//start
+						for (int i = 0; i < 3; i++) {
+							ECS::GetComponent<Transform>(i + 1).SetPositionZ(0);
+						}
+						ECS::GetComponent<Transform>(4).SetPositionZ(100.f);
+
+						//Update the backend
+						BackEnd::Update(m_register);
+						//Clear window with clearColor
+						m_window->Clear(m_clearColor);
+						//Draws the game
+						BackEnd::Draw(m_register);
+						//Flips the windows
+						m_window->Flip();
+
+						m_activeScene = m_scenes[1];
+						m_activeScene->InitScene(float(BackEnd::GetWindowWidth()), float(BackEnd::GetWindowHeight()));
+						m_register = m_activeScene->GetScene();
 					}
-					else {
-						ECS::GetComponent<Transform>(7).SetPositionZ(100.f);
-						ECS::GetComponent<Transform>(8).SetPositionZ(-100.f);
+					if ((mousePos.x<85 && mousePos.x>-131) && (mousePos.y<-48 && mousePos.y>-78)) {//tutorial
+						m_tutorial = !m_tutorial;
+						if (m_tutorial) {
+							ECS::GetComponent<Transform>(8).SetPositionZ(100.f);
+							ECS::GetComponent<Transform>(7).SetPositionZ(-100.f);
+						}
+						else {
+							ECS::GetComponent<Transform>(7).SetPositionZ(100.f);
+							ECS::GetComponent<Transform>(8).SetPositionZ(-100.f);
+						}
 					}
-				}
-				if ((mousePos.x<164 && mousePos.x>-131) && (mousePos.y<-345 && mousePos.y>-393)) {
-					m_window->Close();
+					if ((mousePos.x<164 && mousePos.x>-131) && (mousePos.y<-345 && mousePos.y>-393)) {//quit
+						m_window->Close();
+					}
+					if ((mousePos.x<220 && mousePos.x>-237) && (mousePos.y<-126 && mousePos.y>-172)) {//instruction
+						m_instruct = true;
+						ECS::GetComponent<Transform>(13).SetPositionZ(100.f);
+
+					}
+					if ((mousePos.x<151 && mousePos.x>-143) && (mousePos.y<-242 && mousePos.y>-290)) {//option
+						m_option = true;
+						ECS::GetComponent<Transform>(14).SetPositionZ(100.f);
+
+					}
 				}
 			}
 		}

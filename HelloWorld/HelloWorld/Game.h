@@ -121,6 +121,8 @@ private:
 	int m_score = 0; //the player score at the end
 	bool startgame = false;
 	bool pause = false;
+	bool m_instruct = false;
+	bool m_option = false;
 };
 
 
