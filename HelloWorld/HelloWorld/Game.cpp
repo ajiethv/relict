@@ -1752,7 +1752,7 @@ void Game::Update()
 						ECS::AttachComponent<Enemy>(enemy);
 
 						//set components
-						ECS::GetComponent<Transform>(enemy).SetPosition((ECS::GetComponent<Transform>(2).GetScale().x / 2.f - 25.f) * cos((spawn * 45) * (PI / 180.f)), (ECS::GetComponent<Transform>(2).GetScale().x / 2.f - 25.f) * sin((spawn * 45) * (PI / 180.f)), 50.f);
+						ECS::GetComponent<Transform>(enemy).SetPosition((ECS::GetComponent<Transform>(2).GetScale().x / 2.f) * cos((spawn * 45) * (PI / 180.f)), (ECS::GetComponent<Transform>(2).GetScale().x / 2.f) * sin((spawn * 45) * (PI / 180.f)), 50.f);
 						ECS::GetComponent<Transform>(enemy).SetScale(10, 10, 0);
 						ECS::GetComponent<Enemy>(enemy).SetType(1);
 
@@ -1873,6 +1873,29 @@ void Game::Update()
 				//set the camera to focus on the main player
 				ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
 				ECS::GetComponent<VerticalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
+			}
+		}
+
+		//move enemies
+		for (int i = 0; i < 8; i++) {
+			int moved = 0;
+			if (m_spawnPoint[i] != 0 && sqrt(pow(ECS::GetComponent<Transform>(m_spawnPoint[i]).GetPositionX(), 2) + pow(ECS::GetComponent<Transform>(m_spawnPoint[i]).GetPositionY(), 2)) > ECS::GetComponent<Transform>(2).GetScale().x / 2.f - 25.f) {
+				vec3 direction = ECS::GetComponent<Transform>(m_spawnPoint[i]).GetPosition().Normalize();
+				direction.DivScalar(2);
+				ECS::GetComponent<Transform>(m_spawnPoint[i]).SetPosition(ECS::GetComponent<Transform>(m_spawnPoint[i]).GetPosition() - direction);
+				moved = m_spawnPoint[i];
+			}
+			//move the correct sprite
+			if (moved > 0) {
+				for (int i = 0; i < 8; i++) {
+					if (m_enemy[i] == moved) {
+						vec3 direction = ECS::GetComponent<Transform>(m_enemy[i]).GetPosition().Normalize();
+						direction.DivScalar(2);
+						ECS::GetComponent<Transform>(m_enemySprite[i * 2]).SetPosition(ECS::GetComponent<Transform>(m_enemySprite[i * 2]).GetPosition() - direction);
+						ECS::GetComponent<Transform>(m_enemySprite[i * 2 + 1]).SetPosition(ECS::GetComponent<Transform>(m_enemySprite[i * 2 + 1]).GetPosition() - direction);
+						break;
+					}
+				}
 			}
 		}
 
