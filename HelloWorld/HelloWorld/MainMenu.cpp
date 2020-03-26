@@ -12,6 +12,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 	m_sceneReg = new entt::registry;
 	ECS::AttachRegister(m_sceneReg);
 	float aspectRatio = windowWidth / windowHeight;
+	//set up camera component (0)
 	{
 		auto entity = ECS::CreateEntity();
 		EntityIdentifier::MainCamera(entity);
@@ -197,8 +198,8 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "Instruct.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 150, 55);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, -35.f, 100.f));
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 125, 55);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, -30.f, 100.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -216,8 +217,8 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "Instructred.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 150, 55);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-0.5f, -35.f, 99.f));
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 125, 55);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-0.5f, -30.f, 99.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -235,8 +236,8 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "option.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 150, 55);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, -60.f, 100.f));
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 125, 55);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, -47.f, 100.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -254,15 +255,53 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "optionred.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 150, 55);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-0.5f, -60.f, 99.f));
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 125, 55);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-0.5f, -47.f, 99.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
 		ECS::SetUpIdentifier(collide, bitHolder, "optionred");
 	}
 	{
-		//set the instructions screen(13)
+		//set the button for credits (13)
+		auto collide = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<Transform>(collide);
+
+		//set file
+		std::string fileName = "credits.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 125, 55);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, -65.f, 100.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(collide, bitHolder, "credits");
+	}
+	{
+		//set the red hover effect for credits (14)
+		auto collide = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<Transform>(collide);
+
+		//set file
+		std::string fileName = "creditsred.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 125, 55);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-0.5f, -65.f, 99.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(collide, bitHolder, "creditred");
+	}
+	{
+		//set the instructions screen(15)
 		auto collide = ECS::CreateEntity();
 
 		//attach components
@@ -274,14 +313,33 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 
 		//set components
 		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 200);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, 101.f));
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, -101.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
 		ECS::SetUpIdentifier(collide, bitHolder, "instructionscrn");
 	}
 	{
-		//set the option screen(14)
+		//set the option screen(16)
+		auto collide = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<Transform>(collide);
+
+		//set file
+		std::string fileName = "optionscrn.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 200);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, -101.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(collide, bitHolder, "optionscrn");
+	}
+	{
+		//set the credits screen(17)
 		auto collide = ECS::CreateEntity();
 
 		//attach components
@@ -292,11 +350,201 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "empty.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 200);
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), -200);
 		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, 101.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
-		ECS::SetUpIdentifier(collide, bitHolder, "optionscrn");
+		ECS::SetUpIdentifier(collide, bitHolder, "creditscrn");
+	}
+	{
+	//set the button for back button (18)
+	auto collide = ECS::CreateEntity();
+
+	//attach components
+	ECS::AttachComponent<Sprite>(collide);
+	ECS::AttachComponent<Transform>(collide);
+
+	//set file
+	std::string fileName = "backto.png";
+
+	//set components
+	ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 300, 97);
+	ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, -75.f, -100.f));
+
+	//set player
+	unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+	ECS::SetUpIdentifier(collide, bitHolder, "backbutton");
+	}
+	{
+	//set the red hover effect for back button (19)
+	auto collide = ECS::CreateEntity();
+
+	//attach components
+	ECS::AttachComponent<Sprite>(collide);
+	ECS::AttachComponent<Transform>(collide);
+
+	//set file
+	std::string fileName = "backtored.png";
+
+	//set components
+	ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 300, 97);
+	ECS::GetComponent<Transform>(collide).SetPosition(vec3(-0.5f, -75.f, -100.f));
+
+	//set player
+	unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+	ECS::SetUpIdentifier(collide, bitHolder, "backtored");
+	}
+	{
+		//set the button for on button (20)
+		auto collide = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<Transform>(collide);
+
+		//set file
+		std::string fileName = "on.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 125, 75);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(50.f, 10.f, -100.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(collide, bitHolder, "on");
+	}
+	{
+		//set the red hover effect for on button (21)
+		auto collide = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<Transform>(collide);
+
+		//set file
+		std::string fileName = "onred.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 125, 75);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(50.f, 10.f, -100.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(collide, bitHolder, "onred");
+	}
+	{
+		//set the button for on button (22)
+		auto collide = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<Transform>(collide);
+
+		//set file
+		std::string fileName = "off.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 125, 75);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(125.f, 10.f, -100.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(collide, bitHolder, "off");
+	}
+	{
+		//set the red hover effect for on button (23)
+		auto collide = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<Transform>(collide);
+
+		//set file
+		std::string fileName = "offred.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 125, 75);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(125.f, 10.f, -100.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(collide, bitHolder, "offred");
+	}
+	{
+		//set the button for on button (24)
+		auto collide = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<Transform>(collide);
+
+		//set file
+		std::string fileName = "full.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200, 80);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-85.f, -35.f, -100.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(collide, bitHolder, "full");
+	}
+	{
+		//set the red hover effect for on button (25)
+		auto collide = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<Transform>(collide);
+
+		//set file
+		std::string fileName = "fullred.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200, 80);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-85.f, -35.f, -100.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(collide, bitHolder, "fullred");
+	}
+	{
+		//set the button for on button (26)
+		auto collide = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<Transform>(collide);
+
+		//set file
+		std::string fileName = "window.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200, 80);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(85.f, -35.f, -100.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(collide, bitHolder, "window");
+	}
+	{
+		//set the red hover effect for on button (27)
+		auto collide = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<Transform>(collide);
+
+		//set file
+		std::string fileName = "windowred.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200, 80);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(85.f, -35.f, -100.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(collide, bitHolder, "windowred");
 	}
 }

@@ -53,7 +53,7 @@ void Game::InitGame()
 bool Game::Run()
 {
 	//play music (make a different alias to overlap)
-	mciSendString("open assets\\music\\GameRmusic.mp3 type mpegvideo alias music", NULL, 0, 0);
+	mciSendString("open assets\\music\\FromtheAbyss.mp3 type mpegvideo alias music", NULL, 0, 0);
 	//mciSendString("setaudio music volume to 10", NULL, 0, 0);
 	mciSendString("play music repeat", NULL, 0, 0);
 	
@@ -2327,32 +2327,49 @@ void Game::MouseMotion(SDL_MouseMotionEvent evnt)
 	if (m_activeScene == m_scenes[0]) {
 		vec2 mousePos = vec2(((BackEnd::GetWindowWidth() / 2.f) - evnt.x) / (float(BackEnd::GetWindowWidth()) / 1536.f), ((BackEnd::GetWindowHeight() / 2.f) - evnt.y) / (float(BackEnd::GetWindowHeight()) / 864.f));
 		std::cout<< mousePos.x<<"|"<<mousePos.y << std::endl;
-		
-		if((mousePos.x<250&&mousePos.x>-297)&&(mousePos.y<48&&mousePos.y>-40)) {//start button highlight
-			ECS::GetComponent<Transform>(3).SetPosition(vec3(4.f, 0.f, 101.f));
-		}
-		else {
-			ECS::GetComponent<Transform>(3).SetPosition(vec3(4.f, 0.f, 100.f));
-		}
-		if ((mousePos.x<164 && mousePos.x>-131) && (mousePos.y<-345 && mousePos.y>-393)) {//quit button highlight
-			ECS::GetComponent<Transform>(6).SetPosition(vec3(0.f, -85.f, 101.f));
-		}
-		else {
-			ECS::GetComponent<Transform>(6).SetPosition(vec3(0.f, -85.f, -100.f));
-		}
-		if ((mousePos.x<220 && mousePos.x>-237) && (mousePos.y<-126 && mousePos.y>-172)) {//instruction button highlight
-			ECS::GetComponent<Transform>(10).SetPositionZ(101.f);;
-		}
-		else {
-			ECS::GetComponent<Transform>(10).SetPositionZ(100.f);;
-		}
-		if ((mousePos.x<151 && mousePos.x>-143) && (mousePos.y<-242 && mousePos.y>-290)) {//options button highlight
-			ECS::GetComponent<Transform>(12).SetPositionZ(101.f);;
-		}
-		else {
-			ECS::GetComponent<Transform>(12).SetPositionZ(100.f);;
-		}
+		if (m_instruct) {//instruction screen
 
+		}
+		else if (m_option) {//option screen
+			if ((mousePos.x<630 && mousePos.x>-637) && (mousePos.y<-253 && mousePos.y>-391)) {//start button highlight
+				ECS::GetComponent<Transform>(18).SetPositionZ(100.f);
+			}
+			else {
+				ECS::GetComponent<Transform>(18).SetPositionZ(101.f);
+			}
+		}
+		else { 
+			if ((mousePos.x<250 && mousePos.x>-297) && (mousePos.y<48 && mousePos.y>-40)) {//start button highlight
+				ECS::GetComponent<Transform>(3).SetPosition(vec3(4.f, 0.f, 101.f));
+			}
+			else {
+				ECS::GetComponent<Transform>(3).SetPosition(vec3(4.f, 0.f, 100.f));
+			}
+			if ((mousePos.x<164 && mousePos.x>-131) && (mousePos.y<-345 && mousePos.y>-393)) {//quit button highlight
+				ECS::GetComponent<Transform>(6).SetPosition(vec3(0.f, -85.f, 101.f));
+			}
+			else {
+				ECS::GetComponent<Transform>(6).SetPosition(vec3(0.f, -85.f, -100.f));
+			}
+			if ((mousePos.x<185 && mousePos.x>-195) && (mousePos.y<-103 && mousePos.y>-147)) {//instruction button highlight
+				ECS::GetComponent<Transform>(10).SetPositionZ(101.f);
+			}
+			else {
+				ECS::GetComponent<Transform>(10).SetPositionZ(100.f);
+			}
+			if ((mousePos.x<127 && mousePos.x>-120) && (mousePos.y<-179 && mousePos.y>-229)) {//options button highlight
+				ECS::GetComponent<Transform>(12).SetPositionZ(101.f);
+			}
+			else {
+				ECS::GetComponent<Transform>(12).SetPositionZ(100.f);
+			}
+			if ((mousePos.x<125 && mousePos.x>-113) && (mousePos.y<-254 && mousePos.y>-307)) {//credits button highlight
+				ECS::GetComponent<Transform>(14).SetPositionZ(101.f);
+			}
+			else {
+				ECS::GetComponent<Transform>(14).SetPositionZ(100.f);;
+			}
+		}
 	}
 	else {
 		//Rotate player
@@ -2399,7 +2416,69 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 
 				}
 				else if (m_option) {//option screen
+					if ((mousePos.x<-74 && mousePos.x>-256) && (mousePos.y<231 && mousePos.y>110)) {//volume down arrow
+						std::cout << "down" << std::endl;
 
+					}
+					if ((mousePos.x<-447 && mousePos.x>-660) && (mousePos.y<230 && mousePos.y>-110)) {//volume up arrow
+						std::cout << "up" << std::endl;
+
+					}
+					if ((mousePos.x<-141 && mousePos.x>-241) && (mousePos.y<85 && mousePos.y>2)) {//high contrast on
+						std::cout << "on" << std::endl;
+						ECS::GetComponent<Transform>(20).SetPositionZ(-101.f);
+						ECS::GetComponent<Transform>(21).SetPositionZ(101.f);
+						ECS::GetComponent<Transform>(22).SetPositionZ(101.f);
+						ECS::GetComponent<Transform>(23).SetPositionZ(-101.f);
+					}
+					if ((mousePos.x<-475 && mousePos.x>-598) && (mousePos.y<85 && mousePos.y>-1)) {//high contrast off
+						std::cout << "off" << std::endl;
+						ECS::GetComponent<Transform>(20).SetPositionZ(101.f);
+						ECS::GetComponent<Transform>(21).SetPositionZ(-101.f);
+						ECS::GetComponent<Transform>(22).SetPositionZ(-101.f);
+						ECS::GetComponent<Transform>(23).SetPositionZ(101.f);
+
+					}
+					if ((mousePos.x<677 && mousePos.x>-30) && (mousePos.y<-115 && mousePos.y>-206)) {//fullscreen view
+						std::cout << "full" << std::endl;
+						ECS::GetComponent<Transform>(24).SetPositionZ(-101.f);
+						ECS::GetComponent<Transform>(25).SetPositionZ(101.f);
+						ECS::GetComponent<Transform>(26).SetPositionZ(101.f);
+						ECS::GetComponent<Transform>(27).SetPositionZ(-101.f);
+					}
+					if ((mousePos.x<-57 && mousePos.x>-678) && (mousePos.y<-101 && mousePos.y>-201)) {//windowed view
+						std::cout << "wind" << std::endl;
+						ECS::GetComponent<Transform>(24).SetPositionZ(101.f);
+						ECS::GetComponent<Transform>(25).SetPositionZ(-101.f);
+						ECS::GetComponent<Transform>(26).SetPositionZ(-101.f);
+						ECS::GetComponent<Transform>(27).SetPositionZ(101.f);
+					}
+					if ((mousePos.x<630 && mousePos.x>-637) && (mousePos.y<-253 && mousePos.y>-391)) {//back to menu button 
+						m_option = false;
+						{//reset back to main menu
+							ECS::GetComponent<Transform>(1).SetPositionZ(0.f);
+							ECS::GetComponent<Transform>(2).SetPositionZ(100.f);
+							ECS::GetComponent<Transform>(3).SetPositionZ(99.f);
+							ECS::GetComponent<Transform>(4).SetPositionZ(0.f);
+							ECS::GetComponent<Transform>(5).SetPositionZ(100.f);
+							ECS::GetComponent<Transform>(6).SetPositionZ(-9.f);
+							ECS::GetComponent<Transform>(7).SetPositionZ(100.f);
+							ECS::GetComponent<Transform>(8).SetPositionZ(-9.f);
+							ECS::GetComponent<Transform>(9).SetPositionZ(100.f);
+							ECS::GetComponent<Transform>(10).SetPositionZ(9.f);
+							ECS::GetComponent<Transform>(11).SetPositionZ(100.f);
+							ECS::GetComponent<Transform>(12).SetPositionZ(99.f);
+							ECS::GetComponent<Transform>(13).SetPositionZ(100.f);
+							ECS::GetComponent<Transform>(14).SetPositionZ(99.f);
+						}
+						ECS::GetComponent<Transform>(16).SetPositionZ(-100.f);
+						for (int i = 18; i <= 27; i++) {
+							ECS::GetComponent<Transform>(i).SetPositionZ(-101.f);
+
+						}
+					
+
+					}
 				}
 				else {
 					if ((mousePos.x<250 && mousePos.x>-297) && (mousePos.y<48 && mousePos.y>-40)) {//start
@@ -2435,15 +2514,34 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 					if ((mousePos.x<164 && mousePos.x>-131) && (mousePos.y<-345 && mousePos.y>-393)) {//quit
 						m_window->Close();
 					}
-					if ((mousePos.x<220 && mousePos.x>-237) && (mousePos.y<-126 && mousePos.y>-172)) {//instruction
+					if ((mousePos.x<185 && mousePos.x>-195) && (mousePos.y<-103 && mousePos.y>-147)) {//instruction
 						m_instruct = true;
-						ECS::GetComponent<Transform>(13).SetPositionZ(100.f);
+						std::cout << "instruct" << std::endl;
+						for (int i = 1; i < 15; i++) {
+							ECS::GetComponent<Transform>(i).SetPositionZ(-101.f);
+						}
+						ECS::GetComponent<Transform>(15).SetPositionZ(100.f);
 
 					}
-					if ((mousePos.x<151 && mousePos.x>-143) && (mousePos.y<-242 && mousePos.y>-290)) {//option
+					if ((mousePos.x<127 && mousePos.x>-120) && (mousePos.y<-179 && mousePos.y>-229)) {//option
 						m_option = true;
-						ECS::GetComponent<Transform>(14).SetPositionZ(100.f);
+						std::cout << "option" << std::endl;
+						for (int i = 1; i < 16; i++) {
+							ECS::GetComponent<Transform>(i).SetPositionZ(-101.f);
+						}
+						ECS::GetComponent<Transform>(16).SetPositionZ(0.f);
+						ECS::GetComponent<Transform>(18).SetPositionZ(101.f);
+						ECS::GetComponent<Transform>(19).SetPositionZ(101.f);
+						ECS::GetComponent<Transform>(20).SetPositionZ(101.f);
+						ECS::GetComponent<Transform>(23).SetPositionZ(101.f);
+						ECS::GetComponent<Transform>(25).SetPositionZ(101.f);
+						ECS::GetComponent<Transform>(26).SetPositionZ(101.f);
 
+					}
+					if ((mousePos.x<122 && mousePos.x>-113) && (mousePos.y<-254 && mousePos.y>-307)) {//credits 
+						m_credit = true;
+						std::cout << "credit" << std::endl;
+						ECS::GetComponent<Transform>(17).SetPositionZ(101.f);
 					}
 				}
 			}

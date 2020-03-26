@@ -102,7 +102,7 @@ private:
 	std::vector<unsigned int> m_enemySprite;
 	int m_spawnPoint[8]; //who the spawn point is taken by
 	int m_spawnTimer = 0; //the delay between spawning enemies
-	int m_waveNum = 0; //the current wave
+	int m_waveNum = 14; //the current wave| change to (boss-1) to start boss fight
 	int m_enemiesKilled = 0; //the number of enemies killed
 	int m_bossesKilled = 0; //the number of bosses killed
 	int m_enemyNum = 0; //the number of enemies in the wave
@@ -123,6 +123,8 @@ private:
 	bool pause = false;
 	bool m_instruct = false;
 	bool m_option = false;
+	bool m_credit = false;
+
 };
 
 
