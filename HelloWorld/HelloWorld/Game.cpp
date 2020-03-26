@@ -889,6 +889,10 @@ bool Game::Run()
 						ECS::DestroyEntity(x);
 					}
 					m_waveNumberSprite.clear();
+					for (int x : m_scoreNumberSprite) {
+						ECS::DestroyEntity(x);
+					}
+					m_scoreNumberSprite.clear();
 					for (int i = 0; i < 8; i++) {
 						m_spawnPoint[i] = 0;
 					}
