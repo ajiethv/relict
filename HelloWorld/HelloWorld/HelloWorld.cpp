@@ -452,6 +452,27 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::SetUpIdentifier(bossHealthBorder, bitHolder, "Enemy Health Border");
 	}
 
+	//Set up Score(21)
+	{
+		//create entity
+		auto title = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(title);
+		ECS::AttachComponent<Transform>(title);
+
+		//set file
+		std::string fileName = "score.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(title).LoadSprite(fileName, 100, 40);
+		ECS::GetComponent<Transform>(title).SetPosition(vec3(0.f, 0.f, -110.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(title, bitHolder, "Death Screen");
+	}
+
 	//set the camera to focus on the main player
 	ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
