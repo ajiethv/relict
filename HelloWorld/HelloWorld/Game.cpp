@@ -54,7 +54,7 @@ bool Game::Run()
 {
 	//play music (make a different alias to overlap)
 	mciSendString("open assets\\music\\gamemusic.mp3 type mpegvideo alias music", NULL, 0, 0);
-	//mciSendString("setaudio music volume to 10", NULL, 0, 0);
+	mciSendString("setaudio music volume to 10", NULL, 0, 0);
 	mciSendString("play music repeat", NULL, 0, 0);
 
 	std::string fileName;
@@ -93,9 +93,6 @@ bool Game::Run()
 
 		//Load everything
 		if (m_window->isOpen() && m_activeScene == m_scenes[1] && m_initialStartup) {
-			//overlap music //overlap sound
-			//mciSendString("open assets\\music\\gotem.mp3 type mpegvideo alias musicAgain", NULL, 0, 0);
-			//mciSendString("play musicAgain repeat", NULL, 0, 0);
 			int LScreen, LBarEmpty, LBar;
 
 			//set up the load screen
@@ -511,10 +508,6 @@ bool Game::Run()
 			}
 		}
 
-		if (m_window->isOpen() && ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() > 0) {
-			Timer::Reset();
-		}
-
 		//run the game
 		while (m_window->isOpen() && ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() > 0)
 		{
@@ -587,14 +580,233 @@ bool Game::Run()
 		}
 
 		if (m_window->isOpen() && m_activeScene == m_scenes[1] && ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() <= 0) {
+			//calculate final score
 			if (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() == 0) {
 				ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetHealth(-1);
-				m_score = (m_enemiesKilled * 100 + Timer::time) * (m_bossesKilled + 1);
+				int accuracy = (m_bulletsHit == 0) ? 10 : (m_bulletsMiss == 0) ? 20 : ((1 + (float(m_bulletsHit) / float(m_bulletsHit + m_bulletsMiss))) * 10);
+				m_enemiesKilled *= 100;
+				m_bossesKilled += 1;
+				m_score = m_enemiesKilled * (float(accuracy) / 10.f) * m_bossesKilled;
+				//score display
+				std::vector<int> digits;
+				//enemies killed
+				if (m_enemiesKilled == 0) digits.push_back(0);
+				while (m_enemiesKilled > 0) {
+					digits.push_back(m_enemiesKilled % 10);
+					m_enemiesKilled /= 10;
+				}
+				for (int i = 0; i < digits.size(); i++) {
+					//create the number sprite
+					{
+						//set animation file
+						auto animations = File::LoadJSON("Number.json");
+
+						//create entity
+						auto number = ECS::CreateEntity();
+
+						//attach components
+						ECS::AttachComponent<Sprite>(number);
+						ECS::AttachComponent<Transform>(number);
+						ECS::AttachComponent<AnimationController>(number);
+
+						//set files
+						std::string fileName = "RedNumber.png";
+						auto& animController = ECS::GetComponent<AnimationController>(number);
+						animController.InitUVs(fileName);
+
+						//set animations
+						animController.AddAnimation(animations["0"]);
+						animController.AddAnimation(animations["1"]);
+						animController.AddAnimation(animations["2"]);
+						animController.AddAnimation(animations["3"]);
+						animController.AddAnimation(animations["4"]);
+						animController.AddAnimation(animations["5"]);
+						animController.AddAnimation(animations["6"]);
+						animController.AddAnimation(animations["7"]);
+						animController.AddAnimation(animations["8"]);
+						animController.AddAnimation(animations["9"]);
+
+						animController.SetActiveAnim(digits[i]);
+
+						//set components
+						ECS::GetComponent<Sprite>(number).LoadSprite(fileName, 3, 5, true, &animController);
+						ECS::GetComponent<Transform>(number).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + 20.f + ((digits.size() * 3.f) - (3.f * i)), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 13.f, 100.2f);
+
+						//set number
+						unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::AnimationBit();
+						ECS::SetUpIdentifier(number, bitHolder, "Score Number");
+
+						m_scoreNumberSprite.push_back(number);
+					}
+				}
+				digits.clear();
+
+				//accuracy
+				while (accuracy > 0) {
+					digits.push_back(accuracy % 10);
+					accuracy /= 10;
+				}
+				for (int i = 0; i < digits.size(); i++) {
+					//create the number sprite
+					{
+						//set animation file
+						auto animations = File::LoadJSON("Number.json");
+
+						//create entity
+						auto number = ECS::CreateEntity();
+
+						//attach components
+						ECS::AttachComponent<Sprite>(number);
+						ECS::AttachComponent<Transform>(number);
+						ECS::AttachComponent<AnimationController>(number);
+
+						//set files
+						std::string fileName = "RedNumber.png";
+						auto& animController = ECS::GetComponent<AnimationController>(number);
+						animController.InitUVs(fileName);
+
+						//set animations
+						animController.AddAnimation(animations["0"]);
+						animController.AddAnimation(animations["1"]);
+						animController.AddAnimation(animations["2"]);
+						animController.AddAnimation(animations["3"]);
+						animController.AddAnimation(animations["4"]);
+						animController.AddAnimation(animations["5"]);
+						animController.AddAnimation(animations["6"]);
+						animController.AddAnimation(animations["7"]);
+						animController.AddAnimation(animations["8"]);
+						animController.AddAnimation(animations["9"]);
+
+						animController.SetActiveAnim(digits[i]);
+
+						//set components
+						ECS::GetComponent<Sprite>(number).LoadSprite(fileName, 3, 5, true, &animController);
+						ECS::GetComponent<Transform>(number).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + 22.f + ((digits.size() * 5.f) - (5.f * i)), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 7.f, 100.2f);
+
+						//set number
+						unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::AnimationBit();
+						ECS::SetUpIdentifier(number, bitHolder, "Score Number");
+
+						m_scoreNumberSprite.push_back(number);
+					}
+				}
+				digits.clear();
+
+				//bosses
+				while (m_bossesKilled > 0) {
+					digits.push_back(m_bossesKilled % 10);
+					m_bossesKilled /= 10;
+				}
+				for (int i = 0; i < digits.size(); i++) {
+					//create the number sprite
+					{
+						//set animation file
+						auto animations = File::LoadJSON("Number.json");
+
+						//create entity
+						auto number = ECS::CreateEntity();
+
+						//attach components
+						ECS::AttachComponent<Sprite>(number);
+						ECS::AttachComponent<Transform>(number);
+						ECS::AttachComponent<AnimationController>(number);
+
+						//set files
+						std::string fileName = "RedNumber.png";
+						auto& animController = ECS::GetComponent<AnimationController>(number);
+						animController.InitUVs(fileName);
+
+						//set animations
+						animController.AddAnimation(animations["0"]);
+						animController.AddAnimation(animations["1"]);
+						animController.AddAnimation(animations["2"]);
+						animController.AddAnimation(animations["3"]);
+						animController.AddAnimation(animations["4"]);
+						animController.AddAnimation(animations["5"]);
+						animController.AddAnimation(animations["6"]);
+						animController.AddAnimation(animations["7"]);
+						animController.AddAnimation(animations["8"]);
+						animController.AddAnimation(animations["9"]);
+
+						animController.SetActiveAnim(digits[i]);
+
+						//set components
+						ECS::GetComponent<Sprite>(number).LoadSprite(fileName, 3, 5, true, &animController);
+						ECS::GetComponent<Transform>(number).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + 22.f + ((digits.size() * 5.f) - (5.f * i)), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 1.f, 100.2f);
+
+						//set number
+						unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::AnimationBit();
+						ECS::SetUpIdentifier(number, bitHolder, "Score Number");
+
+						m_scoreNumberSprite.push_back(number);
+					}
+				}
+				digits.clear();
+
+				//final
+				if (m_score == 0) digits.push_back(0);
+				while (m_score > 0) {
+					digits.push_back(m_score % 10);
+					m_score /= 10;
+				}
+				for (int i = 0; i < digits.size(); i++) {
+					//create the number sprite
+					{
+						//set animation file
+						auto animations = File::LoadJSON("Number.json");
+
+						//create entity
+						auto number = ECS::CreateEntity();
+
+						//attach components
+						ECS::AttachComponent<Sprite>(number);
+						ECS::AttachComponent<Transform>(number);
+						ECS::AttachComponent<AnimationController>(number);
+
+						//set files
+						std::string fileName = "RedNumber.png";
+						auto& animController = ECS::GetComponent<AnimationController>(number);
+						animController.InitUVs(fileName);
+
+						//set animations
+						animController.AddAnimation(animations["0"]);
+						animController.AddAnimation(animations["1"]);
+						animController.AddAnimation(animations["2"]);
+						animController.AddAnimation(animations["3"]);
+						animController.AddAnimation(animations["4"]);
+						animController.AddAnimation(animations["5"]);
+						animController.AddAnimation(animations["6"]);
+						animController.AddAnimation(animations["7"]);
+						animController.AddAnimation(animations["8"]);
+						animController.AddAnimation(animations["9"]);
+
+						animController.SetActiveAnim(digits[i]);
+
+						//set components
+						ECS::GetComponent<Sprite>(number).LoadSprite(fileName, 4, 8, true, &animController);
+						ECS::GetComponent<Transform>(number).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + 10.f + ((digits.size() * 5.f) - (5.f * i)), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 10.f, 100.2f);
+
+						//set number
+						unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::AnimationBit();
+						ECS::SetUpIdentifier(number, bitHolder, "Score Number");
+
+						m_scoreNumberSprite.push_back(number);
+					}
+				}
+				digits.clear();
+
+				//set the camera to focus on the main player
+				ECS::GetComponent<HorizontalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
+				ECS::GetComponent<VerticalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
 			}
+
+			//move back sprites
 			ECS::GetComponent<Transform>(9).SetPosition(0, -8, -100.f);
-			//death screen
 			ECS::GetComponent<Transform>(11).SetPosition(0, -8, -100.f);
+			//death screen
 			ECS::GetComponent<Transform>(12).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY(), 100.f);
+			ECS::GetComponent<Transform>(21).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 5, 100.1f);
+
 			vec2 mousePos = vec2(((BackEnd::GetWindowWidth() / 2.f) - BackEnd::GetMotionEvent().x) / (float(BackEnd::GetWindowWidth()) / 1536.f), ((BackEnd::GetWindowHeight() / 2.f) - BackEnd::GetMotionEvent().y) / (float(BackEnd::GetWindowHeight()) / 864.f));
 
 			std::cout << mousePos.x << "|" << mousePos.y << std::endl;
@@ -697,7 +909,8 @@ bool Game::Run()
 					m_enemiesKilled = 0;
 					m_staminaTimer = 0;
 					m_score = 0;
-					Timer::Reset();
+					m_bulletsHit = 0;
+					m_bulletsMiss = 0;
 				}
 			}
 			Input::ResetKeys();
@@ -925,6 +1138,7 @@ void Game::Update()
 			if (ECS::GetComponent<Bullet>(m_bullet[i]).GetExtra() != 3) {
 				if (!(sqrt((ECS::GetComponent<Transform>(2).GetPosition().x - bulletPos.x)* (ECS::GetComponent<Transform>(2).GetPosition().x - bulletPos.x) + (ECS::GetComponent<Transform>(2).GetPosition().y - bulletPos.y) * (ECS::GetComponent<Transform>(2).GetPosition().y - bulletPos.y)) + ECS::GetComponent<Transform>(m_bullet[i]).GetScale().x <= ECS::GetComponent<Transform>(m_bullet[i]).GetScale().x / 2.f + ECS::GetComponent<Transform>(2).GetScale().x / 2.f)) {
 					m_removeEntity.push_back(m_bullet[i]);
+					if (ECS::GetComponent<Bullet>(m_bullet[i]).GetReflected() && !m_tutorial) m_bulletsMiss++;
 					if (ECS::GetComponent<Bullet>(m_bullet[i]).GetExtra() == 2) m_trackingBulletCount--;
 					if (m_tutorial && m_tutorialBullet == 1) {
 						m_tutorialBullet++;
@@ -973,15 +1187,17 @@ void Game::Update()
 									m_spawnPoint[k] = 0;
 								}
 							}
-							if (ECS::GetComponent<Enemy>(j).GetType() < 2) {
-								m_enemiesKilled++;
-							}
-							else {
-								m_bossesKilled++;
-								if (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() < 3) {
-									ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetHealth(ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() + 1);
-									std::string fileName = "Heart.png";
-									ECS::GetComponent<Sprite>(ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() + 5).LoadSprite(fileName, 10, 10);
+							if (!m_tutorial) {
+								if (ECS::GetComponent<Enemy>(j).GetType() < 2) {
+									m_enemiesKilled++;
+								}
+								else {
+									m_bossesKilled++;
+									if (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() < 3) {
+										ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetHealth(ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() + 1);
+										std::string fileName = "Heart.png";
+										ECS::GetComponent<Sprite>(ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() + 5).LoadSprite(fileName, 10, 10);
+									}
 								}
 							}
 						}
@@ -990,6 +1206,9 @@ void Game::Update()
 							m_helpTooltip = 0;
 							std::string fileName = "dodge_tooltip.png";
 							ECS::GetComponent<Sprite>(m_tooltip).LoadSprite(fileName, 50 * BackEnd::GetAspectRatio(), 20);
+						}
+						else {
+							m_bulletsHit++;
 						}
 					}
 				}
@@ -1104,6 +1323,7 @@ void Game::Update()
 			//if a bullet hits the arena wall
 			if (!(sqrt((ECS::GetComponent<Transform>(2).GetPosition().x - bulletPos.x)* (ECS::GetComponent<Transform>(2).GetPosition().x - bulletPos.x) + (ECS::GetComponent<Transform>(2).GetPosition().y - bulletPos.y) * (ECS::GetComponent<Transform>(2).GetPosition().y - bulletPos.y)) + 4.f <= 4.f / 2.f + ECS::GetComponent<Transform>(2).GetScale().x / 2.f)) {
 				if (m_offscreenBullet[i].GetExtra() == 2) m_trackingBulletCount--;
+				if (m_offscreenBullet[i].GetReflected() && !m_tutorial) m_bulletsMiss++;
 				if (m_tutorial && m_tutorialBullet == 1) {
 					m_tutorialBullet++;
 					std::string fileName = "attack_tooltip.png";
@@ -1139,15 +1359,17 @@ void Game::Update()
 									m_spawnPoint[k] = 0;
 								}
 							}
-							if (ECS::GetComponent<Enemy>(j).GetType() < 2) {
-								m_enemiesKilled++;
-							}
-							else {
-								m_bossesKilled++;
-								if (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() < 3) {
-									ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetHealth(ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() + 1);
-									std::string fileName = "Heart.png";
-									ECS::GetComponent<Sprite>(ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() + 5).LoadSprite(fileName, 10, 10);
+							if (!m_tutorial) {
+								if (ECS::GetComponent<Enemy>(j).GetType() < 2) {
+									m_enemiesKilled++;
+								}
+								else {
+									m_bossesKilled++;
+									if (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() < 3) {
+										ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetHealth(ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() + 1);
+										std::string fileName = "Heart.png";
+										ECS::GetComponent<Sprite>(ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() + 5).LoadSprite(fileName, 10, 10);
+									}
 								}
 							}
 						}
@@ -1156,6 +1378,9 @@ void Game::Update()
 							m_helpTooltip = 0;
 							std::string fileName = "dodge_tooltip.png";
 							ECS::GetComponent<Sprite>(m_tooltip).LoadSprite(fileName, 50 * BackEnd::GetAspectRatio(), 20);
+						}
+						else {
+							m_bulletsHit++;
 						}
 					}
 				}
