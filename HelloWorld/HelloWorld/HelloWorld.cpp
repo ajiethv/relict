@@ -136,6 +136,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		else {
 			fileName = "wasteland.png";
 		}
+		fileName = "wasteland.png";
 
 		//set components
 		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 580, 580);
