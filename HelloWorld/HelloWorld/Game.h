@@ -101,6 +101,7 @@ private:
 	std::vector<unsigned int> m_waveNumberSprite; //the sprite id for the wave numbers
 	std::vector<unsigned int> m_scoreNumberSprite; //the sprite id for the score numbers
 	std::vector<unsigned int> m_enemySprite; //the sprite id for the enemy and enemy arms
+	std::vector<LPCSTR> m_sound;
 	int m_spawnPoint[8]; //who the spawn point is taken by
 	int m_spawnTimer = 0; //the delay between spawning enemies
 	int m_waveNum = 14; //the current wave| change to (boss-1) to start boss fight
@@ -122,7 +123,6 @@ private:
 	int m_score = 0; //the player score at the end
 	int m_bulletsHit = 0; //the ammount of reflected bullets that hit
 	int m_bulletsMiss = 0; //the ammount of reflected bullets that miss
-	bool startgame = false;
 	bool pause = false;
 	bool m_instruct = false;
 	bool m_option = false;
