@@ -2701,8 +2701,6 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 							ECS::GetComponent<Transform>(i).SetPositionZ(-101.f);
 
 						}
-					
-
 					}
 				}
 				else {

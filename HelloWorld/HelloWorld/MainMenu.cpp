@@ -407,8 +407,8 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "on.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 125, 75);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(50.f, 10.f, -100.f));
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 50, 25);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(37.f, 10.f, -100.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -426,8 +426,8 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "onred.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 125, 75);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(50.f, 10.f, -100.f));
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 50, 25);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(37.f, 10.f, -100.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -445,7 +445,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "off.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 125, 75);
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 50, 25);
 		ECS::GetComponent<Transform>(collide).SetPosition(vec3(125.f, 10.f, -100.f));
 
 		//set player
@@ -464,7 +464,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "offred.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 125, 75);
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 50, 25);
 		ECS::GetComponent<Transform>(collide).SetPosition(vec3(125.f, 10.f, -100.f));
 
 		//set player
