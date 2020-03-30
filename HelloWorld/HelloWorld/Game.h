@@ -123,6 +123,7 @@ private:
 	int m_score = 0; //the player score at the end
 	int m_bulletsHit = 0; //the ammount of reflected bullets that hit
 	int m_bulletsMiss = 0; //the ammount of reflected bullets that miss
+	int m_volume = 100; //sound and music volume
 	bool pause = false;
 };
 

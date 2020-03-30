@@ -52,16 +52,51 @@ void Game::InitGame()
 
 bool Game::Run()
 {
-	//play music (make a different alias to overlap)
-	mciSendString("open assets\\music\\gamemusic.mp3 type mpegvideo alias music", NULL, 0, 0);
-	//mciSendString("setaudio music volume to 0", NULL, 0, 0);
-	mciSendString("play music repeat", NULL, 0, 0);
+	//load sounds\
+	different sounds - swing(done) - hit bullet - bullet hit enemy - bullet hit player - wave complete
+	mciSendString("open assets\\music\\swing1.mp3 type mpegvideo alias swing1", NULL, 0, 0);
+	mciSendString("quality swing1 audio", NULL, 0, 0);
+	m_sound.push_back("play swing1 from 0");
+	mciSendString("open assets\\music\\swing2.mp3 type mpegvideo alias swing2", NULL, 0, 0);
+	mciSendString("quality swing2 audio", NULL, 0, 0);
+	m_sound.push_back("play swing2 from 0");
+	mciSendString("open assets\\music\\clang1.mp3 type mpegvideo alias clang1", NULL, 0, 0);
+	mciSendString("quality clang1 audio", NULL, 0, 0);
+	m_sound.push_back("play clang1 from 0");
+	mciSendString("open assets\\music\\clang2.mp3 type mpegvideo alias clang2", NULL, 0, 0);
+	mciSendString("quality clang2 audio", NULL, 0, 0);
+	m_sound.push_back("play clang2 from 0");
+	mciSendString("open assets\\music\\clang3.mp3 type mpegvideo alias clang3", NULL, 0, 0);
+	mciSendString("quality clang3 audio", NULL, 0, 0);
+	m_sound.push_back("play clang3 from 0");
+	mciSendString("open assets\\music\\clang4.mp3 type mpegvideo alias clang4", NULL, 0, 0);
+	mciSendString("quality clang4 audio", NULL, 0, 0);
+	m_sound.push_back("play clang4 from 0");
+	mciSendString("open assets\\music\\clang5.mp3 type mpegvideo alias clang5", NULL, 0, 0);
+	mciSendString("quality clang5 audio", NULL, 0, 0);
+	m_sound.push_back("play clang5 from 0");
+	mciSendString("open assets\\music\\hit1.mp3 type mpegvideo alias hit1", NULL, 0, 0);
+	mciSendString("quality hit1 audio", NULL, 0, 0);
+	m_sound.push_back("play hit1 from 0");
+	mciSendString("open assets\\music\\hit2.mp3 type mpegvideo alias hit2", NULL, 0, 0);
+	mciSendString("quality hit2 audio", NULL, 0, 0);
+	m_sound.push_back("play hit2 from 0");
+	mciSendString("open asstes\\music\\wavecomplete.mp3 type mpegvideo alias wavecomplete", NULL, 0, 0);
+	mciSendString("quality wavecomplete audio", NULL, 0, 0);
+	m_sound.push_back("play wavecomplete from 0");
 
 	std::string fileName;
 	//while window is still open
 	while (m_window->isOpen()) {
+
 		//while on the main menu
 		while (m_window->isOpen() && m_activeScene == m_scenes[0]) {
+			//play music
+			mciSendString("open assets\\music\\menutheme.mp3 type mpegvideo alias music", NULL, 0, 0);
+			mciSendString("quality music audio", NULL, 0, 0);
+			//mciSendString("setaudio music volume to 0", NULL, 0, 0);
+			mciSendString("play music repeat", NULL, 0, 0);
+
 			//Update timer
 			Timer::Update();
 
@@ -91,8 +126,15 @@ bool Game::Run()
 			}
 		}
 
+		if (m_window->isOpen() && !m_initialStartup) {
+			mciSendString("play music repeat from 0", NULL, 0, 0);
+		}
+
 		//Load everything
 		if (m_window->isOpen() && m_activeScene == m_scenes[1] && m_initialStartup) {
+			mciSendString("stop music", NULL, 0, 0);
+			mciSendString("close music", NULL, 0, 0);
+
 			int LScreen, LBarEmpty, LBar;
 
 			//set up the load screen
@@ -325,11 +367,33 @@ bool Game::Run()
 			LBarEmpty = 0;
 			LBar = 0;
 
-			//load sounds
-			mciSendString("open assets\\music\\swing1.mp3 type mpegvideo alias swing1", NULL, 0, 0);
-			mciSendString("open assets\\music\\swing2.mp3 type mpegvideo alias swing2", NULL, 0, 0);
-			m_sound.push_back("play swing1 from 0");
-			m_sound.push_back("play swing2 from 0");
+			mciSendString("open assets\\music\\gamemusic.mp3 type mpegvideo alias music", NULL, 0, 0);
+
+			//set volume
+			std::string volumeCommand = "setaudio music volume to 0" + std::to_string(m_volume);
+			mciSendString(volumeCommand.c_str(), NULL, 0, 0);
+			volumeCommand = "setaudio swing1 volume to " + std::to_string(m_volume);
+			mciSendString(volumeCommand.c_str(), NULL, 0, 0);
+			volumeCommand = "setaudio swing2 volume to " + std::to_string(m_volume);
+			mciSendString(volumeCommand.c_str(), NULL, 0, 0);
+			volumeCommand = "setaudio clang1 volume to " + std::to_string(m_volume);
+			mciSendString(volumeCommand.c_str(), NULL, 0, 0);
+			volumeCommand = "setaudio clang2 volume to " + std::to_string(m_volume);
+			mciSendString(volumeCommand.c_str(), NULL, 0, 0);
+			volumeCommand = "setaudio clang3 volume to " + std::to_string(m_volume);
+			mciSendString(volumeCommand.c_str(), NULL, 0, 0);
+			volumeCommand = "setaudio clang4 volume to " + std::to_string(m_volume);
+			mciSendString(volumeCommand.c_str(), NULL, 0, 0);
+			volumeCommand = "setaudio clang5 volume to " + std::to_string(m_volume);
+			mciSendString(volumeCommand.c_str(), NULL, 0, 0);
+			volumeCommand = "setaudio hit1 volume to " + std::to_string(m_volume);
+			mciSendString(volumeCommand.c_str(), NULL, 0, 0);
+			volumeCommand = "setaudio hit2 volume to " + std::to_string(m_volume);
+			mciSendString(volumeCommand.c_str(), NULL, 0, 0);
+			volumeCommand = "setaudio wavecomplete volume to " + std::to_string(m_volume);
+			mciSendString(volumeCommand.c_str(), NULL, 0, 0);
+
+			mciSendString("play music repeat", NULL, 0, 0);
 		}
 
 		//start tutorial
@@ -585,9 +649,11 @@ bool Game::Run()
 			}
 		}
 
-		if (m_window->isOpen() && m_activeScene == m_scenes[1] && ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() <= 0) {
+		while (m_window->isOpen() && m_activeScene == m_scenes[1] && ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() <= 0) {
 			//calculate final score
 			if (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() == 0) {
+				mciSendString("stop music", NULL, 0, 0);
+
 				ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetHealth(-1);
 				int accuracy = (m_bulletsHit == 0) ? 10 : (m_bulletsMiss == 0) ? 20 : ((1 + (float(m_bulletsHit) / float(m_bulletsHit + m_bulletsMiss))) * 10);
 				m_enemiesKilled *= 100;
@@ -850,7 +916,80 @@ bool Game::Run()
 			if (Input::m_windowFocus) {
 				if (Input::GetKeyUp(Key::Escape) || ((SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT))
 					&& ((mousePos.x < -332 && mousePos.x>-588) && (mousePos.y<-128 && mousePos.y>-282)))){//quit message
-						m_window->Close();			
+					//reset everything
+					ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetHealth(3.f);
+					ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetStamina(50.f);
+					fileName = "Heart.png";
+					for (int i = 6; i < 9; i++) {
+						ECS::GetComponent<Sprite>(i).LoadSprite(fileName, 10, 10);
+						ECS::GetComponent<Transform>(i).SetPosition((34.f * BackEnd::GetAspectRatio() + ((BackEnd::GetAspectRatio() - 1) * 25) + (8.f * (i - 6))), 50.f, 90.f);
+					}
+					ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetPosition(0.f, 0.f, 0.f);
+					ECS::GetComponent<Transform>(11).SetPosition(0.f, 0.f, 55.f);
+					ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).SetRotationAngleZ(0.f);
+					float xOffset = (ECS::GetComponent<Transform>(3).GetScale().x / 3.f), yOffset = 0.f;
+					ECS::GetComponent<Transform>(3).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + xOffset, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + yOffset, 0.f);
+					fileName = "Character.png";
+					ECS::GetComponent<Sprite>(11).LoadSprite(fileName, 14, 14);
+					ECS::GetComponent<Transform>(12).SetPosition(0.f, 0.f, -100.f);
+					ECS::GetComponent<Transform>(21).SetPosition(0.f, 0.f, -100.f);
+					ECS::GetComponent<Transform>(13).SetPosition(4.f, 0.f, -100.f);
+					ECS::GetComponent<Transform>(14).SetPosition(4.f, 0.f, -100.f);
+					ECS::GetComponent<Transform>(15).SetPosition(4.f, 0.f, -100.f);
+					ECS::GetComponent<Transform>(16).SetPosition(4.f, 0.f, -100.f);
+
+
+					for (int x : m_bullet) {
+						ECS::DestroyEntity(x);
+					}
+					m_bullet.clear();
+					for (int x : m_enemy) {
+						ECS::DestroyEntity(x);
+					}
+					m_enemy.clear();
+					for (int x : m_offscreenEnemyPos) {
+						ECS::DestroyEntity(x);
+					}
+					for (int x : m_enemySprite) {
+						ECS::DestroyEntity(x);
+					}
+					m_enemySprite.clear();
+					for (int x : m_waveNumberSprite) {
+						ECS::DestroyEntity(x);
+					}
+					m_waveNumberSprite.clear();
+					for (int x : m_scoreNumberSprite) {
+						ECS::DestroyEntity(x);
+					}
+					m_scoreNumberSprite.clear();
+					for (int i = 0; i < 8; i++) {
+						m_spawnPoint[i] = 0;
+					}
+					m_offscreenEnemyPos.clear();
+					m_removeEntity.clear();
+					m_offscreenBullet.clear();
+					m_offscreenEnemy.clear();
+					m_invulnerability = 0.f;
+					m_dodgeTimer = 0.f;
+					m_dodgeDirection = vec2(0.f, 0.f);
+					m_bossBulletOffsetSpiral = 0.f;
+					m_bossBulletOffsetPulse = 0.f;
+					m_bossBulletOffsetBig = 0.f;
+					m_trackingBulletCount = 0;
+					m_waveNum = 0;
+					m_enemyNum = 0;
+					m_bossesKilled = 0;
+					m_enemiesKilled = 0;
+					m_staminaTimer = 0;
+					m_score = 0;
+					m_bulletsHit = 0;
+					m_bulletsMiss = 0;
+					m_initialStartup = true;
+					mciSendString("close music", NULL, 0, 0);
+
+					m_activeScene = m_scenes[0];
+					m_activeScene->InitScene(float(BackEnd::GetWindowWidth()), float(BackEnd::GetWindowHeight()));
+					m_register = m_activeScene->GetScene();
 				}
 				if (Input::GetKeyUp(Key::Enter) || (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) 
 					&&((mousePos.x < 599 && mousePos.x>349) && (mousePos.y<-131 && mousePos.y>-296)))) {
@@ -922,6 +1061,7 @@ bool Game::Run()
 					m_score = 0;
 					m_bulletsHit = 0;
 					m_bulletsMiss = 0;
+					break;
 				}
 			}
 			Input::ResetKeys();
@@ -950,6 +1090,7 @@ void Game::Update()
 
 		//count waves and get number of enemies in the wave
 		if (!m_tutorial && m_enemyNum == 0 && m_enemy.size() == 0) {
+			mciSendString(m_sound[9], NULL, 0, 0);
 			m_waveNum++;
 			m_spawnTimer = 200;
 			m_enemyNum = (m_waveNum % 5 == 0) ? 1 : m_waveNum + 4;
@@ -1090,6 +1231,7 @@ void Game::Update()
 			//if a bullet hits the player
 			if (sqrt((bulletPos.x - playerPos.x) * (bulletPos.x - playerPos.x) + (bulletPos.y - playerPos.y) * (bulletPos.y - playerPos.y)) <= ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetScale().x / 2.f + ECS::GetComponent<Transform>(m_bullet[i]).GetScale().x / 2.f) {
 				if (m_invulnerability <= 0.f && m_dodgeTimer <= 0.f) {
+					mciSendString(m_sound[8], NULL, 0, 0);
 					if (!m_tutorial) {
 						ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetHealth(ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() - 1);
 						std::string fileName = "NoHeart.png";
@@ -1126,6 +1268,10 @@ void Game::Update()
 						}
 
 						ECS::GetComponent<Bullet>(m_bullet[i]).SetSpark(true);
+
+						if (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() > 0) {
+							mciSendString(m_sound[rand() % 5 + 2], NULL, 0, 0);
+						}
 					}
 				}
 				//if it can be reflected
@@ -1133,15 +1279,19 @@ void Game::Update()
 					ECS::GetComponent<Bullet>(m_bullet[i]).SetVelocity(vec2(cos(ECS::GetComponent<Transform>(3).GetRotationAngleZ()), sin(ECS::GetComponent<Transform>(3).GetRotationAngleZ())));
 					ECS::GetComponent<Sprite>(m_bullet[i]).LoadSprite(GreenBulletSpriteRef, 4, 4);
 					ECS::GetComponent<Bullet>(m_bullet[i]).SetReflected(true);
-				}
 
-				if (!ECS::GetComponent<Bullet>(m_bullet[i]).GetSpark()) {
-					for (int i = 0; i < 5; i++) {
-						particle.push_back(Particle());
-						particle[particle.size() - 1].CreateParticle(1, bulletPos);
+					if (!ECS::GetComponent<Bullet>(m_bullet[i]).GetSpark()) {
+						for (int i = 0; i < 5; i++) {
+							particle.push_back(Particle());
+							particle[particle.size() - 1].CreateParticle(1, bulletPos);
+						}
+
+						ECS::GetComponent<Bullet>(m_bullet[i]).SetSpark(true);
+
+						if (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() > 0) {
+							mciSendString(m_sound[rand() % 5 + 2], NULL, 0, 0);
+						}
 					}
-
-					ECS::GetComponent<Bullet>(m_bullet[i]).SetSpark(true);
 				}
 
 				//set the camera to focus on the main player
@@ -1185,6 +1335,7 @@ void Game::Update()
 				for (int j : m_enemy) {
 					vec2 enemyPos = vec2(ECS::GetComponent<Transform>(j).GetPositionX(), ECS::GetComponent<Transform>(j).GetPositionY());
 					if (sqrt((bulletPos.x - enemyPos.x) * (bulletPos.x - enemyPos.x) + (bulletPos.y - enemyPos.y) * (bulletPos.y - enemyPos.y)) <= ECS::GetComponent<Transform>(j).GetScale().x / 2.f + ECS::GetComponent<Transform>(m_bullet[i]).GetScale().x / 2.f) {
+						mciSendString(m_sound[7], NULL, 0, 0);
 						ECS::GetComponent<Enemy>(j).SetHealth(ECS::GetComponent<Enemy>(j).GetHealth() - 1);
 						m_removeEntity.push_back(m_bullet[i]);
 						if (ECS::GetComponent<Bullet>(m_bullet[i]).GetExtra() == 2) m_trackingBulletCount--;
@@ -1357,6 +1508,7 @@ void Game::Update()
 				for (int j : m_enemy) {
 					vec2 enemyPos = vec2(ECS::GetComponent<Transform>(j).GetPositionX(), ECS::GetComponent<Transform>(j).GetPositionY());
 					if (sqrt((bulletPos.x - enemyPos.x) * (bulletPos.x - enemyPos.x) + (bulletPos.y - enemyPos.y) * (bulletPos.y - enemyPos.y)) <= ECS::GetComponent<Transform>(j).GetScale().x / 2.f + m_offscreenBullet[i].GetScale().x / 2.f) {
+						mciSendString(m_sound[7], NULL, 0, 0);
 						ECS::GetComponent<Enemy>(j).SetHealth(ECS::GetComponent<Enemy>(j).GetHealth() - 1);
 						deleteIt = true;
 						if (m_offscreenBullet[i].GetExtra() == 2) m_trackingBulletCount--;
@@ -2739,6 +2891,11 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 			if (m_dodgeTimer <= 0 && ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetStamina() >= 10.f) {
 				//if you left click
 				if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+					//play the sound
+					if (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() > 0) {
+						mciSendString(m_sound[rand() % 2], NULL, 0, 0);
+					}
+
 					//show the animation
 					ECS::GetComponent<AnimationController>(3).Reset();
 					ECS::GetComponent<Transform>(3).SetPositionZ(45.f);
@@ -2773,6 +2930,9 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 									particle.push_back(Particle());
 									particle[particle.size() - 1].CreateParticle(1, bulletPos);
 								}
+								if (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() > 0) {
+									mciSendString(m_sound[rand() % 5 + 2], NULL, 0, 0);
+								}
 
 								ECS::GetComponent<Bullet>(i).SetSpark(true);
 							}
@@ -2789,6 +2949,9 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 								for (int i = 0; i < 5; i++) {
 									particle.push_back(Particle());
 									particle[particle.size() - 1].CreateParticle(1, bulletPos);
+								}
+								if (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() > 0) {
+									mciSendString(m_sound[rand() % 5 + 2], NULL, 0, 0);
 								}
 
 								ECS::GetComponent<Bullet>(i).SetSpark(true);
