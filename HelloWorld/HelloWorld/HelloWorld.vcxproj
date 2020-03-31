@@ -134,7 +134,6 @@
     <ClInclude Include="AnimationController.h" />
     <ClInclude Include="AnimationSystem.h" />
     <ClInclude Include="Bullet.h" />
-    <ClInclude Include="Credits.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="HelloWorld.h" />
     <ClInclude Include="BackEnd.h" />
@@ -148,7 +147,6 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GrainEffect.h" />
     <ClInclude Include="GreyscaleEffect.h" />
-    <ClInclude Include="Instructions.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Stats.h" />
     <ClInclude Include="HorizontalScroll.h" />
@@ -189,7 +187,6 @@
     <ClCompile Include="AnimationController.cpp" />
     <ClCompile Include="AnimationSystem.cpp" />
     <ClCompile Include="Bullet.cpp" />
-    <ClCompile Include="Credits.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="HelloWorld.cpp" />
     <ClCompile Include="BackEnd.cpp" />
@@ -203,7 +200,6 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GrainEffect.cpp" />
     <ClCompile Include="GreyscaleEffect.cpp" />
-    <ClCompile Include="Instructions.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Stats.cpp" />
     <ClCompile Include="HorizontalScroll.cpp" />

@@ -2643,10 +2643,7 @@ void Game::MouseMotion(SDL_MouseMotionEvent evnt)
 	if (m_activeScene == m_scenes[0]) {
 		vec2 mousePos = vec2(((BackEnd::GetWindowWidth() / 2.f) - evnt.x) / (float(BackEnd::GetWindowWidth()) / 1536.f), ((BackEnd::GetWindowHeight() / 2.f) - evnt.y) / (float(BackEnd::GetWindowHeight()) / 864.f));
 		std::cout<< mousePos.x<<"|"<<mousePos.y << std::endl;
-		if (m_instruct) {//instruction screen
-
-		}
-		else if (m_option) {//option screen
+		if (m_instruct|| m_option||m_abilities||m_credit) {//instruction,credit,option,abilities screen
 			if ((mousePos.x<630 && mousePos.x>-637) && (mousePos.y<-253 && mousePos.y>-391)) {//start button highlight
 				ECS::GetComponent<Transform>(18).SetPositionZ(100.f);
 			}
@@ -2728,8 +2725,48 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 		if (m_activeScene == m_scenes[0]) {
 			if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {//advance to loading screen
 				vec2 mousePos = vec2(((BackEnd::GetWindowWidth() / 2.f) - evnt.x) / (float(BackEnd::GetWindowWidth()) / 1536.f), ((BackEnd::GetWindowHeight() / 2.f) - evnt.y) / (float(BackEnd::GetWindowHeight()) / 864.f));
-				if (m_instruct) {//instruction screen
+				if (m_instruct || m_abilities || m_credit) {//instruction screen
+					if (m_instruct&&(mousePos.x<-215 && mousePos.x>-635) && (mousePos.y<-44 && mousePos.y>-231)) {
+						m_instruct = false;
+						m_abilities = true;
+						ECS::GetComponent<Transform>(15).SetPositionZ(-99.f);
+						ECS::GetComponent<Transform>(28).SetPositionZ(100.f);
 
+					}
+					if ((mousePos.x<630 && mousePos.x>-637) && (mousePos.y<-253 && mousePos.y>-391)) {//back to menu button 
+						m_option = false;
+						{//reset back to main menu
+							ECS::GetComponent<Transform>(1).SetPositionZ(0.f);
+							ECS::GetComponent<Transform>(2).SetPositionZ(100.f);
+							ECS::GetComponent<Transform>(3).SetPositionZ(99.f);
+							ECS::GetComponent<Transform>(4).SetPositionZ(0.f);
+							ECS::GetComponent<Transform>(5).SetPositionZ(100.f);
+							ECS::GetComponent<Transform>(6).SetPositionZ(-9.f);
+							ECS::GetComponent<Transform>(7).SetPositionZ(100.f);
+							ECS::GetComponent<Transform>(8).SetPositionZ(-9.f);
+							ECS::GetComponent<Transform>(9).SetPositionZ(100.f);
+							ECS::GetComponent<Transform>(10).SetPositionZ(9.f);
+							ECS::GetComponent<Transform>(11).SetPositionZ(100.f);
+							ECS::GetComponent<Transform>(12).SetPositionZ(99.f);
+							ECS::GetComponent<Transform>(13).SetPositionZ(100.f);
+							ECS::GetComponent<Transform>(14).SetPositionZ(99.f);
+						}
+						if (m_instruct) {
+							ECS::GetComponent<Transform>(15).SetPositionZ(-99.f);
+							m_instruct = false;
+						}
+						else if (m_abilities) {
+							ECS::GetComponent<Transform>(28).SetPositionZ(-99.f);
+							m_abilities = false;
+						}
+						else if (m_credit) {
+							ECS::GetComponent<Transform>(17).SetPositionZ(-99.f);
+							m_credit = false;
+						}
+						ECS::GetComponent<Transform>(18).SetPositionZ(-99.f);
+						ECS::GetComponent<Transform>(19).SetPositionZ(-99.f);
+
+					}
 				}
 				else if (m_option) {//option screen
 					if ((mousePos.x<-74 && mousePos.x>-256) && (mousePos.y<231 && mousePos.y>110)) {//volume down arrow
@@ -2740,14 +2777,14 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 						std::cout << "up" << std::endl;
 
 					}
-					if ((mousePos.x<-141 && mousePos.x>-241) && (mousePos.y<85 && mousePos.y>2)) {//high contrast on
+					if ((mousePos.x<-103 && mousePos.x>-217) && (mousePos.y<85 && mousePos.y>2)) {//high contrast on
 						std::cout << "on" << std::endl;
 						ECS::GetComponent<Transform>(20).SetPositionZ(-101.f);
 						ECS::GetComponent<Transform>(21).SetPositionZ(101.f);
 						ECS::GetComponent<Transform>(22).SetPositionZ(101.f);
 						ECS::GetComponent<Transform>(23).SetPositionZ(-101.f);
 					}
-					if ((mousePos.x<-475 && mousePos.x>-598) && (mousePos.y<85 && mousePos.y>-1)) {//high contrast off
+					if ((mousePos.x<-475 && mousePos.x>-598) && (mousePos.y<90 && mousePos.y>6)) {//high contrast off
 						std::cout << "off" << std::endl;
 						ECS::GetComponent<Transform>(20).SetPositionZ(101.f);
 						ECS::GetComponent<Transform>(21).SetPositionZ(-101.f);
@@ -2835,7 +2872,8 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 							ECS::GetComponent<Transform>(i).SetPositionZ(-101.f);
 						}
 						ECS::GetComponent<Transform>(15).SetPositionZ(100.f);
-
+						ECS::GetComponent<Transform>(18).SetPositionZ(101.f);
+						ECS::GetComponent<Transform>(19).SetPositionZ(101.f);	
 					}
 					if ((mousePos.x<127 && mousePos.x>-120) && (mousePos.y<-179 && mousePos.y>-229)) {//option
 						m_option = true;

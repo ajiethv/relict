@@ -309,7 +309,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<Transform>(collide);
 
 		//set file
-		std::string fileName = "empty.png";
+		std::string fileName = "instructscrn.png";
 
 		//set components
 		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 200);
@@ -358,42 +358,42 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		ECS::SetUpIdentifier(collide, bitHolder, "creditscrn");
 	}
 	{
-	//set the button for back button (18)
-	auto collide = ECS::CreateEntity();
+		//set the button for back button (18)
+		auto collide = ECS::CreateEntity();
 
-	//attach components
-	ECS::AttachComponent<Sprite>(collide);
-	ECS::AttachComponent<Transform>(collide);
+		//attach components
+		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<Transform>(collide);
 
-	//set file
-	std::string fileName = "backto.png";
+		//set file
+		std::string fileName = "backto.png";
 
-	//set components
-	ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 300, 97);
-	ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, -75.f, -100.f));
+		//set components
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 300, 97);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, -75.f, -100.f));
 
-	//set player
-	unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
-	ECS::SetUpIdentifier(collide, bitHolder, "backbutton");
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(collide, bitHolder, "backbutton");
 	}
 	{
-	//set the red hover effect for back button (19)
-	auto collide = ECS::CreateEntity();
+		//set the red hover effect for back button (19)
+		auto collide = ECS::CreateEntity();
 
-	//attach components
-	ECS::AttachComponent<Sprite>(collide);
-	ECS::AttachComponent<Transform>(collide);
+		//attach components
+		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<Transform>(collide);
 
-	//set file
-	std::string fileName = "backtored.png";
+		//set file
+		std::string fileName = "backtored.png";
 
-	//set components
-	ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 300, 97);
-	ECS::GetComponent<Transform>(collide).SetPosition(vec3(-0.5f, -75.f, -100.f));
+		//set components
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 300, 97);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-0.5f, -75.f, -100.f));
 
-	//set player
-	unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
-	ECS::SetUpIdentifier(collide, bitHolder, "backtored");
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(collide, bitHolder, "backtored");
 	}
 	{
 		//set the button for on button (20)
@@ -546,5 +546,24 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
 		ECS::SetUpIdentifier(collide, bitHolder, "windowred");
+	}
+	{
+		//set the abilities screen(28)
+		auto collide = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<Transform>(collide);
+
+		//set file
+		std::string fileName = "abilities.png";
+
+		//set components
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 200);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, -101.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
+		ECS::SetUpIdentifier(collide, bitHolder, "abilitiesscrn");
 	}
 }
