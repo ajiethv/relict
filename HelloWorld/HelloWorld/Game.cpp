@@ -892,21 +892,21 @@ bool Game::Run()
 			vec2 mousePos = vec2(((BackEnd::GetWindowWidth() / 2.f) - BackEnd::GetMotionEvent().x) / (float(BackEnd::GetWindowWidth()) / 1536.f), ((BackEnd::GetWindowHeight() / 2.f) - BackEnd::GetMotionEvent().y) / (float(BackEnd::GetWindowHeight()) / 864.f));
 
 			std::cout << mousePos.x << "|" << mousePos.y << std::endl;
-			if ((mousePos.x < 599 && mousePos.x>349) && (mousePos.y<-131 && mousePos.y>-296)) {//continue message
-				ECS::GetComponent<Transform>(13).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - 50, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 24, 100.f);
-				ECS::GetComponent<Transform>(14).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - 50, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 24, 101.f);
+			if ((mousePos.x < 664 && mousePos.x>425) && (mousePos.y<-173 && mousePos.y>-333)) {//continue message
+				ECS::GetComponent<Transform>(13).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - 60, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 30, 100.f);
+				ECS::GetComponent<Transform>(14).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - 60, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 30, 101.f);
 			}
 			else {
 				ECS::GetComponent<Transform>(14).SetPosition(-200.f, -59.f, -100.f);
-				ECS::GetComponent<Transform>(13).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - 50, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 24, 101.f);
+				ECS::GetComponent<Transform>(13).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - 60, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 30, 101.f);
 			}
-			if ((mousePos.x < -332 && mousePos.x>-588 ) && (mousePos.y<-128 && mousePos.y>-282)) {//quit message
-				ECS::GetComponent<Transform>(15).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + 80, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 24, 100.f);
-				ECS::GetComponent<Transform>(16).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + 80, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 24, 101.f);
+			if ((mousePos.x < -414 && mousePos.x>-656) && (mousePos.y<-175 && mousePos.y>-326)) {//quit message
+				ECS::GetComponent<Transform>(15).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + 90, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 30, 100.f);
+				ECS::GetComponent<Transform>(16).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + 90, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 30, 101.f);
 			}
 			else {
 				ECS::GetComponent<Transform>(16).SetPosition(-200.f, -59.f, -100.f);
-				ECS::GetComponent<Transform>(15).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + 80, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 24, 101.f);
+				ECS::GetComponent<Transform>(15).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + 90, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 30, 101.f);
 			}
 
 			//Update timer
@@ -2893,7 +2893,12 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 						m_abilities = true;
 						ECS::GetComponent<Transform>(15).SetPositionZ(-99.f);
 						ECS::GetComponent<Transform>(28).SetPositionZ(100.f);
-
+					}
+					if (m_abilities && (mousePos.x<743 && mousePos.x>548) && (mousePos.y<-83 && mousePos.y>-216)) {
+						m_instruct = true;
+						m_abilities = false;
+						ECS::GetComponent<Transform>(28).SetPositionZ(-99.f);
+						ECS::GetComponent<Transform>(15).SetPositionZ(100.f);
 					}
 					if ((mousePos.x<630 && mousePos.x>-637) && (mousePos.y<-253 && mousePos.y>-391)) {//back to menu button 
 						m_option = false;
@@ -3029,7 +3034,6 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 					}
 					if ((mousePos.x<185 && mousePos.x>-195) && (mousePos.y<-103 && mousePos.y>-147)) {//instruction
 						m_instruct = true;
-						std::cout << "instruct" << std::endl;
 						for (int i = 1; i < 15; i++) {
 							ECS::GetComponent<Transform>(i).SetPositionZ(-101.f);
 						}
@@ -3039,7 +3043,6 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 					}
 					if ((mousePos.x<127 && mousePos.x>-120) && (mousePos.y<-179 && mousePos.y>-229)) {//option
 						m_option = true;
-						std::cout << "option" << std::endl;
 						for (int i = 1; i < 16; i++) {
 							ECS::GetComponent<Transform>(i).SetPositionZ(-101.f);
 						}
@@ -3054,8 +3057,12 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 					}
 					if ((mousePos.x<122 && mousePos.x>-113) && (mousePos.y<-254 && mousePos.y>-307)) {//credits 
 						m_credit = true;
-						std::cout << "credit" << std::endl;
+						for (int i = 1; i < 28; i++) {
+							ECS::GetComponent<Transform>(i).SetPositionZ(-101.f);
+						}
 						ECS::GetComponent<Transform>(17).SetPositionZ(101.f);
+						ECS::GetComponent<Transform>(18).SetPositionZ(101.f);
+						ECS::GetComponent<Transform>(19).SetPositionZ(101.f);
 					}
 				}
 			}
