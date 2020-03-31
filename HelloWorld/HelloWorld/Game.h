@@ -125,7 +125,6 @@ private:
 	int m_bulletsMiss = 0; //the ammount of reflected bullets that miss
 	bool pause = false;
 	bool m_instruct = false;
-	bool m_abilities = false;
 	bool m_option = false;
 	bool m_credit = false;
 

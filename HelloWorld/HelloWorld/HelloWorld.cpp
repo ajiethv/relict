@@ -156,7 +156,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<Transform>(collide);
 
 		//set file
-		std::string fileName = "pauseS.png";
+		std::string fileName = "pause.png";
 
 		//set components
 		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200, 200);
