@@ -6,9 +6,7 @@ Window::Window(const std::string title, int windowWidth, int windowHeight, bool 
 	m_open = true;
 
 	//Create the window
-	m_window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowWidth, windowHeight, SDL_WINDOW_OPENGL);
-	//set fullscreen
-	//SDL_SetWindowFullscreen(m_window, SDL_WINDOW_FULLSCREEN);
+	m_window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHeight, SDL_WINDOW_OPENGL);
 
 	//change to 20% zoom
 	//clear = 0000, black = F444, red = FF10
@@ -152,7 +150,6 @@ void Window::SetWindowResizable(bool resizable)
 void Window::SetFullscreen(Uint32 flags)
 {
 	//Sets the window fullscreen flag
-	//SDL_WINDOW_FULLSCREEN
 	SDL_SetWindowFullscreen(m_window, m_fullscreen);
 	m_fullscreen = flags;
 }
@@ -161,6 +158,11 @@ Uint32 Window::GetFullscreen() const
 {
 	//Return window fullscreen flag
 	return m_fullscreen;
+}
+
+SDL_Window* Window::GetWindow()
+{
+	return m_window;
 }
 
 void Window::Close()

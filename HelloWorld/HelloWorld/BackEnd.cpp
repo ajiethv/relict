@@ -28,7 +28,6 @@ void BackEnd::InitBackEnd(std::string name)
 {
 	//Initializes SDL
 	InitSDL();
-	//1536 864
 	//Sets the backend window width, height, and aspect ratio
 	GetDesktopResolution(m_windowWidth, m_windowHeight);
 	m_aspectRatio = float(m_windowWidth) / float(m_windowHeight);
@@ -196,6 +195,22 @@ void BackEnd::ReshapeWindow(int w, int h, entt::registry * mainReg)
 	//Set values
 	mainReg->get<Camera>(EntityIdentifier::MainCamera()).SetWindowSize(vec2(float(m_windowWidth), float(m_windowHeight)));
 	mainReg->get<Camera>(EntityIdentifier::MainCamera()).Orthographic(m_aspectRatio, temp.x, temp.y, temp.z, temp.w, tempCam.GetNear(), tempCam.GetFar());
+}
+
+void BackEnd::SetWindowFullscreen(entt::registry * mainReg, SDL_Window *window)
+{
+	int width, height;
+	GetDesktopResolution(width, height);
+	SDL_SetWindowSize(window, width, height);
+	ReshapeWindow(width, height, mainReg);
+	SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+}
+
+void BackEnd::SetWindowBordered(entt::registry* mainReg, SDL_Window *window)
+{
+	SDL_SetWindowSize(window, 700, 700);
+	ReshapeWindow(700, 700, mainReg);
+	SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 }
 
 Window * BackEnd::GetWindow()

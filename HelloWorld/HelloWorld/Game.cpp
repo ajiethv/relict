@@ -107,6 +107,175 @@ bool Game::Run()
 			//mciSendString("setaudio music volume to 0", NULL, 0, 0);
 			mciSendString("play music repeat", NULL, 0, 0);
 
+			//adjust all sprites
+			for (int i = 1; i < 28; i++) {
+				std::string fileName;
+				float xPos, yPos;
+				float zPos = ECS::GetComponent<Transform>(i).GetPositionZ();
+				if (i == 1 || i == 4 || i == 15 || i == 16 || i == 17 || i == 28) {
+					if (i == 1) {
+						fileName = "title_screen.png";
+						xPos = 0.f;
+						yPos = 0.f;
+					}
+					else if (i == 4) {
+						fileName = "LoadScreenEmpty.png";
+						xPos = 0.f;
+						yPos = 0.f;
+					}
+					else if (i == 15) {
+						fileName = "instructscrn.png";
+						xPos = 0.f;
+						yPos = 0.f;
+					}
+					else if (i == 16) {
+						fileName = "optionscrn.png";
+						xPos = 0.f;
+						yPos = 0.f;
+					}
+					else if (i == 17) {
+						fileName = "empty.png";
+						xPos = 0.f;
+						yPos = 0.f;
+					}
+					else {
+						fileName = "abilities.png";
+						xPos = 0.f;
+						yPos = 0.f;
+					}
+					ECS::GetComponent<Sprite>(i).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), (i == 17) ? -200 : 200);
+				}
+				else if (i == 2 || i == 3 || i == 5 || i == 6) {
+					if (i == 2) {
+						fileName = "start.png";
+						xPos = 0.f;
+						yPos = 0.f;
+					}
+					else if (i == 3) {
+						fileName = "hoverstart.png";
+						xPos = 4.f / (16.f / 9.f) * BackEnd::GetAspectRatio();
+						yPos = 0.f;
+					}
+					else if (i == 5) {
+						fileName = "quit.png";
+						xPos = 0.f;
+						yPos = -85.f;
+					}
+					else {
+						fileName = "quitred.png";
+						xPos = 0.f;
+						yPos = -85.f;
+					}
+					ECS::GetComponent<Sprite>(i).LoadSprite(fileName, 84 * BackEnd::GetAspectRatio(), 50);
+				}
+				else if (i == 7 || i == 8) {
+					if (i == 7) {
+						fileName = "tutorialno.png";
+						xPos = 4.f / (16.f / 9.f) * BackEnd::GetAspectRatio();
+						yPos = -15.f;
+					}
+					else {
+						fileName = "tutorialcheck.png";
+						xPos = 4.f / (16.f / 9.f) * BackEnd::GetAspectRatio();
+						yPos = -15.f;
+					}
+					ECS::GetComponent<Sprite>(i).LoadSprite(fileName, 42 * BackEnd::GetAspectRatio(), 25);
+				}
+				else if (i == 9 || i == 10 || i == 11 || i == 12 || i == 13 || i == 14) {
+					if (i == 9) {
+						fileName = "Instruct.png";
+						xPos = 0.f;
+						yPos = -30.f;
+					}
+					else if (i == 10) {
+						fileName = "Instructred.png";
+						xPos = -0.5f / (16.f / 9.f) * BackEnd::GetAspectRatio();
+						yPos = -30.f;
+					}
+					else if (i == 11) {
+						fileName = "option.png";
+						xPos = 0.f;
+						yPos = -47.f;
+					}
+					else if (i == 12) {
+						fileName = "optionred.png";
+						xPos = -0.5f / (16.f / 9.f) * BackEnd::GetAspectRatio();
+						yPos = -47.f;
+					}
+					else if (i == 13) {
+						fileName = "credits.png";
+						xPos = 0.f;
+						yPos = -65.f;
+					}
+					else {
+						fileName = "creditsred.png";
+						xPos = -0.5f / (16.f / 9.f) * BackEnd::GetAspectRatio();
+						yPos = -65.f;
+					}
+					ECS::GetComponent<Sprite>(i).LoadSprite(fileName, 70 * BackEnd::GetAspectRatio(), 55);
+				}
+				else if (i == 18 || i == 19) {
+					if (i == 18) {
+						fileName = "backto.png";
+						xPos = 0.f;
+						yPos = -75.f;
+					}
+					else {
+						fileName = "backtored.png";
+						xPos = -0.5f / (16.f / 9.f) * BackEnd::GetAspectRatio();
+						yPos = -75.f;
+					}
+					ECS::GetComponent<Sprite>(i).LoadSprite(fileName, 169 * BackEnd::GetAspectRatio(), 97);
+				}
+				else if (i == 20 || i == 21 || i == 22 || i == 23) {
+					if (i == 20) {
+						fileName = "on.png";
+						xPos = 37.f / (16.f / 9.f) * BackEnd::GetAspectRatio();
+						yPos = 10.f;
+					}
+					else if (i == 21) {
+						fileName = "onred.png";
+						xPos = 37.f / (16.f / 9.f) * BackEnd::GetAspectRatio();
+						yPos = 10.f;
+					}
+					else if (i == 22) {
+						fileName = "off.png";
+						xPos = 125.f / (16.f / 9.f) * BackEnd::GetAspectRatio();
+						yPos = 10.f;
+					}
+					else {
+						fileName = "offred.png";
+						xPos = 125.f / (16.f / 9.f) * BackEnd::GetAspectRatio();
+						yPos = 10.f;
+					}
+					ECS::GetComponent<Sprite>(i).LoadSprite(fileName, 28 * BackEnd::GetAspectRatio(), 25);
+				}
+				else {
+					if (i == 24) {
+						fileName = "full.png";
+						xPos = -85.f / (16.f / 9.f) * BackEnd::GetAspectRatio();
+						yPos = -35.f;
+					}
+					else if (i == 25) {
+						fileName = "fullred.png";
+						xPos = -85.f / (16.f / 9.f) * BackEnd::GetAspectRatio();
+						yPos = -35.f;
+					}
+					else if (i == 26) {
+						fileName = "window.png";
+						xPos = 85.f / (16.f / 9.f) * BackEnd::GetAspectRatio();
+						yPos = -35.f;
+					}
+					else {
+						fileName = "windowred.png";
+						xPos = 85.f / (16.f / 9.f) * BackEnd::GetAspectRatio();
+						yPos = -35.f;
+					}
+					ECS::GetComponent<Sprite>(i).LoadSprite(fileName, 112 * BackEnd::GetAspectRatio(), 80);
+				}
+				ECS::GetComponent<Transform>(i).SetPosition(xPos, yPos, zPos);
+			}
+
 			//Update timer
 			Timer::Update();
 
@@ -2582,6 +2751,9 @@ void Game::KeyboardHold()
 		std::string fileName = "Stamina.png";
 		ECS::GetComponent<Sprite>(9).LoadSprite(fileName, (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetStamina() * 3.f / 5.f) * BackEnd::GetAspectRatio(), 6);
 		ECS::GetComponent<Transform>(18).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - 30.f * BackEnd::GetAspectRatio() - ((BackEnd::GetAspectRatio() - 1) * 25), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 54.f, 89.f);
+		fileName = "barback.png";
+		ECS::GetComponent<Sprite>(18).LoadSprite(fileName, 32 * BackEnd::GetAspectRatio(), 9);
+		ECS::GetComponent<Sprite>(20).LoadSprite(fileName, 32 * BackEnd::GetAspectRatio(), 9);
 
 		//show enemy health
 		fileName = "Health.png";
@@ -2815,16 +2987,16 @@ void Game::MouseMotion(SDL_MouseMotionEvent evnt)
 		}
 		else { 
 			if ((mousePos.x<250 && mousePos.x>-297) && (mousePos.y<48 && mousePos.y>-40)) {//start button highlight
-				ECS::GetComponent<Transform>(3).SetPosition(vec3(4.f, 0.f, 101.f));
+				ECS::GetComponent<Transform>(3).SetPositionZ(101.f);
 			}
 			else {
-				ECS::GetComponent<Transform>(3).SetPosition(vec3(4.f, 0.f, 100.f));
+				ECS::GetComponent<Transform>(3).SetPositionZ(100.f);
 			}
 			if ((mousePos.x<164 && mousePos.x>-131) && (mousePos.y<-345 && mousePos.y>-393)) {//quit button highlight
-				ECS::GetComponent<Transform>(6).SetPosition(vec3(0.f, -85.f, 101.f));
+				ECS::GetComponent<Transform>(6).SetPositionZ(101.f);
 			}
 			else {
-				ECS::GetComponent<Transform>(6).SetPosition(vec3(0.f, -85.f, -100.f));
+				ECS::GetComponent<Transform>(6).SetPositionZ(-100.f);
 			}
 			if ((mousePos.x<185 && mousePos.x>-195) && (mousePos.y<-103 && mousePos.y>-147)) {//instruction button highlight
 				ECS::GetComponent<Transform>(10).SetPositionZ(101.f);
@@ -2888,13 +3060,13 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 			if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {//advance to loading screen
 				vec2 mousePos = vec2(((BackEnd::GetWindowWidth() / 2.f) - evnt.x) / (float(BackEnd::GetWindowWidth()) / 1536.f), ((BackEnd::GetWindowHeight() / 2.f) - evnt.y) / (float(BackEnd::GetWindowHeight()) / 864.f));
 				if (m_instruct || m_abilities || m_credit) {//instruction screen
-					if (m_instruct&&(mousePos.x<-215 && mousePos.x>-635) && (mousePos.y<-44 && mousePos.y>-231)) {
+					if (m_instruct && (mousePos.x<-215 && mousePos.x>-635) && (mousePos.y<-44 && mousePos.y>-231)) {
 						m_instruct = false;
 						m_abilities = true;
 						ECS::GetComponent<Transform>(15).SetPositionZ(-99.f);
 						ECS::GetComponent<Transform>(28).SetPositionZ(100.f);
 					}
-					if (m_abilities && (mousePos.x<743 && mousePos.x>548) && (mousePos.y<-83 && mousePos.y>-216)) {
+					if (m_abilities && (mousePos.x < 743 && mousePos.x>548) && (mousePos.y<-83 && mousePos.y>-216)) {
 						m_instruct = true;
 						m_abilities = false;
 						ECS::GetComponent<Transform>(28).SetPositionZ(-99.f);
@@ -2936,38 +3108,42 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 					}
 				}
 				else if (m_option) {//option screen
-					if ((mousePos.x<-74 && mousePos.x>-256) && (mousePos.y<231 && mousePos.y>110)) {//volume down arrow
-						std::cout << "down" << std::endl;
-
+					if ((mousePos.x<-74 && mousePos.x>-256) && (mousePos.y < 231 && mousePos.y>110)) {//volume down arrow
+						if (m_volume > 0) m_volume -= 10;
+						mciSendString(("setaudio music volume to " + std::to_string(m_volume)).c_str(), NULL, 0, 0);
 					}
 					if ((mousePos.x<-447 && mousePos.x>-660) && (mousePos.y<230 && mousePos.y>-110)) {//volume up arrow
-						std::cout << "up" << std::endl;
-
+						if (m_volume < 100) m_volume += 10;
+						mciSendString(("setaudio music volume to " + std::to_string(m_volume)).c_str(), NULL, 0, 0);
 					}
-					if ((mousePos.x<-103 && mousePos.x>-217) && (mousePos.y<85 && mousePos.y>2)) {//high contrast on
-						std::cout << "on" << std::endl;
+					if ((mousePos.x<-103 && mousePos.x>-217) && (mousePos.y < 85 && mousePos.y>2)) {//high contrast on
+						m_highContrast = true;
 						ECS::GetComponent<Transform>(20).SetPositionZ(-101.f);
 						ECS::GetComponent<Transform>(21).SetPositionZ(101.f);
 						ECS::GetComponent<Transform>(22).SetPositionZ(101.f);
 						ECS::GetComponent<Transform>(23).SetPositionZ(-101.f);
 					}
-					if ((mousePos.x<-475 && mousePos.x>-598) && (mousePos.y<90 && mousePos.y>6)) {//high contrast off
-						std::cout << "off" << std::endl;
+					if ((mousePos.x<-475 && mousePos.x>-598) && (mousePos.y < 90 && mousePos.y>6)) {//high contrast off
+						m_highContrast = false;
 						ECS::GetComponent<Transform>(20).SetPositionZ(101.f);
 						ECS::GetComponent<Transform>(21).SetPositionZ(-101.f);
 						ECS::GetComponent<Transform>(22).SetPositionZ(-101.f);
 						ECS::GetComponent<Transform>(23).SetPositionZ(101.f);
 
 					}
-					if ((mousePos.x<677 && mousePos.x>-30) && (mousePos.y<-115 && mousePos.y>-206)) {//fullscreen view
-						std::cout << "full" << std::endl;
+					if ((mousePos.x<677 && mousePos.x>-30) && (mousePos.y<-115 && mousePos.y>-206) && !m_fullscreen) {//fullscreen view
+						m_fullscreen = true;
+						BackEnd::SetWindowFullscreen(m_register, m_window->GetWindow());
+						
 						ECS::GetComponent<Transform>(24).SetPositionZ(-101.f);
 						ECS::GetComponent<Transform>(25).SetPositionZ(101.f);
 						ECS::GetComponent<Transform>(26).SetPositionZ(101.f);
 						ECS::GetComponent<Transform>(27).SetPositionZ(-101.f);
 					}
-					if ((mousePos.x<-57 && mousePos.x>-678) && (mousePos.y<-101 && mousePos.y>-201)) {//windowed view
-						std::cout << "wind" << std::endl;
+					if ((mousePos.x<-57 && mousePos.x>-678) && (mousePos.y<-101 && mousePos.y>-201) && m_fullscreen) {//windowed view
+						m_fullscreen = false;
+						BackEnd::SetWindowBordered(m_register, m_window->GetWindow());
+						
 						ECS::GetComponent<Transform>(24).SetPositionZ(101.f);
 						ECS::GetComponent<Transform>(25).SetPositionZ(-101.f);
 						ECS::GetComponent<Transform>(26).SetPositionZ(-101.f);
@@ -2994,7 +3170,6 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 						ECS::GetComponent<Transform>(16).SetPositionZ(-100.f);
 						for (int i = 18; i <= 27; i++) {
 							ECS::GetComponent<Transform>(i).SetPositionZ(-101.f);
-
 						}
 					}
 				}
@@ -3039,7 +3214,7 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 						}
 						ECS::GetComponent<Transform>(15).SetPositionZ(100.f);
 						ECS::GetComponent<Transform>(18).SetPositionZ(101.f);
-						ECS::GetComponent<Transform>(19).SetPositionZ(101.f);	
+						ECS::GetComponent<Transform>(19).SetPositionZ(101.f);
 					}
 					if ((mousePos.x<127 && mousePos.x>-120) && (mousePos.y<-179 && mousePos.y>-229)) {//option
 						m_option = true;
@@ -3049,11 +3224,22 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 						ECS::GetComponent<Transform>(16).SetPositionZ(0.f);
 						ECS::GetComponent<Transform>(18).SetPositionZ(101.f);
 						ECS::GetComponent<Transform>(19).SetPositionZ(101.f);
-						ECS::GetComponent<Transform>(20).SetPositionZ(101.f);
-						ECS::GetComponent<Transform>(23).SetPositionZ(101.f);
-						ECS::GetComponent<Transform>(25).SetPositionZ(101.f);
-						ECS::GetComponent<Transform>(26).SetPositionZ(101.f);
-
+						if (!m_highContrast) {
+							ECS::GetComponent<Transform>(20).SetPositionZ(101.f);
+							ECS::GetComponent<Transform>(23).SetPositionZ(101.f);
+						}
+						else {
+							ECS::GetComponent<Transform>(21).SetPositionZ(101.f);
+							ECS::GetComponent<Transform>(22).SetPositionZ(101.f);
+						}
+						if (m_fullscreen) {
+							ECS::GetComponent<Transform>(25).SetPositionZ(101.f);
+							ECS::GetComponent<Transform>(26).SetPositionZ(101.f);
+						}
+						else {
+							ECS::GetComponent<Transform>(24).SetPositionZ(101.f);
+							ECS::GetComponent<Transform>(27).SetPositionZ(101.f);
+						}
 					}
 					if ((mousePos.x<122 && mousePos.x>-113) && (mousePos.y<-254 && mousePos.y>-307)) {//credits 
 						m_credit = true;

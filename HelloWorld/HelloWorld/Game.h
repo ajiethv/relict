@@ -124,6 +124,8 @@ private:
 	int m_bulletsHit = 0; //the ammount of reflected bullets that hit
 	int m_bulletsMiss = 0; //the ammount of reflected bullets that miss
 	int m_volume = 100; //sound and music volume
+	bool m_fullscreen = true;
+	bool m_highContrast = false;
 	bool pause = false;
 	bool m_instruct = false;
 	bool m_abilities = false;

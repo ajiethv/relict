@@ -44,7 +44,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "title_screen.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(title).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 200);
+		ECS::GetComponent<Sprite>(title).LoadSprite(fileName, 200 * aspectRatio, 200);
 		ECS::GetComponent<Transform>(title).SetPosition(vec3(0.f, 0.f, 0.f));
 
 		//set player
@@ -63,7 +63,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "start.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 150, 50);
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 84 * aspectRatio, 50);
 		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, 100.f));
 
 		//set player
@@ -82,8 +82,8 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "hoverstart.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 150, 50);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(4.f, 0.f, -100.f));
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 84 * aspectRatio, 50);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(4.f / (16.f / 9.f) * aspectRatio, 0.f, -100.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -103,7 +103,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "LoadScreenEmpty.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(LoadScreen).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 200);
+		ECS::GetComponent<Sprite>(LoadScreen).LoadSprite(fileName, 200 * aspectRatio, 200);
 		ECS::GetComponent<Transform>(LoadScreen).SetPosition(vec3(0.f, 0.f, 0.f));
 
 		//set load screen
@@ -122,7 +122,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "quit.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 150, 50);
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 84 * aspectRatio, 50);
 		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, -85.f, 100.f));
 
 		//set player
@@ -141,8 +141,8 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "quitred.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 150, 50);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(4.f, -85.f, -100.f));
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 84 * aspectRatio, 50);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, -85.f, -100.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -160,8 +160,8 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "tutorialno.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 75, 25);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(4.f, -15.f, 100.f));
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 42 * aspectRatio, 25);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(4.f / (16.f / 9.f) * aspectRatio, -15.f, 100.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -179,8 +179,8 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "tutorialcheck.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 75, 25);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(4.f, -15.f, -100.f));
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 42 * aspectRatio, 25);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(4.f / (16.f / 9.f) * aspectRatio, -15.f, -100.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -198,7 +198,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "Instruct.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 125, 55);
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 70 * aspectRatio, 55);
 		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, -30.f, 100.f));
 
 		//set player
@@ -217,8 +217,8 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "Instructred.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 125, 55);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-0.5f, -30.f, 99.f));
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 70 * aspectRatio, 55);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-0.5f / (16.f / 9.f) * aspectRatio, -30.f, 99.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -236,7 +236,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "option.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 125, 55);
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 70 * aspectRatio, 55);
 		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, -47.f, 100.f));
 
 		//set player
@@ -255,8 +255,8 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "optionred.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 125, 55);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-0.5f, -47.f, 99.f));
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 70 * aspectRatio, 55);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-0.5f / (16.f / 9.f) * aspectRatio, -47.f, 99.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -274,7 +274,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "credits.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 125, 55);
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 70 * aspectRatio, 55);
 		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, -65.f, 100.f));
 
 		//set player
@@ -293,8 +293,8 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "creditsred.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 125, 55);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-0.5f, -65.f, 99.f));
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 70 * aspectRatio, 55);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-0.5f / (16.f / 9.f) * aspectRatio, -65.f, 99.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -312,7 +312,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "instructscrn.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 200);
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200 * aspectRatio, 200);
 		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, -101.f));
 
 		//set player
@@ -331,7 +331,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "optionscrn.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 200);
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200 * aspectRatio, 200);
 		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, -101.f));
 
 		//set player
@@ -350,7 +350,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "empty.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), -200);
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200 * aspectRatio, -200);
 		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, 101.f));
 
 		//set player
@@ -369,7 +369,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "backto.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 300, 97);
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 169 * aspectRatio, 97);
 		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, -75.f, -100.f));
 
 		//set player
@@ -388,8 +388,8 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "backtored.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 300, 97);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-0.5f, -75.f, -100.f));
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 169 * aspectRatio, 97);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-0.5f / (16.f / 9.f) * aspectRatio, -75.f, -100.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -407,8 +407,8 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "on.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 50, 25);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(37.f, 10.f, -100.f));
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 28 * aspectRatio, 25);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(37.f / (16.f / 9.f) * aspectRatio, 10.f, -100.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -426,8 +426,8 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "onred.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 50, 25);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(37.f, 10.f, -100.f));
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 28 * aspectRatio, 25);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(37.f / (16.f / 9.f) * aspectRatio, 10.f, -100.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -445,8 +445,8 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "off.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 50, 25);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(125.f, 10.f, -100.f));
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 28 * aspectRatio, 25);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(125.f / (16.f / 9.f) * aspectRatio, 10.f, -100.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -464,8 +464,8 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "offred.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 50, 25);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(125.f, 10.f, -100.f));
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 28 * aspectRatio, 25);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(125.f / (16.f / 9.f) * aspectRatio, 10.f, -100.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -483,8 +483,8 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "full.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200, 80);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-85.f, -35.f, -100.f));
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 112 * aspectRatio, 80);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-85.f / (16.f / 9.f) * aspectRatio, -35.f, -100.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -502,8 +502,8 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "fullred.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200, 80);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-85.f, -35.f, -100.f));
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 112 * aspectRatio, 80);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-85.f / (16.f / 9.f) * aspectRatio, -35.f, -100.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -521,8 +521,8 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "window.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200, 80);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(85.f, -35.f, -100.f));
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 112 * aspectRatio, 80);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(85.f / (16.f / 9.f) * aspectRatio, -35.f, -100.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -540,8 +540,8 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "windowred.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200, 80);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(85.f, -35.f, -100.f));
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 112 * aspectRatio, 80);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(85.f / (16.f / 9.f) * aspectRatio, -35.f, -100.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -559,7 +559,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "abilities.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), 200);
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200 * aspectRatio, 200);
 		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, -101.f));
 
 		//set player

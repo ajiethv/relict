@@ -56,6 +56,10 @@ public:
 	//Reshapes the window
 	//*Happens then WINDOW_EVENT_RESHAPE event is polled
 	static void ReshapeWindow(int w, int h, entt::registry* mainReg);
+	//sets the window to fullscreen 
+	static void SetWindowFullscreen(entt::registry* mainReg, SDL_Window *window);
+	//sets the window to bordered
+	static void SetWindowBordered(entt::registry* mainReg, SDL_Window* window);
 
 	//Getters
 	static Window* GetWindow();

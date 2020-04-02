@@ -38,6 +38,8 @@ public:
 	void SetFullscreen(Uint32 flags);
 	//Grabs whether or not the window is fullscreen
 	Uint32 GetFullscreen() const;
+	//returns the window (as an SDL_Window)
+	SDL_Window* GetWindow();
 
 	//Closes the window
 	void Close();
