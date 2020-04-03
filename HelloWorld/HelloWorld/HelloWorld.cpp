@@ -129,12 +129,15 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 
 		//set file
 		std::string fileName;
-		int randNum = rand() % 2;
+		int randNum = rand() % 3;
 		if (randNum == 0) {
 			fileName = "map.png";
 		}
-		else {
+		else if (randNum == 1) {
 			fileName = "wasteland.png";
+		}
+		else {
+			fileName = "sakura.png";
 		}
 
 		//set components

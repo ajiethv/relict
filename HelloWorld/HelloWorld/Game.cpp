@@ -104,7 +104,7 @@ bool Game::Run()
 			//play music
 			mciSendString("open assets\\music\\menutheme.mp3 type mpegvideo alias music", NULL, 0, 0);
 			mciSendString("quality music audio", NULL, 0, 0);
-			//mciSendString("setaudio music volume to 0", NULL, 0, 0);
+			mciSendString(("setaudio music volume to " + std::to_string(m_volume)).c_str(), NULL, 0, 0);
 			mciSendString("play music repeat", NULL, 0, 0);
 
 			//adjust all sprites
