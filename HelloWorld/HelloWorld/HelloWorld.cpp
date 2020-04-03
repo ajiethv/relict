@@ -284,7 +284,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "deathscreen.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(title).LoadSprite(fileName, 225, 125);
+		ECS::GetComponent<Sprite>(title).LoadSprite(fileName, 225.f / (16.f / 9.f) * aspectRatio, 125);
 		ECS::GetComponent<Transform>(title).SetPosition(vec3(0.f, 0.f, -110.f));
 
 		//set player
@@ -303,7 +303,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "fight.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 75, 50);
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 75.f / (16.f / 9.f) * aspectRatio, 50);
 		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-200.f, -59.f, -100.f));
 
 		//set player
@@ -322,7 +322,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "fightred.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 75, 50);
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 75.f / (16.f / 9.f) * aspectRatio, 50);
 		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-200.f, -59.f, -100.f));
 
 		//set player
@@ -341,7 +341,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "fade.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 75, 50);
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 75.f / (16.f / 9.f) * aspectRatio, 50);
 		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-200.f, -59.f, -100.f));
 
 		//set player
@@ -360,7 +360,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "fadered.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 75, 50);
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 75.f / (16.f / 9.f) * aspectRatio, 50);
 		ECS::GetComponent<Transform>(collide).SetPosition(vec3(-200.f, -59.f, -100.f));
 
 		//set player
@@ -465,7 +465,7 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "score.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(title).LoadSprite(fileName, 100, 40);
+		ECS::GetComponent<Sprite>(title).LoadSprite(fileName, 100.f / (16.f / 9.f) * aspectRatio, 40);
 		ECS::GetComponent<Transform>(title).SetPosition(vec3(0.f, 0.f, -110.f));
 
 		//set player

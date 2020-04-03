@@ -55,6 +55,11 @@ void Particle::CreateParticle(int type, vec2 position, vec2 direction)
 	ECS::GetComponent<VerticalScroll>(EntityIdentifier::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()));
 }
 
+void Particle::DeleteParticle()
+{
+	ECS::DestroyEntity(m_particle);
+}
+
 int Particle::GetParticle() const
 {
 	return m_particle;

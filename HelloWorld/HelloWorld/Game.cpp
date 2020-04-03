@@ -828,6 +828,7 @@ bool Game::Run()
 			}
 		}
 
+		int finalScore = 0, accuracyMult = 0, bossMult = 0;
 		while (m_window->isOpen() && m_activeScene == m_scenes[1] && ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() <= 0) {
 			//calculate final score
 			if (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() == 0) {
@@ -847,6 +848,9 @@ bool Game::Run()
 					m_enemiesKilled /= 10;
 				}
 				for (int i = 0; i < digits.size(); i++) {
+					finalScore++;
+					accuracyMult++;
+					bossMult++;
 					//create the number sprite
 					{
 						//set animation file
@@ -881,7 +885,7 @@ bool Game::Run()
 
 						//set components
 						ECS::GetComponent<Sprite>(number).LoadSprite(fileName, 3, 5, true, &animController);
-						ECS::GetComponent<Transform>(number).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + 20.f + ((digits.size() * 3.f) - (3.f * i)), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 13.f, 100.2f);
+						ECS::GetComponent<Transform>(number).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (20.f / (16.f / 9.f) * BackEnd::GetAspectRatio()) + ((digits.size() * 3.f) - (3.f * i)), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 13.f, 100.2f);
 
 						//set number
 						unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::AnimationBit();
@@ -898,6 +902,8 @@ bool Game::Run()
 					accuracy /= 10;
 				}
 				for (int i = 0; i < digits.size(); i++) {
+					finalScore++;
+					bossMult++;
 					//create the number sprite
 					{
 						//set animation file
@@ -932,7 +938,7 @@ bool Game::Run()
 
 						//set components
 						ECS::GetComponent<Sprite>(number).LoadSprite(fileName, 3, 5, true, &animController);
-						ECS::GetComponent<Transform>(number).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + 22.f + ((digits.size() * 5.f) - (5.f * i)), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 7.f, 100.2f);
+						ECS::GetComponent<Transform>(number).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (22.f / (16.f / 9.f) * BackEnd::GetAspectRatio()) + ((digits.size() * 5.f) - (5.f * i)), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 7.f, 100.2f);
 
 						//set number
 						unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::AnimationBit();
@@ -949,6 +955,7 @@ bool Game::Run()
 					m_bossesKilled /= 10;
 				}
 				for (int i = 0; i < digits.size(); i++) {
+					finalScore++;
 					//create the number sprite
 					{
 						//set animation file
@@ -983,7 +990,7 @@ bool Game::Run()
 
 						//set components
 						ECS::GetComponent<Sprite>(number).LoadSprite(fileName, 3, 5, true, &animController);
-						ECS::GetComponent<Transform>(number).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + 22.f + ((digits.size() * 5.f) - (5.f * i)), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 1.f, 100.2f);
+						ECS::GetComponent<Transform>(number).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (22.f / (16.f / 9.f) * BackEnd::GetAspectRatio()) + ((digits.size() * 5.f) - (5.f * i)), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 1.f, 100.2f);
 
 						//set number
 						unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::AnimationBit();
@@ -1035,7 +1042,7 @@ bool Game::Run()
 
 						//set components
 						ECS::GetComponent<Sprite>(number).LoadSprite(fileName, 4, 8, true, &animController);
-						ECS::GetComponent<Transform>(number).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + 10.f + ((digits.size() * 5.f) - (5.f * i)), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 10.f, 100.2f);
+						ECS::GetComponent<Transform>(number).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (14.f / (16.f / 9.f) * BackEnd::GetAspectRatio()) + ((digits.size() * 5.f) - (5.f * i)), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 10.f, 100.2f);
 
 						//set number
 						unsigned int bitHolder = EntityIdentifier::SpriteBit() | EntityIdentifier::TransformBit() | EntityIdentifier::AnimationBit();
@@ -1058,24 +1065,44 @@ bool Game::Run()
 			ECS::GetComponent<Transform>(12).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY(), 100.f);
 			ECS::GetComponent<Transform>(21).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 5, 100.1f);
 
+			fileName = "score.png";
+			ECS::GetComponent<Sprite>(21).LoadSprite(fileName, 100.f / (16.f / 9.f) * BackEnd::GetAspectRatio(), 40);
+			fileName = "deathscreen.png";
+			ECS::GetComponent<Sprite>(12).LoadSprite(fileName, 225.f / (16.f / 9.f) * BackEnd::GetAspectRatio(), 125);
+			for (int i = 13; i <= 16; i++) {
+				if (i == 13) fileName = "fight.png";
+				else if (i == 14) fileName = "fightred.png";
+				else if (i == 15) fileName = "fade.png";
+				else fileName = "fadered.png";
+				ECS::GetComponent<Sprite>(i).LoadSprite(fileName, 75.f / (16.f / 9.f) * BackEnd::GetAspectRatio(), 50);
+			}
+			fileName = "RedNumber.png";
+			for (int i = 0; i < m_scoreNumberSprite.size(); i++) {
+				ECS::GetComponent<Sprite>(m_scoreNumberSprite[i]).LoadSprite(fileName, (i >= finalScore) ? 4 : 3, (i >= finalScore) ? 8 : 5);
+				if (i >= finalScore) ECS::GetComponent<Transform>(m_scoreNumberSprite[i]).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (14.f / (16.f / 9.f) * BackEnd::GetAspectRatio()) + ((((m_scoreNumberSprite.size() - 1 - finalScore) * 5.f) - (5.f * (i - finalScore))) / (16.f / 9.f) * BackEnd::GetAspectRatio()), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 10.f, 100.2f);
+				else if (i >= bossMult) ECS::GetComponent<Transform>(m_scoreNumberSprite[i]).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (22.f / (16.f / 9.f) * BackEnd::GetAspectRatio()) + ((((finalScore - bossMult) * 5.f) - (5.f * (i - bossMult))) / (16.f / 9.f) * BackEnd::GetAspectRatio()), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 1.f, 100.2f);
+				else if (i >= accuracyMult) ECS::GetComponent<Transform>(m_scoreNumberSprite[i]).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (22.f / (16.f / 9.f) * BackEnd::GetAspectRatio()) + ((((bossMult - accuracyMult) * 5.f) - (5.f * (i - accuracyMult))) / (16.f / 9.f) * BackEnd::GetAspectRatio()), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 7.f, 100.2f);
+				else ECS::GetComponent<Transform>(m_scoreNumberSprite[i]).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (20.f / (16.f / 9.f) * BackEnd::GetAspectRatio()) + (((accuracyMult * 3.f) - (3.f * i)) / (16.f / 9.f) * BackEnd::GetAspectRatio()), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() + 13.f, 100.2f);
+			}
+
 			vec2 mousePos = vec2(((BackEnd::GetWindowWidth() / 2.f) - BackEnd::GetMotionEvent().x) / (float(BackEnd::GetWindowWidth()) / 1536.f), ((BackEnd::GetWindowHeight() / 2.f) - BackEnd::GetMotionEvent().y) / (float(BackEnd::GetWindowHeight()) / 864.f));
 
 			std::cout << mousePos.x << "|" << mousePos.y << std::endl;
 			if ((mousePos.x < 664 && mousePos.x>425) && (mousePos.y<-173 && mousePos.y>-333)) {//continue message
-				ECS::GetComponent<Transform>(13).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - 60, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 30, 100.f);
-				ECS::GetComponent<Transform>(14).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - 60, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 30, 101.f);
+				ECS::GetComponent<Transform>(13).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - (60.f / (16.f / 9.f) * BackEnd::GetAspectRatio()), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 30, 100.f);
+				ECS::GetComponent<Transform>(14).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - (60.f / (16.f / 9.f) * BackEnd::GetAspectRatio()), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 30, 101.f);
 			}
 			else {
-				ECS::GetComponent<Transform>(14).SetPosition(-200.f, -59.f, -100.f);
-				ECS::GetComponent<Transform>(13).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - 60, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 30, 101.f);
+				ECS::GetComponent<Transform>(14).SetPosition(-200.f / (16.f / 9.f) * BackEnd::GetAspectRatio(), -59.f, -100.f);
+				ECS::GetComponent<Transform>(13).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() - (60.f / (16.f / 9.f) * BackEnd::GetAspectRatio()), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 30, 101.f);
 			}
 			if ((mousePos.x < -414 && mousePos.x>-656) && (mousePos.y<-175 && mousePos.y>-326)) {//quit message
-				ECS::GetComponent<Transform>(15).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + 90, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 30, 100.f);
-				ECS::GetComponent<Transform>(16).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + 90, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 30, 101.f);
+				ECS::GetComponent<Transform>(15).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (90.f / (16.f / 9.f) * BackEnd::GetAspectRatio()), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 30, 100.f);
+				ECS::GetComponent<Transform>(16).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (90.f / (16.f / 9.f) * BackEnd::GetAspectRatio()), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 30, 101.f);
 			}
 			else {
-				ECS::GetComponent<Transform>(16).SetPosition(-200.f, -59.f, -100.f);
-				ECS::GetComponent<Transform>(15).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + 90, ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 30, 101.f);
+				ECS::GetComponent<Transform>(16).SetPosition(-200.f / (16.f / 9.f) * BackEnd::GetAspectRatio(), -59.f, -100.f);
+				ECS::GetComponent<Transform>(15).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() + (90.f / (16.f / 9.f) * BackEnd::GetAspectRatio()), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY() - 30, 101.f);
 			}
 
 			//Update timer
@@ -1094,7 +1121,7 @@ bool Game::Run()
 
 			if (Input::m_windowFocus) {
 				if (Input::GetKeyUp(Key::Escape) || ((SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT))
-					&& ((mousePos.x < -332 && mousePos.x>-588) && (mousePos.y<-128 && mousePos.y>-282)))){//quit message
+					&& ((mousePos.x < -414 && mousePos.x>-656) && (mousePos.y<-175 && mousePos.y>-326)))){//quit message
 					//reset everything
 					ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetHealth(3.f);
 					ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetStamina(50.f);
@@ -1144,6 +1171,10 @@ bool Game::Run()
 					for (int i = 0; i < 8; i++) {
 						m_spawnPoint[i] = 0;
 					}
+					for (Particle x : particle) {
+						x.DeleteParticle();
+					}
+					particle.clear();
 					m_offscreenEnemyPos.clear();
 					m_removeEntity.clear();
 					m_offscreenBullet.clear();
@@ -1171,7 +1202,7 @@ bool Game::Run()
 					m_register = m_activeScene->GetScene();
 				}
 				if (Input::GetKeyUp(Key::Enter) || (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) 
-					&&((mousePos.x < 599 && mousePos.x>349) && (mousePos.y<-131 && mousePos.y>-296)))) {
+					&&((mousePos.x < 664 && mousePos.x>425) && (mousePos.y<-173 && mousePos.y>-333)))) {
 					//reset everything
 					ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetHealth(3.f);
 					ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).SetStamina(50.f);
@@ -3020,7 +3051,8 @@ void Game::MouseMotion(SDL_MouseMotionEvent evnt)
 	}
 	else {
 		//Rotate player
-		vec2 mousePos = vec2(((BackEnd::GetWindowWidth() / 2.f) - evnt.x) / (float(BackEnd::GetWindowWidth()) / 1536.f), ((BackEnd::GetWindowHeight() / 2.f) - evnt.y) / (float(BackEnd::GetWindowHeight()) / 864.f));
+		vec2 mousePos = vec2((BackEnd::GetWindowWidth() / 2.f) - evnt.x, (BackEnd::GetWindowHeight() / 2.f) - evnt.y);
+
 		float angle;
 		if (mousePos.x <= 0.f && mousePos.y >= 0.f) {
 			angle = abs(atan(float(mousePos.y) / float(mousePos.x)) * (180.f / PI));
@@ -3270,9 +3302,6 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 					for (int i : m_bullet) {
 						ECS::GetComponent<Bullet>(i).SetSpark(false);
 					}
-
-					//play the sound
-					//mciSendString(m_sound[0], NULL, 0, 0);
 
 					//timer for the stamina
 					m_staminaTimer = 0.2f;

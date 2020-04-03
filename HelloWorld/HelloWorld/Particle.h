@@ -12,6 +12,8 @@ public:
 
 	//create particles
 	void CreateParticle(int type, vec2 position, vec2 direction = vec2(0, 0));
+	//delete particle
+	void DeleteParticle();
 
 	void SetParticle(int p);
 	void SetParticlePos(vec2 pP);
