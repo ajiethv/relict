@@ -347,11 +347,11 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<Transform>(collide);
 
 		//set file
-		std::string fileName = "empty.png";
+		std::string fileName = "creditscrn.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200 * aspectRatio, -200);
-		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, 101.f));
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200 * aspectRatio, 200);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, -101.f));
 
 		//set player
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
@@ -559,7 +559,7 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "abilities.png";
 
 		//set components
-		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200 * aspectRatio, 200);
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 200 * aspectRatio, 200 );
 		ECS::GetComponent<Transform>(collide).SetPosition(vec3(0.f, 0.f, -101.f));
 
 		//set player

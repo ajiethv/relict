@@ -108,7 +108,7 @@ bool Game::Run()
 			mciSendString("play music repeat", NULL, 0, 0);
 
 			//adjust all sprites
-			for (int i = 1; i < 28; i++) {
+			for (int i = 1; i <= 28; i++) {
 				std::string fileName;
 				float xPos, yPos;
 				float zPos = ECS::GetComponent<Transform>(i).GetPositionZ();
@@ -134,16 +134,16 @@ bool Game::Run()
 						yPos = 0.f;
 					}
 					else if (i == 17) {
-						fileName = "empty.png";
+						fileName = "creditscrn.png";
 						xPos = 0.f;
 						yPos = 0.f;
 					}
-					else {
+					else if (i == 28) {
 						fileName = "abilities.png";
 						xPos = 0.f;
 						yPos = 0.f;
 					}
-					ECS::GetComponent<Sprite>(i).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(), (i == 17) ? -200 : 200);
+					ECS::GetComponent<Sprite>(i).LoadSprite(fileName, 200 * BackEnd::GetAspectRatio(),200);
 				}
 				else if (i == 2 || i == 3 || i == 5 || i == 6) {
 					if (i == 2) {
@@ -3096,13 +3096,13 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 						m_instruct = false;
 						m_abilities = true;
 						ECS::GetComponent<Transform>(15).SetPositionZ(-99.f);
-						ECS::GetComponent<Transform>(28).SetPositionZ(100.f);
+						ECS::GetComponent<Transform>(28).SetPositionZ(0.f);
 					}
 					if (m_abilities && (mousePos.x < 743 && mousePos.x>548) && (mousePos.y<-83 && mousePos.y>-216)) {
 						m_instruct = true;
 						m_abilities = false;
 						ECS::GetComponent<Transform>(28).SetPositionZ(-99.f);
-						ECS::GetComponent<Transform>(15).SetPositionZ(100.f);
+						ECS::GetComponent<Transform>(15).SetPositionZ(0.f);
 					}
 					if ((mousePos.x<630 && mousePos.x>-637) && (mousePos.y<-253 && mousePos.y>-391)) {//back to menu button 
 						m_option = false;
@@ -3200,7 +3200,7 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 							ECS::GetComponent<Transform>(14).SetPositionZ(99.f);
 						}
 						ECS::GetComponent<Transform>(16).SetPositionZ(-100.f);
-						for (int i = 18; i <= 27; i++) {
+						for (int i = 15; i <= 28; i++) {
 							ECS::GetComponent<Transform>(i).SetPositionZ(-101.f);
 						}
 					}
@@ -3275,10 +3275,10 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 					}
 					if ((mousePos.x<122 && mousePos.x>-113) && (mousePos.y<-254 && mousePos.y>-307)) {//credits 
 						m_credit = true;
-						for (int i = 1; i < 28; i++) {
+						for (int i = 1; i <= 28; i++) {
 							ECS::GetComponent<Transform>(i).SetPositionZ(-101.f);
 						}
-						ECS::GetComponent<Transform>(17).SetPositionZ(101.f);
+						ECS::GetComponent<Transform>(17).SetPositionZ(0.f);
 						ECS::GetComponent<Transform>(18).SetPositionZ(101.f);
 						ECS::GetComponent<Transform>(19).SetPositionZ(101.f);
 					}
