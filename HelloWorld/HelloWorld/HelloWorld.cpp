@@ -262,6 +262,10 @@ void HelloWorld::InitScene(float windowWidth, float windowHeight)
 		animController.AddAnimation(animations["MoveLeft"]);	//Animation 5
 		animController.AddAnimation(animations["AttackLeft"]);	//Animation 6
 		animController.AddAnimation(animations["DamageLeft"]);	//Animation 7
+		animController.AddAnimation(animations["DashRight"]);	//Animation 8
+		animController.AddAnimation(animations["DashLeft"]);	//Animation 9
+		animController.AddAnimation(animations["DeathRight"]);	//Animation 10
+		animController.AddAnimation(animations["DeathLeft"]);	//Animation 11
 
 		animController.SetActiveAnim(0);
 
