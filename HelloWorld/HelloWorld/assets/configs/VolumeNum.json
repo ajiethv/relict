@@ -1,0 +1,68 @@
+{
+  "0": {
+    "Frame0": [ 1.0, 891.0, 165.0, 811.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 9.999999747378752e-05
+  },
+  "10": {
+    "Frame0": [ 1.0, 810.0, 165.0, 730.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 9.999999747378752e-05
+  },
+  "100": {
+    "Frame0": [ 1.0, 81.0, 165.0, 1.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 9.999999747378752e-05
+  },
+  "20": {
+    "Frame0": [ 1.0, 729.0, 165.0, 649.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 9.999999747378752e-05
+  },
+  "30": {
+    "Frame0": [ 1.0, 648.0, 165.0, 568.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 9.999999747378752e-05
+  },
+  "40": {
+    "Frame0": [ 1.0, 567.0, 165.0, 487.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 9.999999747378752e-05
+  },
+  "50": {
+    "Frame0": [ 1.0, 486.0, 165.0, 406.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 9.999999747378752e-05
+  },
+  "60": {
+    "Frame0": [ 1.0, 405.0, 165.0, 325.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 9.999999747378752e-05
+  },
+  "70": {
+    "Frame0": [ 1.0, 324.0, 165.0, 244.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 9.999999747378752e-05
+  },
+  "80": {
+    "Frame0": [ 1.0, 243.0, 165.0, 163.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 9.999999747378752e-05
+  },
+  "90": {
+    "Frame0": [ 1.0, 162.0, 165.0, 82.0 ],
+    "NumFrames": 1,
+    "Repeating": true,
+    "SecsPerFrame": 9.999999747378752e-05
+  }
+}

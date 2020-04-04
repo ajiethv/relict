@@ -108,7 +108,7 @@ bool Game::Run()
 			mciSendString("play music repeat", NULL, 0, 0);
 
 			//adjust all sprites
-			for (int i = 1; i <= 28; i++) {
+			for (int i = 1; i <= 29; i++) {
 				std::string fileName;
 				float xPos, yPos;
 				float zPos = ECS::GetComponent<Transform>(i).GetPositionZ();
@@ -249,6 +249,13 @@ bool Game::Run()
 						yPos = 10.f;
 					}
 					ECS::GetComponent<Sprite>(i).LoadSprite(fileName, 28 * BackEnd::GetAspectRatio(), 25);
+				}
+				else if (i == 29) {
+					fileName = "VolumeNumber.png";
+					xPos = 81.f / (16.f / 9.f) * BackEnd::GetAspectRatio();
+					yPos = 38.f;
+					ECS::GetComponent<Sprite>(i).LoadSprite(fileName, 20 * BackEnd::GetAspectRatio(), 10);
+					ECS::GetComponent<AnimationController>(i).SetActiveAnim(m_volume / 10);
 				}
 				else {
 					if (i == 24) {
@@ -826,6 +833,19 @@ bool Game::Run()
 
 				ECS::GetComponent<Camera>(EntityIdentifier::MainCamera()).SetPosition(ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionX() / BackEnd::GetAspectRatio(), ECS::GetComponent<Transform>(EntityIdentifier::MainPlayer()).GetPositionY(), ECS::GetComponent<Camera>(EntityIdentifier::MainCamera()).GetPositionZ());
 			}
+		}
+
+		while (m_window->isOpen() && m_activeScene == m_scenes[1] && !ECS::GetComponent<AnimationController>(11).GetAnimationDone()) {
+			//Update timer
+			Timer::Update();
+			//Update the backend
+			BackEnd::Update(m_register);
+			//Clear window with clearColor
+			m_window->Clear(m_clearColor);
+			//Draws the game
+			BackEnd::Draw(m_register);
+			//Flips the windows
+			m_window->Flip();
 		}
 
 		int finalScore = 0, accuracyMult = 0, bossMult = 0;
@@ -1409,6 +1429,7 @@ void Game::Update()
 				m_tutorial = false;
 			}
 			if (m_dodgeTimer <= 0.f) {
+				ECS::GetComponent<AnimationController>(11).SetActiveAnim((ECS::GetComponent<AnimationController>(11).GetActiveAnim() - 8) * 4);
 				std::string fileName = "Character.png";
 				ECS::GetComponent<Sprite>(11).LoadSprite(fileName, 14, 14);
 			}
@@ -1447,8 +1468,9 @@ void Game::Update()
 						std::string fileName = "NoHeart.png";
 						ECS::GetComponent<Sprite>(ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() + 6).LoadSprite(fileName, 10, 10);
 						if (ECS::GetComponent<Stats>(EntityIdentifier::MainPlayer()).GetHealth() <= 0) {
-							ECS::GetComponent<Transform>(12).SetPosition(0.f, 0.f, 100.f);
-							std::cout << "yo" << std::endl;
+							ECS::GetComponent<AnimationController>(11).SetActiveAnim((ECS::GetComponent<AnimationController>(11).GetActiveAnim() < 8) ? ECS::GetComponent<AnimationController>(11).GetActiveAnim() / 4 + 10 : ECS::GetComponent<AnimationController>(11).GetActiveAnim() + 2);
+							m_removeEntity.push_back(m_bullet[i]);
+							break;
 						}
 					}
 					m_invulnerability  = 2.f;
@@ -2927,6 +2949,7 @@ void Game::KeyboardDown()
 				if (Input::GetKey(Key::W) && Input::GetKey(Key::A)) {
 					m_dodgeTimer = 20.f;
 					m_dodgeDirection = vec2(-sqrt(0.5f), sqrt(0.5f));
+					ECS::GetComponent<AnimationController>(11).SetActiveAnim(9);
 					std::string fileName = "CharacterInvulnerable.png";
 					ECS::GetComponent<Sprite>(11).LoadSprite(fileName, 14, 14);
 				}
@@ -2934,6 +2957,7 @@ void Game::KeyboardDown()
 				else if (Input::GetKey(Key::W) && Input::GetKey(Key::D)) {
 					m_dodgeTimer = 20.f;
 					m_dodgeDirection = vec2(sqrt(0.5f), sqrt(0.5f));
+					ECS::GetComponent<AnimationController>(11).SetActiveAnim(8);
 					std::string fileName = "CharacterInvulnerable.png";
 					ECS::GetComponent<Sprite>(11).LoadSprite(fileName, 14, 14);
 				}
@@ -2941,6 +2965,7 @@ void Game::KeyboardDown()
 				else if (Input::GetKey(Key::S) && Input::GetKey(Key::A)) {
 					m_dodgeTimer = 20.f;
 					m_dodgeDirection = vec2(-sqrt(0.5f), -sqrt(0.5f));
+					ECS::GetComponent<AnimationController>(11).SetActiveAnim(9);
 					std::string fileName = "CharacterInvulnerable.png";
 					ECS::GetComponent<Sprite>(11).LoadSprite(fileName, 14, 14);
 				}
@@ -2948,6 +2973,7 @@ void Game::KeyboardDown()
 				else if (Input::GetKey(Key::S) && Input::GetKey(Key::D)) {
 					m_dodgeTimer = 20.f;
 					m_dodgeDirection = vec2(sqrt(0.5f), -sqrt(0.5f));
+					ECS::GetComponent<AnimationController>(11).SetActiveAnim(8);
 					std::string fileName = "CharacterInvulnerable.png";
 					ECS::GetComponent<Sprite>(11).LoadSprite(fileName, 14, 14);
 				}
@@ -2956,6 +2982,7 @@ void Game::KeyboardDown()
 					if (Input::GetKey(Key::W)) {
 						m_dodgeTimer = 20.f;
 						m_dodgeDirection = vec2(0, 1);
+						ECS::GetComponent<AnimationController>(11).SetActiveAnim(ECS::GetComponent<AnimationController>(11).GetActiveAnim() / 4 + 8);
 						std::string fileName = "CharacterInvulnerable.png";
 						ECS::GetComponent<Sprite>(11).LoadSprite(fileName, 14, 14);
 					}
@@ -2963,6 +2990,7 @@ void Game::KeyboardDown()
 					if (Input::GetKey(Key::A)) {
 						m_dodgeTimer = 20.f;
 						m_dodgeDirection = vec2(-1, 0);
+						ECS::GetComponent<AnimationController>(11).SetActiveAnim(9);
 						std::string fileName = "CharacterInvulnerable.png";
 						ECS::GetComponent<Sprite>(11).LoadSprite(fileName, 14, 14);
 					}
@@ -2970,6 +2998,7 @@ void Game::KeyboardDown()
 					if (Input::GetKey(Key::S)) {
 						m_dodgeTimer = 20.f;
 						m_dodgeDirection = vec2(0, -1);
+						ECS::GetComponent<AnimationController>(11).SetActiveAnim(ECS::GetComponent<AnimationController>(11).GetActiveAnim() / 4 + 8);
 						std::string fileName = "CharacterInvulnerable.png";
 						ECS::GetComponent<Sprite>(11).LoadSprite(fileName, 14, 14);
 					}
@@ -2977,6 +3006,7 @@ void Game::KeyboardDown()
 					if (Input::GetKey(Key::D)) {
 						m_dodgeTimer = 20.f;
 						m_dodgeDirection = vec2(1, 0);
+						ECS::GetComponent<AnimationController>(11).SetActiveAnim(8);
 						std::string fileName = "CharacterInvulnerable.png";
 						ECS::GetComponent<Sprite>(11).LoadSprite(fileName, 14, 14);
 					}
@@ -3150,6 +3180,11 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 					}
 					if ((mousePos.x<-103 && mousePos.x>-217) && (mousePos.y < 85 && mousePos.y>2)) {//high contrast on
 						m_highContrast = true;
+						RedBulletSprite = "redbulletcontrast.png";
+						YellowBulletSprite = "orangebulletcontrast.png";
+						GreenBulletSprite = "greenbulletcontrast.png";
+						GreenBulletSpriteRef = "whitebulletcontrast.png";
+						RedBulletSpriteBig = "redbullet2contrast.png";
 						ECS::GetComponent<Transform>(20).SetPositionZ(-101.f);
 						ECS::GetComponent<Transform>(21).SetPositionZ(101.f);
 						ECS::GetComponent<Transform>(22).SetPositionZ(101.f);
@@ -3157,6 +3192,11 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 					}
 					if ((mousePos.x<-475 && mousePos.x>-598) && (mousePos.y < 90 && mousePos.y>6)) {//high contrast off
 						m_highContrast = false;
+						RedBulletSprite = "RedBullet.png";
+						YellowBulletSprite = "OrangeBullet.png";
+						GreenBulletSprite = "GreenBullet.png";
+						GreenBulletSpriteRef = "WhiteBullet.png";
+						RedBulletSpriteBig = "RedBullet2.png";
 						ECS::GetComponent<Transform>(20).SetPositionZ(101.f);
 						ECS::GetComponent<Transform>(21).SetPositionZ(-101.f);
 						ECS::GetComponent<Transform>(22).SetPositionZ(-101.f);
@@ -3198,6 +3238,7 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 							ECS::GetComponent<Transform>(12).SetPositionZ(99.f);
 							ECS::GetComponent<Transform>(13).SetPositionZ(100.f);
 							ECS::GetComponent<Transform>(14).SetPositionZ(99.f);
+							ECS::GetComponent<Transform>(29).SetPositionZ(-100.f);
 						}
 						ECS::GetComponent<Transform>(16).SetPositionZ(-100.f);
 						for (int i = 15; i <= 28; i++) {
@@ -3256,6 +3297,8 @@ void Game::MouseClick(SDL_MouseButtonEvent evnt)
 						ECS::GetComponent<Transform>(16).SetPositionZ(0.f);
 						ECS::GetComponent<Transform>(18).SetPositionZ(101.f);
 						ECS::GetComponent<Transform>(19).SetPositionZ(101.f);
+						ECS::GetComponent<Transform>(29).SetPositionZ(101.f);
+						ECS::GetComponent<AnimationController>(29).SetActiveAnim(m_volume / 10);
 						if (!m_highContrast) {
 							ECS::GetComponent<Transform>(20).SetPositionZ(101.f);
 							ECS::GetComponent<Transform>(23).SetPositionZ(101.f);

@@ -566,4 +566,45 @@ void MainMenu::InitScene(float windowWidth, float windowHeight)
 		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit();
 		ECS::SetUpIdentifier(collide, bitHolder, "abilitiesscrn");
 	}
+
+	{
+		//set animation file
+		auto animations = File::LoadJSON("VolumeNum.json");
+		
+		//set the abilities screen(29)
+		auto collide = ECS::CreateEntity();
+
+		//attach components
+		ECS::AttachComponent<Sprite>(collide);
+		ECS::AttachComponent<Transform>(collide);
+		ECS::AttachComponent<AnimationController>(collide);
+
+		//set file
+		std::string fileName = "VolumeNumber.png";
+		auto& animController = ECS::GetComponent<AnimationController>(collide);
+		animController.InitUVs(fileName);
+
+		//set animations
+		animController.AddAnimation(animations["0"]);	//Animation 0
+		animController.AddAnimation(animations["10"]);	//Animation 1
+		animController.AddAnimation(animations["20"]);	//Animation 2
+		animController.AddAnimation(animations["30"]);	//Animation 3
+		animController.AddAnimation(animations["40"]);	//Animation 4
+		animController.AddAnimation(animations["50"]);	//Animation 5
+		animController.AddAnimation(animations["60"]);	//Animation 6
+		animController.AddAnimation(animations["70"]);	//Animation 7
+		animController.AddAnimation(animations["80"]);	//Animation 8
+		animController.AddAnimation(animations["90"]);	//Animation 9
+		animController.AddAnimation(animations["100"]);	//Animation 10
+
+		animController.SetActiveAnim(0);
+
+		//set components
+		ECS::GetComponent<Sprite>(collide).LoadSprite(fileName, 20 * aspectRatio, 10, true, &animController);
+		ECS::GetComponent<Transform>(collide).SetPosition(vec3(81.f / (16.f / 9.f) * aspectRatio, 38.f, -101.f));
+
+		//set player
+		unsigned int bitHolder = EntityIdentifier::TransformBit() | EntityIdentifier::SpriteBit() | EntityIdentifier::AnimationBit();
+		ECS::SetUpIdentifier(collide, bitHolder, "volume numbers");
+	}
 }
